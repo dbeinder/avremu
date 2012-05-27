@@ -29,13 +29,7 @@ namespace avrEmu
 			SetZeroNegativeFlag (rd.Value);
 		}
 		
-		protected void Ldi (List<AvrInstrArg> args)
-		{
-			ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-			int k = (args [1] as AvrInstrArgConst).Constant;
-			
-			rd.Value = (byte)k;
-		}
+		
 	
 		#endregion
 
@@ -49,7 +43,15 @@ namespace avrEmu
 		
 		#region Data Transfer
 		
+		protected void Ldi (List<AvrInstrArg> args)
+		{
+			ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
+			int k = (args [1] as AvrInstrArgConst).Constant;
+			
+			rd.Value = (byte)k;
+		}
 		#endregion
+		
 	
 		#region MCU Control
 		

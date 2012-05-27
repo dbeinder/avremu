@@ -9,9 +9,8 @@ namespace avrEmu
 	{
 		static List<AvrInstruction> instrs = new List<AvrInstruction> () 
 		{
-			new AvrInstruction("ldi r14, 4"),
-			new AvrInstruction("ldi r15, 5"),
-			new AvrInstruction ("add r14, r15"),
+			new AvrInstruction("ldi r14, 120"),
+			new AvrInstruction("ldi r15, 150"),
 			new AvrInstruction ("add r14, r15")
 		};
 		
@@ -20,7 +19,8 @@ namespace avrEmu
 		static void Main (string[] args)
 		{
 			
-			
+			ExtByte bt = new ExtByte (8);
+			bt.BitNumbers ["jkl"] = 6;
 			
 			AvrController atny = new AtTiny2313 ();
 			

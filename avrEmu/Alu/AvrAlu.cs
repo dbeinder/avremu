@@ -58,7 +58,7 @@ namespace avrEmu
 		{
 			this.SREG = new ExtByte (0);
 			this.SREG.BitChanged += new ExtByte.BitChangedEventHandler (SREG_BitChanged);
-			this.SREG.BitNames = new Dictionary<string, int> ()
+			this.SREG.BitNumbers = new Dictionary<string, int> ()
             {
               { "C", 0 },
               { "Z", 1 },
@@ -74,7 +74,7 @@ namespace avrEmu
 
 		protected virtual void SREG_BitChanged (object sender, BitChangedEventArgs e)
 		{
-			if (e.ChangedBitNr == this.SREG.BitNames ["N"] || e.ChangedBitNr == this.SREG.BitNames ["V"]) {
+			if (e.ChangedBitNr == this.SREG.BitNumbers ["N"] || e.ChangedBitNr == this.SREG.BitNumbers ["V"]) {
 				this.SREG ["S"] = this.SREG ["N"] ^ this.SREG ["V"];
 			}
 		}
