@@ -36,36 +36,36 @@ namespace avrEmu
         public delegate void BitChangedEventHandler(object sender,BitChangedEventArgs e);
 
         public event ByteChangedEventHandler ByteChanged;
-		
+        
         protected Dictionary<string, int> bitNumbers = new Dictionary<string, int>();
         protected List<string> bitNames = new List<string>();
-		
+        
         public class BitEvent
         {
             public event BitChangedEventHandler BitChanged;
-			
+            
             public void FireEvents(object sender, BitChangedEventArgs e)
             {
                 if (this.BitChanged != null)
                     this.BitChanged(sender, e);
             }
         }
-		
+        
         public class BitEventsWrapper
         {
             private List<BitEvent> eventsClasses = new List<BitEvent>() 
-			{
-				new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent(),
-				new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent()
-			};
+            {
+                new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent(),
+                new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent()
+            };
             private ExtByte extByte;
-			
+            
             public BitEventsWrapper(ExtByte extByte)
             {
                 this.extByte = extByte;
             }
-			
-            public BitEvent this [int index]
+            
+            public BitEvent this[int index]
             {
                 get
                 {
@@ -75,8 +75,8 @@ namespace avrEmu
                     return eventsClasses [index];
                 }
             }
-			
-            public BitEvent this [string bitName]
+            
+            public BitEvent this[string bitName]
             {
                 get
                 {
@@ -87,7 +87,7 @@ namespace avrEmu
                 }
             }
         }
-		
+        
         public class BN
         {
             private Dictionary<string, int> source;
@@ -96,24 +96,24 @@ namespace avrEmu
             {
                 this.source = source;
             }
-			
-            public int this [string bitName]
+            
+            public int this[string bitName]
             {
                 get
                 {
                     if (!source.ContainsKey(bitName))
                         throw new Exception("BitName not found!");
-					
+                    
                     return source [bitName];
                 }
             }
-			
+            
             public bool Contains(string bitName)
             {
                 return source.ContainsKey(bitName);
             }
         }
-		
+        
         public List<string> BitNames
         {
             get
@@ -123,14 +123,14 @@ namespace avrEmu
             set
             {
                 this.bitNumbers.Clear();
-				
+                
                 for (int i = 0; i < 8; i++) 
                     this.bitNumbers.Add(value [i], i);
-				
+                
                 this.bitNames = value;
             }
         }
-		
+        
         public BitEventsWrapper BitEvents;
         public BN BitNumbers;
         protected byte _value;
@@ -150,8 +150,8 @@ namespace avrEmu
                 {
                     if (this [i] != old [i])
                         this.BitEvents [i].FireEvents(
-							this,
-							new BitChangedEventArgs(this, i, this [i])
+                            this,
+                            new BitChangedEventArgs(this, i, this [i])
                         );
                 }
                 if (ByteChanged != null)
@@ -181,7 +181,7 @@ namespace avrEmu
             this.BitEvents = new BitEventsWrapper(this);
         }
 
-        public bool this [int index]
+        public bool this[int index]
         {
             get
             {
@@ -200,18 +200,18 @@ namespace avrEmu
                     this.Value |= (byte)(1 << index);
                 else
                     this.Value &= (byte)~(1 << index);
-				
+                
                 this.BitEvents [index].FireEvents(
-						this,
-						new BitChangedEventArgs(this, index, value)
+                        this,
+                        new BitChangedEventArgs(this, index, value)
                 );
-				
+                
                 if (ByteChanged != null)
                     ByteChanged(this, new ByteChangedEventArgs(this));
             }
         }
 
-        public bool this [string key]
+        public bool this[string key]
         {
             get
             {
@@ -238,10 +238,10 @@ namespace avrEmu
         {
             return this.Value == other.Value;
         }
-		
-		#region Convenient but dangerous
+        
+        #region Convenient but dangerous
         //creates a new obj -> Bit/ByteChangeEvent stop working
-		
+        
         /* public static implicit operator byte(ExtByte bt)
         {
             return bt.Value;
@@ -251,8 +251,8 @@ namespace avrEmu
         {
             return new ExtByte(bt);
         }*/
-		#endregion
-		
+        #endregion
+        
         public override string ToString()
         {
             string output = "Byte:" + this._value.ToString() + " [";
@@ -262,7 +262,7 @@ namespace avrEmu
                     output += this.BitNames [i];
                 else
                     output += "B" + i.ToString();
-				
+                
                 output += "=" + (this [i] ? "1, " : "0, ");
             }
             return output.Substring(0, output.Length - 2) + "]";
