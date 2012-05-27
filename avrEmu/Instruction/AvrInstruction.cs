@@ -15,9 +15,9 @@ namespace avrEmu
             this.Arguments = args;
         }
 
-        public AvrInstruction (string asmString)
-		{
-			this.Arguments = new List<AvrInstrArg> ();
+        public AvrInstruction(string asmString)
+        {
+            this.Arguments = new List<AvrInstrArg>();
             ParseFromString(asmString);
         }
 

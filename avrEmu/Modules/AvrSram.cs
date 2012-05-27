@@ -5,12 +5,12 @@ namespace avrEmu
     {
         public ExtByte[] Memory;
 
-        public AvrSram (int capacity)
-		{
-			this.Memory = new ExtByte[capacity];
-			
-			for (int i = 0; i < capacity; i++) 
-				this.Memory[i] = new ExtByte(0);
+        public AvrSram(int capacity)
+        {
+            this.Memory = new ExtByte[capacity];
+            
+            for (int i = 0; i < capacity; i++) 
+                this.Memory [i] = new ExtByte(0);
         }
 
         public override void Reset()

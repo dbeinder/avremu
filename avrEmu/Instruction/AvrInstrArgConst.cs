@@ -5,9 +5,9 @@ namespace avrEmu
     {
         public int Constant { get; set; }
 
-        public AvrInstrArgConst (int constant)
-		{
-			this.InstructionArgType = AvrInstrArgType.NumericConstant;
+        public AvrInstrArgConst(int constant)
+        {
+            this.InstructionArgType = AvrInstrArgType.NumericConstant;
             this.Constant = constant;
         }
     }

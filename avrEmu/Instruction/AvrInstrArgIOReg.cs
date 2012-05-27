@@ -5,9 +5,9 @@ namespace avrEmu
     {
         public string IORegister { get; set; }
 
-        public AvrInstrArgIOReg (string ioReg)
-		{
-			this.InstructionArgType = AvrInstrArgType.IORegister;
+        public AvrInstrArgIOReg(string ioReg)
+        {
+            this.InstructionArgType = AvrInstrArgType.IORegister;
             this.IORegister = ioReg;
         }
     }
