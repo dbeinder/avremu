@@ -36,10 +36,53 @@ namespace avrEmu
 		public delegate void BitChangedEventHandler (object sender,BitChangedEventArgs e);
 
 		public event ByteChangedEventHandler ByteChanged;
-		public event BitChangedEventHandler BitChanged;
 		
 		protected Dictionary<string, int> bitNumbers = new Dictionary<string, int> ();
 		protected List<string> bitNames = new List<string> ();
+		
+		public class BitEvent
+		{
+			public event BitChangedEventHandler BitChanged;
+			
+			public void FireEvents (object sender, BitChangedEventArgs e)
+			{
+				if (this.BitChanged != null)
+					this.BitChanged (sender, e);
+			}
+		}
+		
+		public class BitEventsWrapper
+		{
+			private List<BitEvent> eventsClasses = new List<BitEvent> () 
+			{
+				new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent(),
+				new BitEvent(), new BitEvent(), new BitEvent(), new BitEvent()
+			};
+			private ExtByte extByte;
+			
+			public BitEventsWrapper (ExtByte extByte)
+			{
+				this.extByte = extByte;
+			}
+			
+			public BitEvent this [int index] {
+				get {
+					if (index < 0 || index > 7)
+						throw new Exception ("Invalid BitIndex for ExtByte");
+
+					return eventsClasses [index];
+				}
+			}
+			
+			public BitEvent this [string bitName] {
+				get {
+					if (this.extByte.BitNumbers.Contains (bitName))
+						return this.eventsClasses [this.extByte.BitNumbers [bitName]];
+					else
+						throw new Exception ("BitName not found!");
+				}
+			}
+		}
 		
 		public class BN
 		{
@@ -79,6 +122,7 @@ namespace avrEmu
 			}
 		}
 		
+		public BitEventsWrapper BitEvents;
 		public BN BitNumbers;
 		protected byte _value;
 
@@ -92,8 +136,7 @@ namespace avrEmu
 
 				for (int i = 0; i < 8; i++) {
 					if (this [i] != old [i])
-					if (BitChanged != null)
-						BitChanged (
+					this.BitEvents [i].FireEvents (
 							this,
 							new BitChangedEventArgs (this, i, this [i])
 						);
@@ -107,6 +150,7 @@ namespace avrEmu
 		{
 			this._value = b;
 			this.BitNumbers = new BN (this.bitNumbers);
+			this.BitEvents = new BitEventsWrapper (this);
 		}
 
 		public ExtByte (bool bit0, bool bit1, bool bit2, bool bit3, bool bit4, bool bit5, bool bit6, bool bit7)
@@ -121,6 +165,7 @@ namespace avrEmu
 			this [6] = bit6;
 			this [7] = bit7;
 			this.BitNumbers = new BN (this.bitNumbers);
+			this.BitEvents = new BitEventsWrapper (this);
 		}
 
 		public bool this [int index] {
@@ -140,8 +185,10 @@ namespace avrEmu
 				else
 					this.Value &= (byte)~(1 << index);
 				
-				if (BitChanged != null)
-					BitChanged (this, new BitChangedEventArgs (this, index, value));
+				this.BitEvents [index].FireEvents (
+						this,
+						new BitChangedEventArgs (this, index, value)
+					);
 				
 				if (ByteChanged != null)
 					ByteChanged (this, new ByteChangedEventArgs (this));
@@ -156,7 +203,7 @@ namespace avrEmu
 					throw new Exception ("Bit Name not found!");
 			}
 			set {
-				if (this.BitNumbers.Contains(key))
+				if (this.BitNumbers.Contains (key))
 					this [this.BitNumbers [key]] = value;
 				else
 					throw new Exception ("Bit Name not found!");
@@ -172,7 +219,10 @@ namespace avrEmu
 		{
 			return this.Value == other.Value;
 		}
-
+		
+		#region Convenient but dangerous
+		//creates a new obj -> Bit/ByteChangeEvent stop working
+		
 		/* public static implicit operator byte(ExtByte bt)
         {
             return bt.Value;
@@ -182,6 +232,8 @@ namespace avrEmu
         {
             return new ExtByte(bt);
         }*/
+		#endregion
+		
 		public override string ToString ()
 		{
 			string output = "Byte:" + this._value.ToString () + " [";

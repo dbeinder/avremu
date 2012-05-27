@@ -26,10 +26,10 @@ namespace avrEmu
 			AvrPMFormLink fakeFlash = atny.ProgramMemory as AvrPMFormLink;
 			fakeFlash.FetchInstruction += delegate(object sender, FetchInstructionEventArgs e) {
 				e.Instruction = instrs [pc];
-				pc = (pc+1) % instrs.Count;
+				pc = (pc + 1) % instrs.Count;
 			};
-			
-			
+			atny.ALU.SREG ["Z"] = true;
+			atny.ALU.SREG ["V"] = true;
 			for (;;)
 				atny.ClockTick ();
 			

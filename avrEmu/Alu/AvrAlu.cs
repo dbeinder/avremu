@@ -44,8 +44,6 @@ namespace avrEmu
 
 		public ExtByte SREG { get; protected set; }
 		
-		//protected Dictionary<string, Instruction> InstructionSet = new Dictionary<string, Instruction> ();
-		//protected Dictionary<string, List<AvrInstrArgType>> ValidInstructionArguments = new Dictionary<string, List<AvrInstrArgType>> ();
 		protected Dictionary<string, VI> InstructionSet = new Dictionary<string, VI> ();
 		
 		public AvrAlu (AvrController controller)
@@ -57,18 +55,19 @@ namespace avrEmu
 		protected virtual void InitSREG ()
 		{
 			this.SREG = new ExtByte (0);
-			this.SREG.BitChanged += new ExtByte.BitChangedEventHandler (SREG_BitChanged);
+			
 			this.SREG.BitNames = new List<string> ()
             	{ "C", "Z", "N", "V", "S", "H", "T", "I" };
+			
+			this.SREG.BitEvents ["N"].BitChanged += new ExtByte.BitChangedEventHandler (SREG_BitChanged);
+			this.SREG.BitEvents ["V"].BitChanged += new ExtByte.BitChangedEventHandler (SREG_BitChanged);
 			
 			this.IORegisters.Add ("SREG", this.SREG);
 		}
 
 		protected virtual void SREG_BitChanged (object sender, BitChangedEventArgs e)
 		{
-			if (e.ChangedBitNr == this.SREG.BitNumbers ["N"] || e.ChangedBitNr == this.SREG.BitNumbers ["V"]) {
-				this.SREG ["S"] = this.SREG ["N"] ^ this.SREG ["V"];
-			}
+			this.SREG ["S"] = this.SREG ["N"] ^ this.SREG ["V"];
 		}
 		
 		public virtual void ExecuteInstruction (AvrInstruction instruction)
