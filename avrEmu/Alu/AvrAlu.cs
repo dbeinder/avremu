@@ -23,7 +23,7 @@ namespace avrEmu
 			public VI (Instruction exec)
 			{
 				this.Exec = exec;
-				this.Args = new List<AvrInstrArgType>();
+				this.Args = new List<AvrInstrArgType> ();
 			}
 
 			public VI (Instruction exec, AvrInstrArgType arg0)
@@ -58,17 +58,9 @@ namespace avrEmu
 		{
 			this.SREG = new ExtByte (0);
 			this.SREG.BitChanged += new ExtByte.BitChangedEventHandler (SREG_BitChanged);
-			this.SREG.BitNumbers = new Dictionary<string, int> ()
-            {
-              { "C", 0 },
-              { "Z", 1 },
-              { "N", 2 },
-              { "V", 3 },
-              { "S", 4 },
-              { "H", 5 },
-              { "T", 6 },
-              { "I", 7 },
-            };
+			this.SREG.BitNames = new List<string> ()
+            	{ "C", "Z", "N", "V", "S", "H", "T", "I" };
+			
 			this.IORegisters.Add ("SREG", this.SREG);
 		}
 
@@ -89,9 +81,8 @@ namespace avrEmu
 					throw new Exception ("Argument #" + i + " is of invalid Type!");
 			}
 			
-			this.InstructionSet [instruction.Instruction].Exec(instruction.Arguments);
+			this.InstructionSet [instruction.Instruction].Exec (instruction.Arguments);
 		}
-		
 			
 		protected byte CutAndSetCarry (int number)
 		{

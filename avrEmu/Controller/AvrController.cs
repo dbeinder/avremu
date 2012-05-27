@@ -21,6 +21,21 @@ namespace avrEmu
 
 		protected List<AvrModule> Modules = new List<AvrModule> ();
 		
+		protected virtual void Reset ()
+		{
+			this.ProgramCounter = 0;
+			this.PeripheralRegisters = new Dictionary<string, ExtByte> ();
+			ResetModules ();
+			LoadIORegisters ();
+			ResetWorkingRegisters ();
+		}
+		
+		protected virtual void ResetModules ()
+		{
+			foreach (AvrModule module in this.Modules)
+				module.Reset ();
+		}
+		
 		protected virtual void ResetWorkingRegisters ()
 		{
 			for (int i = 0; i < this.WorkingRegisters.Length; i++) {

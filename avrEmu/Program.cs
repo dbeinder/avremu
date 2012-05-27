@@ -11,7 +11,7 @@ namespace avrEmu
 		{
 			new AvrInstruction("ldi r14, 120"),
 			new AvrInstruction("ldi r15, 150"),
-			new AvrInstruction ("add r14, r15")
+			new AvrInstruction("add r14, r15")
 		};
 		
 		static int pc = 0;
@@ -20,7 +20,6 @@ namespace avrEmu
 		{
 			
 			ExtByte bt = new ExtByte (8);
-			bt.BitNumbers ["jkl"] = 6;
 			
 			AvrController atny = new AtTiny2313 ();
 			

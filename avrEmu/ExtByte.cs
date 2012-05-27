@@ -37,8 +37,9 @@ namespace avrEmu
 
 		public event ByteChangedEventHandler ByteChanged;
 		public event BitChangedEventHandler BitChanged;
-
-		public Dictionary<string, int> BitNumbers = new Dictionary<string, int> ();
+		
+		protected Dictionary<string, int> bitNumbers = new Dictionary<string, int> ();
+		protected List<string> bitNames = new List<string> ();
 		
 		public class BN
 		{
@@ -49,41 +50,36 @@ namespace avrEmu
 				this.source = source;
 			}
 			
-			public string this [int bit] {
+			public int this [string bitName] {
 				get {
-					if (bit < 0 || bit > 7)
-						throw new Exception ("Invalid BitIndex for ExtByte");
+					if (!source.ContainsKey (bitName))
+						throw new Exception ("BitName not found!");
 					
-					Dictionary<int, string> reverse = source.ToDictionary (
-						x => x.Value,
-						x => x.Key
-					);
-					
-					if (reverse.ContainsKey(bit)) 
-						return reverse [bit];
-					else
-						throw new Exception ("No Name for Bit definied!");
+					return source [bitName];
 				}
-				
-				set {
-					if (bit < 0 || bit > 7)
-						throw new Exception ("Invalid BitIndex for ExtByte");
-						
-					Dictionary<int, string> reverse = source.ToDictionary (
-						x => x.Value,
-						x => x.Key
-					);
-					
-					if (reverse.ContainsKey (bit)) {
-						string oldName = source.ToDictionary (x => x.Value, x => x.Key) [bit];
-						source.Remove (oldName);
-					}
-					source.Add (value, bit);
-				}
+			}
+			
+			public bool Contains (string bitName)
+			{
+				return source.ContainsKey (bitName);
 			}
 		}
 		
-		public BN BitNames { get; protected set; }
+		public List<string> BitNames {
+			get {
+				return this.bitNames;
+			}
+			set {
+				this.bitNumbers.Clear ();
+				
+				for (int i = 0; i < 8; i++) 
+					this.bitNumbers.Add (value [i], i);
+				
+				this.bitNames = value;
+			}
+		}
+		
+		public BN BitNumbers;
 		protected byte _value;
 
 		public byte Value {
@@ -110,7 +106,7 @@ namespace avrEmu
 		public ExtByte (byte b)
 		{
 			this._value = b;
-			this.BitNames = new BN (this.BitNumbers);
+			this.BitNumbers = new BN (this.bitNumbers);
 		}
 
 		public ExtByte (bool bit0, bool bit1, bool bit2, bool bit3, bool bit4, bool bit5, bool bit6, bool bit7)
@@ -124,7 +120,7 @@ namespace avrEmu
 			this [5] = bit5;
 			this [6] = bit6;
 			this [7] = bit7;
-			this.BitNames = new BN (this.BitNumbers);
+			this.BitNumbers = new BN (this.bitNumbers);
 		}
 
 		public bool this [int index] {
@@ -154,13 +150,13 @@ namespace avrEmu
 
 		public bool this [string key] {
 			get {
-				if (this.BitNumbers.ContainsKey (key))
+				if (this.BitNumbers.Contains (key))
 					return this [this.BitNumbers [key]];
 				else
 					throw new Exception ("Bit Name not found!");
 			}
 			set {
-				if (this.BitNumbers.ContainsKey (key))
+				if (this.BitNumbers.Contains(key))
 					this [this.BitNumbers [key]] = value;
 				else
 					throw new Exception ("Bit Name not found!");
@@ -188,9 +184,16 @@ namespace avrEmu
         }*/
 		public override string ToString ()
 		{
-			
-			return "";
-			//return string.Format ("[ExtByte: Value={0}, Item={1}, Item={2}]", Value, Item, Item);
+			string output = "Byte:" + this._value.ToString () + " [";
+			for (int i = 0; i < 8; i++) {
+				if (this.BitNames.Count > i)
+					output += this.BitNames [i];
+				else
+					output += "B" + i.ToString ();
+				
+				output += "=" + (this [i] ? "1, " : "0, ");
+			}
+			return output.Substring (0, output.Length - 2) + "]";
 		}
 
 	}

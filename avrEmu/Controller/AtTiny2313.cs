@@ -12,6 +12,8 @@ namespace avrEmu
 
         public AtTiny2313 ()
 		{
+			this.WorkingRegisters = new ExtByte[WorkingRegisterCount];
+			
 			this.ALU = new AtTinyAlu (this);
 			this.ProgramMemory = new AvrPMFormLink ();
 			this.SRAM = new AvrSram (CapacitySRAM);
@@ -19,11 +21,7 @@ namespace avrEmu
 			this.Modules.Add (this.ProgramMemory);
 			this.Modules.Add (this.SRAM);
 
-			this.ProgramCounter = 0;
-			this.PeripheralRegisters = new Dictionary<string, ExtByte> ();
-			this.WorkingRegisters = new ExtByte[WorkingRegisterCount];
-			ResetWorkingRegisters ();
-            LoadIORegisters();
+			Reset ();
         }
 
 
