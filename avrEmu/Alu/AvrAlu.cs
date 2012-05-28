@@ -84,19 +84,49 @@ namespace avrEmu
             this.InstructionSet [instruction.Instruction].Exec(instruction.Arguments);
         }
             
-        protected byte CutAndSetCarry(int number)
+        [Flags]
+        protected enum SregFlags
         {
-            byte newValue = (byte)number;
-            
-            this.SREG ["C"] = (number != newValue);
-            
-            return newValue;
+            None = 0,
+            C = 1,
+            Z = 2,
+            N = 4,
+            V = 8,
+            //H = 16, //no idea for an universal way to detect
+
+            //CZNVH = SregFlags.C | SregFlags.Z | SregFlags.N | SregFlags.V | SregFlags.H,
+            CZNV = SregFlags.C | SregFlags.Z | SregFlags.N | SregFlags.V,
+            ZNV = SregFlags.Z | SregFlags.N | SregFlags.V
         }
 
-        protected void SetZeroNegativeFlag(byte bt)
+        protected byte SetFlags(int result, SregFlags flags)
         {
-            this.SREG ["Z"] = (bt == 0);
-            this.SREG ["N"] = ((new ExtByte(bt)) [7] == true);
+            byte newValue = (byte)result;
+            /* switch (flags)
+            {
+                case SregFlags.C:
+                    this.SREG ["C"] = (result != newValue);
+                case SregFlags.Z:
+                    this.SREG ["Z"] = (newValue == 0);
+                case SregFlags.N:
+                    this.SREG ["N"] = ((new ExtByte(newValue)) [7] == true);
+                case SregFlags.V:5
+                    this.SREG ["V"] = (result > 127) || (result < -128);
+            }*/
+
+            if ((flags & SregFlags.C) == SregFlags.C)
+                this.SREG ["C"] = (result != newValue);
+
+            if ((flags & SregFlags.Z) == SregFlags.Z)
+                this.SREG ["Z"] = (newValue == 0);
+
+            if ((flags & SregFlags.N) == SregFlags.N)
+                this.SREG ["N"] = ((new ExtByte(newValue)) [7] == true);
+
+            if ((flags & SregFlags.V) == SregFlags.V)
+                this.SREG ["V"] = (result > 127) || (result < -128);
+
+            return newValue;
         }
     }
 
