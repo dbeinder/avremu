@@ -58,6 +58,7 @@
     <Compile Include="Modules\AvrProgramMemory.cs" />
     <Compile Include="Modules\AvrPMFormLink.cs" />
     <Compile Include="Modules\AvrSram.cs" />
+    <Compile Include="WordHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

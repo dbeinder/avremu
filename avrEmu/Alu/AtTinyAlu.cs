@@ -11,12 +11,21 @@ namespace avrEmu
             : base(controller)
         {
             this.InstructionSet = new Dictionary<string, VI>() {
+                //Arithmetics and Logic 
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
+
+                //Branch
+
+                //Bit and Bit-Test
+
+                //Data Transfer
                 { "mov", new VI(this.Mov, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "movw", new VI(this.Movw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "ldi", new VI(this.Ldi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
                 { "in", new VI(this.In, AvrInstrArgType.WorkingRegister, AvrInstrArgType.IORegister) },
                 { "out", new VI(this.Out, AvrInstrArgType.IORegister, AvrInstrArgType.WorkingRegister) },
+                 
+                //MCU Control
                 { "nop", new VI(this.Nop) }
             };
         

@@ -43,9 +43,17 @@ namespace avrEmu
         public AvrController Controller { get; protected set; }
 
         public ExtByte SREG { get; protected set; }
+
+        protected int CarryAsInt
+        {
+            get
+            {
+                return (this.SREG ["C"] ? 1 : 0);
+            }
+        }
         
         protected Dictionary<string, VI> InstructionSet = new Dictionary<string, VI>();
-        
+
         public AvrAlu(AvrController controller)
         {
             this.Controller = controller;
@@ -80,10 +88,16 @@ namespace avrEmu
                 if (instruction.Arguments [i].InstructionArgType != this.InstructionSet [instruction.Instruction].Args [i])
                     throw new Exception("Argument #" + i + " is of invalid Type!");
             }
-            
+
+            int oldPC = this.Controller.ProgramCounter;
             this.InstructionSet [instruction.Instruction].Exec(instruction.Arguments);
+            if (this.Controller.ProgramCounter == oldPC)
+                this.Controller.ProgramCounter++;
         }
-            
+
+
+
+
         [Flags]
         protected enum SregFlags
         {
@@ -102,17 +116,6 @@ namespace avrEmu
         protected byte SetFlags(int result, SregFlags flags)
         {
             byte newValue = (byte)result;
-            /* switch (flags)
-            {
-                case SregFlags.C:
-                    this.SREG ["C"] = (result != newValue);
-                case SregFlags.Z:
-                    this.SREG ["Z"] = (newValue == 0);
-                case SregFlags.N:
-                    this.SREG ["N"] = ((new ExtByte(newValue)) [7] == true);
-                case SregFlags.V:5
-                    this.SREG ["V"] = (result > 127) || (result < -128);
-            }*/
 
             if ((flags & SregFlags.C) == SregFlags.C)
                 this.SREG ["C"] = (result != newValue);
@@ -128,6 +131,27 @@ namespace avrEmu
 
             return newValue;
         }
+
+        protected UInt16 SetFlags16(int result, SregFlags flags)
+        {
+            UInt16 newValue = (UInt16)result;
+
+            if ((flags & SregFlags.C) == SregFlags.C)
+                this.SREG ["C"] = (result != newValue);
+
+            if ((flags & SregFlags.Z) == SregFlags.Z)
+                this.SREG ["Z"] = (newValue == 0);
+
+            if ((flags & SregFlags.N) == SregFlags.N)
+                this.SREG ["N"] = ((new ExtByte(newValue)) [7] == true);
+
+            if ((flags & SregFlags.V) == SregFlags.V)
+                this.SREG ["V"] = (result > 127) || (result < -128);
+
+            return newValue;
+        }
+
+
     }
 
 }
