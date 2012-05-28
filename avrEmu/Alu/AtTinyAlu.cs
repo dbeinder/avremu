@@ -13,6 +13,8 @@ namespace avrEmu
             this.InstructionSet = new Dictionary<string, VI>() {
                 //Arithmetics and Logic 
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
+                { "adc", new VI(this.Adc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "adiw", new VI(this.Adiw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
 
                 //Branch
 
@@ -40,6 +42,26 @@ namespace avrEmu
 
             this.SREG ["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f)) > 15;
             rd.Value = SetFlags(rd.Value + rr.Value, SregFlags.CZNV);
+        }
+
+        protected void Adc(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
+
+            this.SREG ["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f) + this.CarryAsInt) > 15;
+            rd.Value = SetFlags(
+                rd.Value + rr.Value + this.CarryAsInt,
+                SregFlags.CZNV
+            );
+        }
+
+        protected void Adiw(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
+            int k = (args [1] as AvrInstrArgConst).Constant;
+
+
         }
     
         #endregion

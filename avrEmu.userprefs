@@ -1,24 +1,36 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="avrEmu/Alu/AvrAlu.cs">
+    <Files>
+      <File FileName="avrEmu/Alu/AtTinyAlu.cs" Line="52" Column="47" />
+      <File FileName="avrEmu/Program.cs" Line="32" Column="21" />
+      <File FileName="avrEmu/Alu/AvrAlu.cs" Line="148" Column="54" />
+      <File FileName="avrEmu/WordHelper.cs" Line="28" Column="29" />
+      <File FileName="avrEmu/Controller/AvrController.cs" Line="20" Column="45" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="avrEmu" expanded="True">
-            <Node name="Alu" expanded="True" />
-            <Node name="Controller" expanded="True" />
-            <Node name="Instruction" expanded="True" />
-            <Node name="Modules" expanded="True" />
-            <Node name="Program.cs" selected="True" />
+            <Node name="Properties" selected="True" />
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>atny.WorkingRegisters[14]</Value>
+          <Value>atny.WorkingRegisters[15]</Value>
+          <Value>atny.ALU.SREG</Value>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/home/david/monoProj/avrEmu/avrEmu/Modules/AvrPMFormLink.cs" line="26" />
-      <Breakpoint file="/home/david/monoProj/avrEmu/avrEmu/ExtByte.cs" line="124" />
+      <Breakpoint file="/home/david/monoProj/avrEmu/avrEmu/Program.cs" line="33" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

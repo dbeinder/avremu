@@ -143,7 +143,7 @@ namespace avrEmu
                 this.SREG ["Z"] = (newValue == 0);
 
             if ((flags & SregFlags.N) == SregFlags.N)
-                this.SREG ["N"] = ((new ExtByte(newValue)) [7] == true);
+                this.SREG ["N"] = (newValue & (1 << 15)) > 0;
 
             if ((flags & SregFlags.V) == SregFlags.V)
                 this.SREG ["V"] = (result > 127) || (result < -128);

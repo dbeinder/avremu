@@ -18,14 +18,14 @@ namespace avrEmu
             return new ExtByte((byte)((word & 0xff00) >> 8));
         }
 
-        public static ushort FromBytes(ExtByte low, ExtByte high)
-        {
-            return (low.Value + (high.Value << 8));
+        public static ushort FromBytes (ExtByte low, ExtByte high)
+		{
+			return (ushort)((ushort)low.Value + ((ushort)high.Value << 8));
         }
 
-        public static ushort FromBytes(ExtByte[] bytes)
-        {
-            return (bytes[0].Value + (bytes[1].Value << 8));
+        public static ushort FromBytes (ExtByte[] bytes)
+		{
+			return (ushort)((ushort)bytes [0].Value + ((ushort)bytes[1].Value << 8));
         }
     }
 }
