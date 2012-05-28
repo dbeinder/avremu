@@ -1,5 +1,0 @@
-\\ms1\schueler\3bhel-bd\visual studio 2010\Projects\avrEmu\avrEmu\obj\x86\Debug\ResolveAssemblyReference.cache
-\\ms1\schueler\3bhel-bd\visual studio 2010\Projects\avrEmu\avrEmu\bin\Debug\avrEmu.exe
-\\ms1\schueler\3bhel-bd\visual studio 2010\Projects\avrEmu\avrEmu\bin\Debug\avrEmu.pdb
-\\ms1\schueler\3bhel-bd\visual studio 2010\Projects\avrEmu\avrEmu\obj\x86\Debug\avrEmu.exe
-\\ms1\schueler\3bhel-bd\visual studio 2010\Projects\avrEmu\avrEmu\obj\x86\Debug\avrEmu.pdb
