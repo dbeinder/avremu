@@ -65,12 +65,12 @@ namespace avrEmu
             if (k < 0 || k > 63)
                 throw new Exception("Invalid Value for Immediate summand");
 			
-            ushort regVal = WordHelper.FromBytes(rd.Value, rdHigh.Value);
+            ushort regVal = WordHelper.FromBytes(rd, rdHigh);
 			
-            regVal = SetFlags16(regVal + k);
+            regVal = SetFlags16(regVal + k, SregFlags.CZNV);
 			
-            rd.Value = WordHelper.GetLowByte(regVal);
-            rdHigh.Value = WordHelper.GetHighByte(regVal);
+            rd.Value = WordHelper.GetLowByte(regVal).Value;
+            rdHigh.Value = WordHelper.GetHighByte(regVal).Value;
         }
     
         #endregion
