@@ -133,7 +133,7 @@ namespace avrEmu
         }
 
         protected UInt16 SetFlags16(int result, SregFlags flags)
-        {
+        { //untested
             UInt16 newValue = (UInt16)result;
 
             if ((flags & SregFlags.C) == SregFlags.C)

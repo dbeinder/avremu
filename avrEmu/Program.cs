@@ -7,26 +7,20 @@ namespace avrEmu
 {
     class Program
     {
-        static List<AvrInstruction> instrs = new List<AvrInstruction>() 
+		static string[] instrs = new string[]
 		{
-			new AvrInstruction("ldi r14, 120"),
-			new AvrInstruction("ldi r15, 5"),
-			new AvrInstruction("add r14, r15")
+			"ldi r14, 120",
+			"ldi r15, 5",
+			"add r14, r15"
 		};
 		
-        static int pc = 0;
-		
-        static void Main(string[] args)
-        {
-
-
-            AvrController atny = new AtTiny2313();
+        static void Main (string[] args)
+		{
+			AvrController atny = new AtTiny2313 ();
 			
-            AvrPMFormLink fakeFlash = atny.ProgramMemory as AvrPMFormLink;
-            fakeFlash.FetchInstruction += delegate(object sender, FetchInstructionEventArgs e)
-            {
-                e.Instruction = instrs [pc];
-                pc = (pc + 1) % instrs.Count;
+			AvrPMFormLink fakeFlash = atny.ProgramMemory as AvrPMFormLink;
+			fakeFlash.FetchInstruction += delegate(object sender, FetchInstructionEventArgs e) {
+				e.Instruction = new AvrInstruction(instrs[e.InstructionNr]);
             };
 
             for (;;)

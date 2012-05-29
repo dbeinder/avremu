@@ -59,9 +59,18 @@ namespace avrEmu
         protected void Adiw(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
+            ExtByte rdHigh = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register + 1];
             int k = (args [1] as AvrInstrArgConst).Constant;
-
-
+			
+            if (k < 0 || k > 63)
+                throw new Exception("Invalid Value for Immediate summand");
+			
+            ushort regVal = WordHelper.FromBytes(rd.Value, rdHigh.Value);
+			
+            regVal = SetFlags16(regVal + k);
+			
+            rd.Value = WordHelper.GetLowByte(regVal);
+            rdHigh.Value = WordHelper.GetHighByte(regVal);
         }
     
         #endregion
