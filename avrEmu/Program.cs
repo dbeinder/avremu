@@ -23,6 +23,7 @@ namespace avrEmu
                 int iNr = e.InstructionNr % instrs.Length;
 				e.Instruction = new AvrInstruction(instrs[iNr]);
             };
+
             DateTime start = DateTime.Now.Add(new TimeSpan(0,0,10));
             int cnt = 0;
 

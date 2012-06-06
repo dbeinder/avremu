@@ -7,9 +7,13 @@ namespace avrEmu
 {
     class AtTinyAlu : AvrAlu
     {
+        public ExtByte StackPointer { get; protected set; }
+
         public AtTinyAlu(AvrController controller)
             : base(controller)
         {
+            this.IORegisters.Add("SP", this.StackPointer);
+
             this.InstructionSet = new Dictionary<string, VI>() {
                 //Arithmetics and Logic 
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
@@ -17,6 +21,7 @@ namespace avrEmu
                 { "adiw", new VI(this.Adiw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
 
                 //Branch
+                { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
 
                 //Bit and Bit-Test
 
@@ -30,26 +35,42 @@ namespace avrEmu
                 //MCU Control
                 { "nop", new VI(this.Nop) }
             };
-        
+
         }
-       
-        #region Arithmetics and Logic 
-       
+
+        #region Internal Helpers
+
+        protected void PushToStack(ExtByte value)
+        {
+            this.Controller.SRAM.Memory[this.StackPointer.Value].Value = value.Value;
+            this.StackPointer.Value++;
+        }
+
+        protected ExtByte PopFromStack()
+        {
+            this.StackPointer.Value--;
+            return new ExtByte(this.Controller.SRAM.Memory[this.StackPointer.Value].Value);
+        }
+
+        #endregion
+
+        #region Arithmetics and Logic
+
         protected void Add(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte rr = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
-            this.SREG ["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f)) > 15;
+            this.SREG["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f)) > 15;
             rd.Value = SetFlags(rd.Value + rr.Value, SregFlags.CZNV);
         }
 
         protected void Adc(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte rr = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
-            this.SREG ["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f) + this.CarryAsInt) > 15;
+            this.SREG["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f) + this.CarryAsInt) > 15;
             rd.Value = SetFlags(
                 rd.Value + rr.Value + this.CarryAsInt,
                 SregFlags.CZNV
@@ -58,84 +79,124 @@ namespace avrEmu
 
         protected void Adiw(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte rdHigh = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register + 1];
-            int k = (args [1] as AvrInstrArgConst).Constant;
-			
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rdHigh = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register + 1];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
             if (k < 0 || k > 63)
                 throw new Exception("Invalid Value for Immediate summand");
-			
+
             ushort regVal = WordHelper.FromBytes(rd, rdHigh);
-			
+
             regVal = SetFlags16(regVal + k, SregFlags.CZNV);
-			
+
             rd.Value = WordHelper.GetLowByte(regVal).Value;
             rdHigh.Value = WordHelper.GetHighByte(regVal).Value;
         }
-    
+
         #endregion
 
         #region Branch
-        
+
+        protected void Rjmp(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            this.PC += k + 1;
+        }
+
+       /* protected void Ijmp(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            this.PC = k;
+        }*/
+
+        protected void Rcall(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            PushToStack(WordHelper.GetHighByte((ushort)this.PC));
+            PushToStack(WordHelper.GetLowByte((ushort)this.PC));
+
+            this.PC = k+1;
+        }
+
+      /*  protected void Icall(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            PushToStack(WordHelper.GetHighByte((ushort)this.PC).Value);
+            PushToStack(WordHelper.GetLowByte((ushort)this.PC).Value);
+
+            this.PC = k;
+        }*/
+
+        protected void Ret(List<AvrInstrArg> args)
+        {
+            this.PC = WordHelper.FromBytes(PopFromStack(), PopFromStack());
+        }
+
+
         #endregion
-        
+
         #region Bit and Bit-Test
-        
+
         #endregion
-        
+
         #region Data Transfer
 
         protected void Mov(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte rr = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
-            
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
             rd.Value = rr.Value;
         }
 
         protected void Movw(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte rdHigh = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register + 1];
-            ExtByte rr = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
-            ExtByte rrHigh = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register + 1];
-            
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rdHigh = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register + 1];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+            ExtByte rrHigh = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register + 1];
+
             rd.Value = rr.Value;
             rdHigh.Value = rrHigh.Value;
         }
 
         protected void Ldi(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            int k = (args [1] as AvrInstrArgConst).Constant;
-            
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
             rd.Value = (byte)k;
         }
 
         protected void In(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.WorkingRegisters [(args [0] as AvrInstrArgRegister).Register];
-            ExtByte ior = this.Controller.PeripheralRegisters [(args [1] as AvrInstrArgIOReg).IORegister]; 
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte ior = this.Controller.PeripheralRegisters[(args[1] as AvrInstrArgIOReg).IORegister];
 
             rd.Value = ior.Value;
         }
 
         protected void Out(List<AvrInstrArg> args)
         {
-            ExtByte ior = this.Controller.PeripheralRegisters [(args [0] as AvrInstrArgIOReg).IORegister]; 
-            ExtByte rd = this.Controller.WorkingRegisters [(args [1] as AvrInstrArgRegister).Register];
+            ExtByte ior = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte rd = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
             ior.Value = rd.Value;
         }
         #endregion
-    
+
         #region MCU Control
-        
+
         protected void Nop(List<AvrInstrArg> args)
         {
             //No Operation
         }
-        
+
         #endregion
     }
 
