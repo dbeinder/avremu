@@ -8,10 +8,12 @@ namespace Preprozessor
 {
     class Preprocessor
     {
+        List<string> inputToList = new List<string>();
         List<string> afterPrePro = new List<string>();
+        List<int> lineMapping = new List<int>();
         Dictionary<string, string> replacer = new Dictionary<string, string>();
 
-        // Regex regEx = new Regex();
+        //Regex regEx = new Regex();
 
         void Init(Dictionary<string, string> initDict)
         {
@@ -21,65 +23,99 @@ namespace Preprozessor
         {
             replacer.Add("RAMEND", "132");
         }
-        public string PreProcess(string line)
+        public string PreProcess(string input)
         {
-            AddReplacer();
+            string[] inputToArray = "jhasdkl\nhjkasdhfdk\nsafjkjkh".Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-            // search for comments and delete them
-            line = line.Replace('\t', ' ');
-            string[] elements = line.Split(';');
-            line = elements[0];
+            inputToList.AddRange(inputToArray);
 
-            // delete blanks
-            line = line.Trim();
+            inputToList = CleanUp(inputToList);
 
-            string newline = "";
-            for (int i = 0; i < line.Length; i++)
+
+            return inputToList[1];
+            //AddReplacer();                
+
+
+            ////Environment.NewLine(
+
+            //else
+            //{
+            //    // .def ...
+            //    string[] elementsb = line.Split(' ');
+            //    if (line[0] == '.')
+            //    {
+            //        if (elementsb[0] == ".def")
+            //        {
+            //            replacer.Add(elementsb[1], elementsb[3]);
+            //        }
+            //    }
+
+            //    // search for replacers
+            //    foreach (KeyValuePair<string, string> kvp in replacer)
+            //    {
+            //        for (int i = 1; i < elementsb.Length; i++)
+            //        {
+            //            elementsb[i] = elementsb[i].Replace(kvp.Key, kvp.Value);
+            //        }
+            //    }
+            //    line = "";
+            //    for (int i = 0; i < elementsb.Length; i++)
+            //    {
+            //        line += elementsb[i] + " ";
+            //    }
+
+            //    line = Calculate("(((132+10)*10+(20-15))/5)");
+            //    //line = Calculate(line);
+            //    //line = Calculate("((1+1)*1-1)");
+            //    return line = line.Trim();
+            //}
+        }
+
+
+        private List<string> CleanUp(List<string> line)
+        {
+            for (int i = 0; i < line.Count; i++)
             {
-                if (line[i] == ' ' && line[i + 1] == ' ')
+                // search for comments and delete them
+                line[i] = line[i].Replace('\t', ' ');
+                string[] elements = line[i].Split(';');
+                line[i] = elements[0];
+
+                // delete WhiteSpaces
+                line[i] = line[i].Trim();
+
+                string helpstring = "";
+                for (int a = 0; a < line[i].Length; a++)
                 {
-                }
-                else newline += line[i];
-
-            }
-            line = newline;
-
-            if (line == "")
-            {
-                afterPrePro.Add(null);
-                return null;
-            }
-            else
-            {
-                // .def ...
-                string[] elementsb = line.Split(' ');
-                if (line[0] == '.')
-                {
-                    if (elementsb[0] == ".def")
+                    if (line[i][a] == ' ' && line[i][a + 1] == ' ')
                     {
-                        replacer.Add(elementsb[1], elementsb[3]);
+                        for (int b = a; b < line[i].Length - 1; b++)
+                        {
+                            helpstring = line[i].Substring(0, b - 1);
+                            helpstring += line[i][b + 1];
+                        }
+                        line[i] = helpstring;
+                        a = 0;
                     }
                 }
 
-                // search for replacers
-                foreach (KeyValuePair<string, string> kvp in replacer)
+                // save numbers of lines in which
+                if (inputToList[i] != "")
                 {
-                    for (int i = 1; i < elementsb.Length; i++)
-                    {
-                        elementsb[i] = elementsb[i].Replace(kvp.Key, kvp.Value);
-                    }
+                    lineMapping.Add(i);
                 }
-                line = "";
-                for (int i = 0; i < elementsb.Length; i++)
-                {
-                    line += elementsb[i] + " ";
-                }
-
-                line = Calculate("(((132+10)*10+(20-15))/5)");
-                //line = Calculate(line);
-                //line = Calculate("((1+1)*1-1)");
-                return line = line.Trim();
+               
             }
+            for (int i = 0; i < line.Count; i++)
+            {
+                 if (line[i] == "")
+                {
+                    line.RemoveAt(i);
+                }
+            }
+           
+            return line;
+
         }
 
         private string Calculate(string line)
@@ -125,7 +161,7 @@ namespace Preprozessor
                                 }
                                 else
                                 {
-                                    line = line.Replace(line.Substring(count, i - count),Calculate(line.Substring(count, i - count)));
+                                    line = line.Replace(line.Substring(count, i - count), Calculate(line.Substring(count, i - count)));
                                     i = 0;
                                     r = 0;
                                 }

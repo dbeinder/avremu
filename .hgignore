@@ -2,7 +2,7 @@
 syntax: glob
 
 *.obj
-*.pdb
+*.pdb*.suo
 *.user
 *.aps
 *.pch
