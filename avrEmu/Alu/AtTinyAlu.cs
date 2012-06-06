@@ -22,7 +22,9 @@ namespace avrEmu
 
                 //Branch
                 { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
-
+                { "rcall", new VI(this.Rcall, AvrInstrArgType.NumericConstant) },
+                { "ret", new VI(this.Ret) },
+                { "reti", new VI(this.Reti) },
                 //Bit and Bit-Test
 
                 //Data Transfer
@@ -134,6 +136,12 @@ namespace avrEmu
 
         protected void Ret(List<AvrInstrArg> args)
         {
+            this.PC = WordHelper.FromBytes(PopFromStack(), PopFromStack());
+        }
+
+        protected void Reti(List<AvrInstrArg> args)
+        {
+            this.SREG["I"] = true;
             this.PC = WordHelper.FromBytes(PopFromStack(), PopFromStack());
         }
 
