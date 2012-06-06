@@ -7,6 +7,33 @@ namespace avrEmu
 {
     abstract class AvrAlu : AvrModule
     {
+        public AvrController Controller { get; protected set; }
+
+        public AvrAlu(AvrController controller)
+        {
+            this.Controller = controller;
+            InitSREG();
+        }
+
+        public virtual void ExecuteInstruction(AvrInstruction instruction)
+        {
+            if (instruction.Arguments.Count != this.InstructionSet[instruction.Instruction].Args.Count)
+                throw new Exception("Invalid number of Arguments for Instruction!");
+
+            for (int i = 0; i < instruction.Arguments.Count; i++)
+            {
+                if (instruction.Arguments[i].InstructionArgType != this.InstructionSet[instruction.Instruction].Args[i])
+                    throw new Exception("Argument #" + i + " is of invalid Type!");
+            }
+
+            int oldPC = this.Controller.ProgramCounter;
+            this.InstructionSet[instruction.Instruction].Exec(instruction.Arguments);
+            if (this.Controller.ProgramCounter == oldPC)
+                this.Controller.ProgramCounter++;
+        }
+            
+        #region Instruction Set
+
         protected delegate void Instruction(List<AvrInstrArg> args);
 
         protected class VI
@@ -40,32 +67,13 @@ namespace avrEmu
 
         }
 
-        public AvrController Controller { get; protected set; }
-
-        public ExtByte SREG { get; protected set; }
-
-        protected int PC
-        {
-            get { return this.Controller.ProgramCounter; }
-            set { this.Controller.ProgramCounter = value; }
-        }
-
-
-        protected int CarryAsInt
-        {
-            get
-            {
-                return (this.SREG["C"] ? 1 : 0);
-            }
-        }
-
         protected Dictionary<string, VI> InstructionSet = new Dictionary<string, VI>();
 
-        public AvrAlu(AvrController controller)
-        {
-            this.Controller = controller;
-            InitSREG();
-        }
+        #endregion
+
+        #region Status Register
+
+        public ExtByte SREG { get; protected set; }
 
         protected virtual void InitSREG()
         {
@@ -84,25 +92,7 @@ namespace avrEmu
             this.SREG["S"] = this.SREG["N"] ^ this.SREG["V"];
         }
 
-        public virtual void ExecuteInstruction(AvrInstruction instruction)
-        {
-            if (instruction.Arguments.Count != this.InstructionSet[instruction.Instruction].Args.Count)
-                throw new Exception("Invalid number of Arguments for Instruction!");
-
-            for (int i = 0; i < instruction.Arguments.Count; i++)
-            {
-                if (instruction.Arguments[i].InstructionArgType != this.InstructionSet[instruction.Instruction].Args[i])
-                    throw new Exception("Argument #" + i + " is of invalid Type!");
-            }
-
-            int oldPC = this.Controller.ProgramCounter;
-            this.InstructionSet[instruction.Instruction].Exec(instruction.Arguments);
-            if (this.Controller.ProgramCounter == oldPC)
-                this.Controller.ProgramCounter++;
-        }
-
-
-
+        #region Status Flag Helpers
 
         [Flags]
         protected enum SregFlags
@@ -156,8 +146,61 @@ namespace avrEmu
 
             return newValue;
         }
+        
+        #endregion
 
+        #endregion
 
+        #region Shortcuts
+
+        public ushort X
+        {
+            get { return GetWord(26); }
+            set { StoreWord(26, value); }
+        }
+
+        public ushort Y
+        {
+            get { return GetWord(28); }
+            set { StoreWord(28, value); }
+        }
+
+        public ushort Z
+        {
+            get { return GetWord(30); }
+            set { StoreWord(30, value); }
+        }
+
+        protected int CarryAsInt
+        {
+            get
+            {
+                return (this.SREG["C"] ? 1 : 0);
+            }
+        }
+
+        protected int PC
+        {
+            get { return this.Controller.ProgramCounter; }
+            set { this.Controller.ProgramCounter = value; }
+        }
+
+        #endregion
+
+        #region Helper
+
+        protected ushort GetWord(int lowReg)
+        {
+            return WordHelper.FromBytes(this.Controller.WorkingRegisters[lowReg], this.Controller.WorkingRegisters[lowReg + 1]);
+        }
+
+        protected void StoreWord(int lowReg, ushort value)
+        {
+            this.Controller.WorkingRegisters[lowReg].Value = WordHelper.GetLowByte(value).Value;
+            this.Controller.WorkingRegisters[lowReg + 1].Value = WordHelper.GetHighByte(value).Value;
+        }
+
+        #endregion
     }
 
 }

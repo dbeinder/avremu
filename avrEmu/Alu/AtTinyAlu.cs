@@ -25,6 +25,7 @@ namespace avrEmu
                 { "rcall", new VI(this.Rcall, AvrInstrArgType.NumericConstant) },
                 { "ret", new VI(this.Ret) },
                 { "reti", new VI(this.Reti) },
+
                 //Bit and Bit-Test
 
                 //Data Transfer
@@ -107,12 +108,10 @@ namespace avrEmu
             this.PC += k + 1;
         }
 
-       /* protected void Ijmp(List<AvrInstrArg> args)
+        protected void Ijmp(List<AvrInstrArg> args)
         {
-            int k = (args[0] as AvrInstrArgConst).Constant;
-
-            this.PC = k;
-        }*/
+            this.PC = this.Z;
+        }
 
         protected void Rcall(List<AvrInstrArg> args)
         {
@@ -121,18 +120,16 @@ namespace avrEmu
             PushToStack(WordHelper.GetHighByte((ushort)this.PC));
             PushToStack(WordHelper.GetLowByte((ushort)this.PC));
 
-            this.PC = k+1;
+            this.PC = k + 1;
         }
 
-      /*  protected void Icall(List<AvrInstrArg> args)
+        protected void Icall(List<AvrInstrArg> args)
         {
-            int k = (args[0] as AvrInstrArgConst).Constant;
+            PushToStack(WordHelper.GetHighByte((ushort)this.PC));
+            PushToStack(WordHelper.GetLowByte((ushort)this.PC));
 
-            PushToStack(WordHelper.GetHighByte((ushort)this.PC).Value);
-            PushToStack(WordHelper.GetLowByte((ushort)this.PC).Value);
-
-            this.PC = k;
-        }*/
+            this.PC = this.Z;
+        }
 
         protected void Ret(List<AvrInstrArg> args)
         {
