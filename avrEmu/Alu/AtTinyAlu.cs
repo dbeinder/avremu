@@ -22,7 +22,9 @@ namespace avrEmu
 
                 //Branch
                 { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
+                { "ijmp", new VI(this.Ijmp) },
                 { "rcall", new VI(this.Rcall, AvrInstrArgType.NumericConstant) },
+                { "icall", new VI(this.Icall) },
                 { "ret", new VI(this.Ret) },
                 { "reti", new VI(this.Reti) },
 
