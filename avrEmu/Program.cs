@@ -16,6 +16,8 @@ namespace avrEmu
 		
         static void Main (string[] args)
 		{
+            Preprocessor prepro = new Preprocessor();
+            prepro.PreProcess("Q+((132+10)*10+(20-15))/5");
 			AvrController atny = new AtTiny2313 ();
 			
 			AvrPMFormLink fakeFlash = atny.ProgramMemory as AvrPMFormLink;

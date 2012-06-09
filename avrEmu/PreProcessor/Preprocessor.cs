@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Preprozessor
+namespace avrEmu
 {
     class Preprocessor
     {
@@ -23,52 +23,25 @@ namespace Preprozessor
         {
             replacer.Add("RAMEND", "132");
         }
-        public string PreProcess(string input)
+        public List<string> PreProcess(string input)
         {
-            string[] inputToArray = "jhasdkl\nhjkasdhfdk\nsafjkjkh".Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
+            string[] inputToArray = input.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine("(((132+10)*10+(20-15))/5)");
             inputToList.AddRange(inputToArray);
 
             inputToList = CleanUp(inputToList);
 
+            SearchForDef(inputToList);
 
-            return inputToList[1];
-            //AddReplacer();                
+            inputToList = ReplaceDef(inputToList);
 
+            AddReplacer();
 
-            ////Environment.NewLine(
+            inputToList = Calculate(inputToList);
 
-            //else
-            //{
-            //    // .def ...
-            //    string[] elementsb = line.Split(' ');
-            //    if (line[0] == '.')
-            //    {
-            //        if (elementsb[0] == ".def")
-            //        {
-            //            replacer.Add(elementsb[1], elementsb[3]);
-            //        }
-            //    }
-
-            //    // search for replacers
-            //    foreach (KeyValuePair<string, string> kvp in replacer)
-            //    {
-            //        for (int i = 1; i < elementsb.Length; i++)
-            //        {
-            //            elementsb[i] = elementsb[i].Replace(kvp.Key, kvp.Value);
-            //        }
-            //    }
-            //    line = "";
-            //    for (int i = 0; i < elementsb.Length; i++)
-            //    {
-            //        line += elementsb[i] + " ";
-            //    }
-
-            //    line = Calculate("(((132+10)*10+(20-15))/5)");
             //    //line = Calculate(line);
             //    //line = Calculate("((1+1)*1-1)");
-            //    return line = line.Trim();
-            //}
+            return inputToList;
         }
 
 
@@ -99,28 +72,118 @@ namespace Preprozessor
                     }
                 }
 
-                // save numbers of lines in which
+                // save numbers of lines in which there is something
                 if (inputToList[i] != "")
                 {
                     lineMapping.Add(i);
                 }
-               
+
             }
+            // Delete lines in which there is nothing
             for (int i = 0; i < line.Count; i++)
             {
-                 if (line[i] == "")
+                if (line[i] == "")
                 {
                     line.RemoveAt(i);
                 }
             }
-           
+
             return line;
 
         }
 
-        private string Calculate(string line)
+        private void SearchForDef(List<string> line)
         {
+            for (int i = 0; i < line.Count; i++)
+            {
+                // .def ...
+                string[] elementsb = line[i].Split(' ');
+                if (line[i][0] == '.')
+                {
+                    // if .def than add to dictionary replacer
+                    if (elementsb[0] == ".def")
+                    {
+                        replacer.Add(elementsb[1], elementsb[3]);
+                    }
+                }
+            }
+        }
 
+        private List<string> ReplaceDef(List<string> line)
+        {
+            for (int i = 0; i < line.Count; i++)
+            {
+                string[] elementsb = line[i].Split(' ');
+                // search for replacers
+                foreach (KeyValuePair<string, string> kvp in replacer)
+                {
+
+                    for (int a = 1; a < elementsb.Length; a++)
+                    {
+                        elementsb[a] = elementsb[a].Replace(kvp.Key, kvp.Value);
+                    }
+                }
+                // replace elements
+                line[i] = "";
+                for (int a = 0; a < elementsb.Length; a++)
+                {
+                    line[i] += elementsb[a] + " ";
+                }
+
+            }
+
+            return line;
+        }
+
+        private List<string> Calculate(List<string> line)
+        {
+            for (int i = 0; i < line.Count; i++)
+            {
+                line[i] = SearchForClip(line[i]);
+
+                line[i] = CalculateNumbers(line[i]);
+                Console.WriteLine(line);
+            }
+            return line;
+        }
+
+        private string SearchForClip(string line)
+        {
+            int count = 0;
+            int start = 0;
+            int countOfClips = 0;
+            do
+            {
+                countOfClips = 0;
+                for (int i = 0; i < line.Length; i++)
+                {
+                    count = 0;
+                    if (line[i] == '(')
+                    {
+                        countOfClips++;
+                        start = i + 1;
+                        do
+                        {
+                            count++;
+                            if (line[count + start - 1] == '(')
+                            {
+                                countOfClips++;
+                                start += count;
+                                count = 0;
+                            }
+                        } while (line[count + start - 1] != ')');
+
+                        line = line.Substring(0, start - 1) + CalculateNumbers(line.Substring(start, count - 1)) + line.Substring(count + start);
+                        i = -1;
+                        Console.WriteLine(line);
+                    }
+                }
+            } while (countOfClips != 0);
+            return line;
+        }
+
+        private string CalculateNumbers(string line)
+        {
             List<char> plusminus = new List<char>();
             plusminus.Add('*');
             plusminus.Add('/');
@@ -128,97 +191,12 @@ namespace Preprozessor
             plusminus.Add('-');
             for (int r = 0; r < plusminus.Count; r++)
             {
-
                 for (int i = 0; i < line.Length; i++)
                 {
-                    bool integer = true;
                     if (line[i] == plusminus[r])
                     {
-                        int a;
-                        string helpstring = "";
-                        int b;
-                        int count = i;
-                        int c;
-                        do
-                        {
-                            if (int.TryParse(Convert.ToString(line[count - 1]), out a))
-                            {
-                                helpstring = line[count - 1] + helpstring;
-                                count--;
-                            }
-                            else if (line[i - 1] == ')')
-                            {
-
-                                do
-                                {
-                                    count--;
-                                } while (line[count] != '(');
-                                if (int.TryParse(line.Substring(count + 1, i - count - 2), out c))
-                                {
-                                    line = line.Replace("(" + Convert.ToString(c) + ")", Convert.ToString(c));
-                                    i = 0;
-                                    r = 0;
-                                }
-                                else
-                                {
-                                    line = line.Replace(line.Substring(count, i - count), Calculate(line.Substring(count, i - count)));
-                                    i = 0;
-                                    r = 0;
-                                }
-
-                                count = i;
-
-                            }
-                            else if (helpstring != "")
-                            {
-                                a = Convert.ToInt32(helpstring);
-                                integer = false;
-                            }
-                            else
-                                integer = false;
-
-                        } while (integer == true && i != 0);
-
-                        helpstring = "";
-                        integer = true;
-                        count = i;
-                        do
-                        {
-                            if (int.TryParse(Convert.ToString(line[count + 1]), out b))
-                            {
-                                helpstring += line[count + 1];
-                                count++;
-                            }
-                            else if (line[i + 1] == '(')
-                            {
-                                do
-                                {
-                                    count++;
-                                } while (line[count] != ')');
-                                //line = line.Substring(i + 2, count - i - 2);
-                                if (int.TryParse(line.Substring(i + 2, count - i - 2), out c))
-                                {
-                                    line = line.Replace("(" + Convert.ToString(c) + ")", Convert.ToString(c));
-                                    i = 0;
-                                    r = 0;
-                                }
-                                else
-                                {
-                                    line = line.Replace(line.Substring(i + 1, count - i - 1), Calculate(line.Substring(i + 1, count - i)));
-                                    i = 0;
-                                    r = 0;
-                                }
-                                count = i;
-                            }
-                            else if (helpstring != "")
-                            {
-                                b = Convert.ToInt32(helpstring);
-                                integer = false;
-                            }
-                            else
-                                integer = false;
-
-                        } while (integer == true && i != 0);
+                        int a = TestForIntLeft(line, i);
+                        int b = TestForIntRight(line, i);
 
                         if (plusminus[r] == '*')
                             line = line.Replace(Convert.ToString(a) + plusminus[r] + Convert.ToString(b), Convert.ToString(a * b));
@@ -229,11 +207,53 @@ namespace Preprozessor
                         else if (plusminus[r] == '-')
                             line = line.Replace(Convert.ToString(a) + plusminus[r] + Convert.ToString(b), Convert.ToString(a - b));
                     }
-
                 }
-
             }
+            Console.WriteLine(line);
             return line;
+        }
+
+        private int TestForIntLeft(string line, int startPoint)
+        {
+            int count = startPoint;
+            string helpstring = "";
+            int a;
+            bool integer = true;
+            do
+            {
+                if (int.TryParse(Convert.ToString(line[count - 1]), out a))
+                {
+                    helpstring = line[count - 1] + helpstring;
+                    count--;
+                }
+                else
+                    integer = false;
+            } while (integer == true && count > 0);
+            if (helpstring != "")
+                a = Convert.ToInt32(helpstring);
+            return a;
+        }
+
+        private int TestForIntRight(string line, int startPoint)
+        {
+            int count = startPoint;
+            string helpstring = "";
+            int b;
+            bool integer = true;
+            do
+            {
+                if (int.TryParse(Convert.ToString(line[count + 1]), out b))
+                {
+                    helpstring += line[count + 1];
+                    count++;
+                }
+                else
+                    integer = false;
+            } while (integer == true && count + 1 < line.Length);
+            if (helpstring != "")
+                b = Convert.ToInt32(helpstring);
+            return b;
         }
     }
 }
+
