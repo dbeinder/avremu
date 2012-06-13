@@ -9,8 +9,11 @@ namespace avrEmu
     class Preprocessor
     {
         List<string> inputToList = new List<string>();
-        List<string> afterPrePro = new List<string>();
-        List<int> lineMapping = new List<int>();
+        
+        public List<string> afterPrePro = new List<string>();
+        
+        public List<int> lineMapping = new List<int>();
+        
         Dictionary<string, string> replacer = new Dictionary<string, string>();
 
         //Regex regEx = new Regex();
@@ -33,15 +36,16 @@ namespace avrEmu
 
             SearchForDef(inputToList);
 
-            inputToList = ReplaceDef(inputToList);
-
             AddReplacer();
-
+            
+            inputToList = ReplaceDef(inputToList);
+            
             inputToList = Calculate(inputToList);
 
+            afterPrePro.AddRange(inputToList);
             //    //line = Calculate(line);
             //    //line = Calculate("((1+1)*1-1)");
-            return inputToList;
+            return afterPrePro;
         }
 
 
@@ -62,11 +66,8 @@ namespace avrEmu
                 {
                     if (line[i][a] == ' ' && line[i][a + 1] == ' ')
                     {
-                        for (int b = a; b < line[i].Length - 1; b++)
-                        {
-                            helpstring = line[i].Substring(0, b - 1);
-                            helpstring += line[i][b + 1];
-                        }
+                        helpstring = line[i].Substring(0, a) + line[i].Substring(a + 1);
+
                         line[i] = helpstring;
                         a = 0;
                     }
@@ -85,6 +86,7 @@ namespace avrEmu
                 if (line[i] == "")
                 {
                     line.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -142,7 +144,6 @@ namespace avrEmu
                 line[i] = SearchForClip(line[i]);
 
                 line[i] = CalculateNumbers(line[i]);
-                Console.WriteLine(line);
             }
             return line;
         }
@@ -175,7 +176,6 @@ namespace avrEmu
 
                         line = line.Substring(0, start - 1) + CalculateNumbers(line.Substring(start, count - 1)) + line.Substring(count + start);
                         i = -1;
-                        Console.WriteLine(line);
                     }
                 }
             } while (countOfClips != 0);
@@ -209,7 +209,6 @@ namespace avrEmu
                     }
                 }
             }
-            Console.WriteLine(line);
             return line;
         }
 
