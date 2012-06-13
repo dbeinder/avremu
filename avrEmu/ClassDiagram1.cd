@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="avrEmu.AtTinyAlu" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEIAAAAAAAEAAAIAAAAAAAAAACQAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Alu\AtTinyAlu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrAlu" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="avrEmu.AvrAlu.Instruction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="avrEmu.AvrAlu.VI" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="avrEmu.AvrAlu.SregFlags" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAQEAAAIAAAAAAAAAABAQAAAQAAAAAABAAAQ=</HashCode>
+      <FileName>Alu\AvrAlu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AtTiny2313" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Controller\AtTiny2313.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrController" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAgQABAAAAAQAAEAQBgAAAAAAAgAAAABAAAA=</HashCode>
+      <FileName>Controller\AvrController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ByteChangedEventArgs" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExtByte.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.BitChangedEventArgs" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ExtByte.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ExtByte" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAQEjAACAAAAABAAAAAABEAgAAAAABA=</HashCode>
+      <FileName>ExtByte.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="avrEmu.AvrInstrArg" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstrArg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrInstrArg16BReg" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>Instruction\AvrInstrArg16BReg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrInstrArgConst" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstrArgConst.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrInstrArgIOReg" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstrArgIOReg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrInstrArgRegister" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstrArgRegister.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrInstruction" Collapsed="true">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAIAAAIIAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstruction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrModule" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAQAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modules\AvrModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.FetchInstructionEventArgs" Collapsed="true">
+    <Position X="2.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Modules\AvrPMFormLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrPMFormLink" Collapsed="true">
+    <Position X="2.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Modules\AvrPMFormLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrProgramMemory" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Modules\AvrProgramMemory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrSram" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Modules\AvrSram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.Program" Collapsed="true">
+    <Position X="6.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.WordHelper" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAEAAAgAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>WordHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Preprozessor.Preprocessor" Collapsed="true">
+    <Position X="8.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAQAAAAAASAAAAAAAAAAAACAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>PreProcessor\Preprocessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="avrEmu.AvrInstrArgType" Collapsed="true">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAgQAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction\AvrInstrArg.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="avrEmu.AvrInstrArg16BType" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Instruction\AvrInstrArg16BReg.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
