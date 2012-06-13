@@ -19,6 +19,15 @@ namespace avrEmu
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
                 { "adc", new VI(this.Adc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "adiw", new VI(this.Adiw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                {"sub", new VI(this.Sub, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"subi",new VI(this.Subi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"sbc",new VI(this.Sbc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"sbci",new VI(this.Sbci,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"and",new VI(this.And,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"andi",new VI(this.Andi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"or",new VI(this.Or,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"ori",new VI(this.Ori,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"eor",new VI(this.Eor, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
 
                 //Branch
                 { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
@@ -65,6 +74,8 @@ namespace avrEmu
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+            rd.Value = (byte)(rd.Value + rr.Value);
+
 
             this.SREG["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f)) > 15;
             rd.Value = SetFlags(rd.Value + rr.Value, SregFlags.CZNV);
@@ -99,6 +110,87 @@ namespace avrEmu
             rdHigh.Value = WordHelper.GetHighByte(regVal).Value;
         }
 
+        protected void Sub(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+            ExtByte res = new ExtByte((byte)(rd.Value - rr.Value));
+
+            this.SREG["H"] = (!rd[3] && rr[3] || rr[3] && res[3] || res[3] && !rd[3]);
+            rd.Value = SetFlags(rd.Value - rr.Value, SregFlags.CZNV);
+        }
+
+        protected void Subi(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+            ExtByte kex = new ExtByte((byte)k);
+            ExtByte res = new ExtByte((byte)(rd.Value - k));
+
+            this.SREG["H"] = (!rd[3] && kex[3] || kex[3] && res[3] || res[3] && !rd[3]);
+            rd.Value = SetFlags(rd.Value - k, SregFlags.CZNV);
+        }
+
+        protected void Sbc(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+            ExtByte res = new ExtByte((byte)(rd.Value - rr.Value - this.CarryAsInt));
+
+            this.SREG["H"] = (!rd[3] && rr[3] || rr[3] && res[3] || res[3] && !rd[3]);
+            rd.Value = SetFlags(rd.Value - rr.Value - this.CarryAsInt, SregFlags.CZNV);
+        }
+
+        protected void Sbci(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+            ExtByte kex = new ExtByte((byte)k);
+            ExtByte res = new ExtByte((byte)(rd.Value - k - this.CarryAsInt));
+
+            this.SREG["H"] = (!rd[3] && kex[3] || kex[3] && res[3] || res[3] && !rd[3]);
+            rd.Value = SetFlags(rd.Value - k - this.CarryAsInt, SregFlags.CZNV);
+        }
+
+        protected void And(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            rd.Value = SetFlags(rd.Value & rr.Value, SregFlags.CZNV);
+        }
+
+        protected void Andi(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            rd.Value = SetFlags(rd.Value & k, SregFlags.CZNV);
+        }
+
+        protected void Or(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            rd.Value = SetFlags(rd.Value | rr.Value, SregFlags.CZNV);
+        }
+
+        protected void Ori(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            rd.Value = SetFlags(rd.Value | k, SregFlags.CZNV);
+        }
+
+        protected void Eor(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            rd.Value = SetFlags(rd.Value ^ rr.Value, SregFlags.CZNV);
+        }
         #endregion
 
         #region Branch
