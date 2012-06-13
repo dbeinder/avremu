@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace avrEmu
 {
@@ -16,6 +18,16 @@ namespace avrEmu
 		
         static void Main (string[] args)
 		{
+            //(new MainForm()).
+            Thread th = new Thread(new ThreadStart(delegate()
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+                
+            }));
+            th.Start();
+
             Preprocessor prepro = new Preprocessor();
             prepro.PreProcess("Q+((132+10)*10+(20-15))/5");
 			AvrController atny = new AtTiny2313 ();

@@ -34,6 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +48,12 @@
     <Compile Include="Controller\AtTiny2313.cs" />
     <Compile Include="Controller\AvrController.cs" />
     <Compile Include="ExtByte.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\AvrModule.cs" />
     <Compile Include="PreProcessor\Preprocessor.cs" />
     <Compile Include="Program.cs" />
@@ -59,6 +67,14 @@
     <Compile Include="Modules\AvrProgramMemory.cs" />
     <Compile Include="Modules\AvrPMFormLink.cs" />
     <Compile Include="Modules\AvrSram.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\MyRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WordHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -71,5 +87,47 @@
   -->
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_start_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_rewind_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_pause_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_play_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_fastforward_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_end_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_stop_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\control_repeat_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet_error.png" />
   </ItemGroup>
 </Project>
