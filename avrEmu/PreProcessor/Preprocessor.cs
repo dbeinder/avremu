@@ -24,7 +24,7 @@ namespace avrEmu
 
         void AddReplacer()
         {
-            replacer.Add("RAMEND", "132");
+            replacer.Add("ramend", "260");
         }
         public List<string> PreProcess(string input)
         {
@@ -42,6 +42,8 @@ namespace avrEmu
             inputToList = Calculate(inputToList);
 
             inputToList = SearchForHighAndLow(inputToList);
+
+            inputToList = SearchForDoublePoint(inputToList);
 
             afterPrePro.AddRange(inputToList);
             //    //line = Calculate(line);
@@ -61,6 +63,7 @@ namespace avrEmu
 
                 // delete WhiteSpaces
                 line[i] = line[i].Trim();
+                line[i] = line[i].ToLower();
 
                 string helpstring = "";
                 for (int a = 0; a < line[i].Length; a++)
@@ -108,6 +111,7 @@ namespace avrEmu
                     {
                         replacer.Add(elementsb[1], elementsb[3]);
                     }
+                    line.RemoveAt(i);
                 }
             }
         }
@@ -265,56 +269,84 @@ namespace avrEmu
                 int b;
                 for (int i = 0; i < line[a].Length; i++)
                 {
-                    if (line[a][i] == 'H')
+                    if (i + 4 < line[a].Length && line[a].Substring(i, 4) == "high")
                     {
-                        if (line[a][i + 1] == 'I')
-                            if (line[a][i + 2] == 'G')
-                                if (line[a][i + 3] == 'H')
-                                {
-                                    count = i + 4;
-                                    do
-                                    {
-                                        if (int.TryParse(Convert.ToString(line[a][count]), out a))
-                                        {
-                                            helpstring += line[a][count];
-                                            count++;
-                                        }
-                                        else
-                                            integer = false;
-                                    } while (integer == true && count < line[a].Length);
-                                    b = Convert.ToInt32(helpstring);
+                        count = i + 4;
+                        do
+                        {
+                            if (int.TryParse(Convert.ToString(line[a][count]), out b))
+                            {
+                                helpstring += line[a][count];
+                                count++;
+                            }
+                            else
+                                integer = false;
+                        } while (integer == true && count < line[a].Length);
+                        b = Convert.ToInt32(helpstring);
 
-                                    b = b * 0xd7;
-                                    line[a] = line[a].Replace("HIGH" + helpstring, Convert.ToString(b));
-                                    i=0;
-                                }
+                        b = b & 0xff00 - 255;
+                        line[a] = line[a].Replace("high" + helpstring, Convert.ToString(b));
+                        i = 0;
                     }
 
-                    //if (line[a][i] == 'L')
-                    //{
-                    //    if (line[a][i + 1] == 'O')
-                    //        if (line[a][i + 2] == 'W')
-                    //        {
-                    //            count = i + 4;
-                    //            do
-                    //            {
-                    //                if (int.TryParse(Convert.ToString(line[a][count]), out a))
-                    //                {
-                    //                    helpstring += line[a][count];
-                    //                    count++;
-                    //                }
-                    //                else
-                    //                    integer = false;
-                    //            } while (integer == true && count < line[a].Length);
-                    //            b = Convert.ToInt32(helpstring);
+                    if (i + 4 < line[a].Length && line[a].Substring(i, 3) == "low")
+                    {
+                        count = i + 3;
+                        do
+                        {
+                            if (int.TryParse(Convert.ToString(line[a][count]), out b))
+                            {
+                                helpstring += line[a][count];
+                                count++;
+                            }
+                            else
+                                integer = false;
+                        } while (integer == true && count < line[a].Length);
+                        b = Convert.ToInt32(helpstring);
 
-                    //            b = b * 0xf3;
-                    //            line[a] = line[a].Replace("LOW" + helpstring, Convert.ToString(b));
-                    //        }
-                    //}
+                        b = b & 0x00ff;
+                        line[a] = line[a].Replace("low" + helpstring, Convert.ToString(b));
+                        i = 0;
+                    }
                 }
             }
 
+            return line;
+        }
+
+        private List<string> SearchForDoublePoint(List<string> line)
+        {
+            for (int i = 0; i < line.Count; i++)
+            {
+                for (int a = 0; a < line[i].Length; a++)
+                {
+                    if (line[i][a] == ':')
+                    {
+                        string helpstring = line[i].Substring(0, a);
+                        line[i] = line[i].Substring(a + 1);
+                        line[i] = line[i].Trim();
+
+                        if (line[i] == "")
+                        {
+                            line.RemoveAt(i);
+                            a = 0;
+                        }
+
+                        replacer.Add(helpstring, Convert.ToString(i));
+                    }
+
+
+                }
+            }
+
+            foreach (KeyValuePair<string, string> kvp in replacer)
+            {
+
+                for (int i = 1; i < line.Count; i++)
+                {
+                    line[i] = line[i].Replace(kvp.Key, kvp.Value);
+                }
+            }
             return line;
         }
     }
