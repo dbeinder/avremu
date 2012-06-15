@@ -41,8 +41,12 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.richTextBox1 = new MyRichTextBox();
+            this.pbCodeIcons = new System.Windows.Forms.PictureBox();
+            this.rtbCode = new System.Windows.Forms.RichTextBox();
+            this.pnlCode = new System.Windows.Forms.Panel();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
+            this.pnlCode.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -157,34 +161,64 @@
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "toolStripButton5";
             // 
-            // richTextBox1
+            // pbCodeIcons
             // 
-            this.richTextBox1.AcceptsTab = true;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.richTextBox1.BulletIndent = 7;
-            this.richTextBox1.DetectUrls = false;
-            this.richTextBox1.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.HideSelection = false;
-            this.richTextBox1.Location = new System.Drawing.Point(12, 28);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ShowSelectionMargin = true;
-            this.richTextBox1.Size = new System.Drawing.Size(501, 227);
-            this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "ldi r16, 5\nldi r15, 4\nadd r15, r16";
-            this.richTextBox1.WordWrap = false;
+            this.pbCodeIcons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbCodeIcons.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.pbCodeIcons.Location = new System.Drawing.Point(0, 0);
+            this.pbCodeIcons.Name = "pbCodeIcons";
+            this.pbCodeIcons.Size = new System.Drawing.Size(16, 226);
+            this.pbCodeIcons.TabIndex = 2;
+            this.pbCodeIcons.TabStop = false;
+            this.pbCodeIcons.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCodeIcons_Paint);
+            // 
+            // rtbCode
+            // 
+            this.rtbCode.AcceptsTab = true;
+            this.rtbCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbCode.DetectUrls = false;
+            this.rtbCode.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbCode.HideSelection = false;
+            this.rtbCode.Location = new System.Drawing.Point(16, 3);
+            this.rtbCode.Name = "rtbCode";
+            this.rtbCode.Size = new System.Drawing.Size(484, 219);
+            this.rtbCode.TabIndex = 3;
+            this.rtbCode.Text = "loop:\tldi\tr15, 7\t;Trollala\n\tadd\tr2, r15\t\n\tsubi\tr2, 9\n\tbreq\tloop\t;jump back";
+            this.rtbCode.WordWrap = false;
+            this.rtbCode.VScroll += new System.EventHandler(this.rtbCode_VScroll);
+            this.rtbCode.TextChanged += new System.EventHandler(this.rtbCode_TextChanged);
+            // 
+            // pnlCode
+            // 
+            this.pnlCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCode.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlCode.Controls.Add(this.rtbCode);
+            this.pnlCode.Controls.Add(this.pbCodeIcons);
+            this.pnlCode.Location = new System.Drawing.Point(12, 39);
+            this.pnlCode.Name = "pnlCode";
+            this.pnlCode.Size = new System.Drawing.Size(501, 227);
+            this.pnlCode.TabIndex = 4;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(525, 365);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.pnlCode);
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).EndInit();
+            this.pnlCode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,7 +238,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private MyRichTextBox richTextBox1;
+        private System.Windows.Forms.PictureBox pbCodeIcons;
+        private System.Windows.Forms.RichTextBox rtbCode;
+        private System.Windows.Forms.Panel pnlCode;
 
     }
 }
