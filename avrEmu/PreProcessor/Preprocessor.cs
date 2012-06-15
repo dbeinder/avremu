@@ -9,8 +9,11 @@ namespace avrEmu
     class Preprocessor
     {
         List<string> inputToList = new List<string>();
-        List<string> afterPrePro = new List<string>();
-        List<int> lineMapping = new List<int>();
+
+        public List<string> afterPrePro = new List<string>();
+
+        public List<int> lineMapping = new List<int>();
+
         Dictionary<string, string> replacer = new Dictionary<string, string>();
 
         //Regex regEx = new Regex();
@@ -26,22 +29,24 @@ namespace avrEmu
         public List<string> PreProcess(string input)
         {
             string[] inputToArray = input.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            Console.WriteLine("(((132+10)*10+(20-15))/5)");
             inputToList.AddRange(inputToArray);
 
             inputToList = CleanUp(inputToList);
 
             SearchForDef(inputToList);
 
-            inputToList = ReplaceDef(inputToList);
-
             AddReplacer();
+
+            inputToList = ReplaceDef(inputToList);
 
             inputToList = Calculate(inputToList);
 
+            inputToList = SearchForHighAndLow(inputToList);
+
+            afterPrePro.AddRange(inputToList);
             //    //line = Calculate(line);
             //    //line = Calculate("((1+1)*1-1)");
-            return inputToList;
+            return afterPrePro;
         }
 
 
@@ -62,11 +67,8 @@ namespace avrEmu
                 {
                     if (line[i][a] == ' ' && line[i][a + 1] == ' ')
                     {
-                        for (int b = a; b < line[i].Length - 1; b++)
-                        {
-                            helpstring = line[i].Substring(0, b - 1);
-                            helpstring += line[i][b + 1];
-                        }
+                        helpstring = line[i].Substring(0, a) + line[i].Substring(a + 1);
+
                         line[i] = helpstring;
                         a = 0;
                     }
@@ -85,6 +87,7 @@ namespace avrEmu
                 if (line[i] == "")
                 {
                     line.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -142,7 +145,6 @@ namespace avrEmu
                 line[i] = SearchForClip(line[i]);
 
                 line[i] = CalculateNumbers(line[i]);
-                Console.WriteLine(line);
             }
             return line;
         }
@@ -175,7 +177,6 @@ namespace avrEmu
 
                         line = line.Substring(0, start - 1) + CalculateNumbers(line.Substring(start, count - 1)) + line.Substring(count + start);
                         i = -1;
-                        Console.WriteLine(line);
                     }
                 }
             } while (countOfClips != 0);
@@ -209,7 +210,6 @@ namespace avrEmu
                     }
                 }
             }
-            Console.WriteLine(line);
             return line;
         }
 
@@ -253,6 +253,69 @@ namespace avrEmu
             if (helpstring != "")
                 b = Convert.ToInt32(helpstring);
             return b;
+        }
+
+        private List<string> SearchForHighAndLow(List<string> line)
+        {
+            for (int a = 0; a < line.Count; a++)
+            {
+                bool integer = true;
+                string helpstring = "";
+                int count;
+                int b;
+                for (int i = 0; i < line[a].Length; i++)
+                {
+                    if (line[a][i] == 'H')
+                    {
+                        if (line[a][i + 1] == 'I')
+                            if (line[a][i + 2] == 'G')
+                                if (line[a][i + 3] == 'H')
+                                {
+                                    count = i + 4;
+                                    do
+                                    {
+                                        if (int.TryParse(Convert.ToString(line[a][count]), out a))
+                                        {
+                                            helpstring += line[a][count];
+                                            count++;
+                                        }
+                                        else
+                                            integer = false;
+                                    } while (integer == true && count < line[a].Length);
+                                    b = Convert.ToInt32(helpstring);
+
+                                    b = b * 0xd7;
+                                    line[a] = line[a].Replace("HIGH" + helpstring, Convert.ToString(b));
+                                    i=0;
+                                }
+                    }
+
+                    //if (line[a][i] == 'L')
+                    //{
+                    //    if (line[a][i + 1] == 'O')
+                    //        if (line[a][i + 2] == 'W')
+                    //        {
+                    //            count = i + 4;
+                    //            do
+                    //            {
+                    //                if (int.TryParse(Convert.ToString(line[a][count]), out a))
+                    //                {
+                    //                    helpstring += line[a][count];
+                    //                    count++;
+                    //                }
+                    //                else
+                    //                    integer = false;
+                    //            } while (integer == true && count < line[a].Length);
+                    //            b = Convert.ToInt32(helpstring);
+
+                    //            b = b * 0xf3;
+                    //            line[a] = line[a].Replace("LOW" + helpstring, Convert.ToString(b));
+                    //        }
+                    //}
+                }
+            }
+
+            return line;
         }
     }
 }
