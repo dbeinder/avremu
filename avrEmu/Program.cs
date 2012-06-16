@@ -16,9 +16,9 @@ namespace avrEmu
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());
+                
             }));
             th.Start();
-
             //TESTCODE IN HERE 
 
             Console.ReadKey();

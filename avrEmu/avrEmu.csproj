@@ -61,6 +61,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\AvrModule.cs" />
+    <Compile Include="Modules\AvrProgramMemoryFlash.cs" />
     <Compile Include="PreProcessor\Preprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ValueEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueEdit.Designer.cs">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="WordHelper.cs" />
   </ItemGroup>
@@ -101,6 +108,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValueEdit.resx">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

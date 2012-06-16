@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace avrEmu
 {
@@ -19,6 +20,7 @@ namespace avrEmu
 
     public partial class ExtByteEditor : UserControl
     {
+
         protected NumberFormat displayFormat = NumberFormat.Hexadecimal;
 
         public NumberFormat DisplayFormat
@@ -48,14 +50,18 @@ namespace avrEmu
 
         private void lviContent_Resize(object sender, EventArgs e)
         {
-            lviContent.Columns[0].Width = (int)(lviContent.Width * 0.4d) - 2;
-            lviContent.Columns[1].Width = (int)(lviContent.Width * 0.6d) - 2;
+            int availableWidth = lviContent.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth;
+
+            lviContent.Columns[0].Width = (int)(availableWidth * 0.4d) - 1;
+
+            lviContent.Columns[1].Width = (int)(availableWidth * 0.6d) - 2;
         }
 
         public void RegisterByte(ExtByte extByte, string name)
         {
             this.watchedBytes.Add(extByte);
             ListViewItem item = new ListViewItem(name);
+            item.Tag = extByte;
             item.SubItems.Add(GetFormated(watchedBytes.Count - 1));
             this.lviContent.Items.Add(item);
             extByte.ByteChanged += new ExtByte.ByteChangedEventHandler(extByte_ByteChanged);
@@ -110,7 +116,6 @@ namespace avrEmu
             }
         }
 
-
         protected void UpdateFormatting()
         {
             for (int i = 0; i < watchedBytes.Count; i++)
@@ -118,5 +123,45 @@ namespace avrEmu
                 this.lviContent.Items[i].SubItems[1].Text = GetFormated(i);
             }
         }
+
+        public void Clear()
+        {
+            foreach (ExtByte eb in this.watchedBytes)
+                eb.ByteChanged -= extByte_ByteChanged;
+
+            this.watchedBytes.Clear();
+            this.lviContent.Items.Clear();
+        }
+
+        private void lviContent_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            StartEdit(-1); //original value
+        }
+
+        private void StartEdit(int newValue)
+        {
+            ExtByte eb = this.lviContent.SelectedItems[0].Tag as ExtByte;
+
+            ValueEdit ve = new ValueEdit(newValue == -1 ? eb.Value : newValue, 255, newValue == -1);
+            ve.StartPosition = FormStartPosition.CenterParent;
+
+            if (ve.ShowDialog() == DialogResult.OK)
+                eb.Value = (byte)ve.Value;
+        }
+
+        [DllImport("user32.dll")]
+        static extern int MapVirtualKey(uint uCode, uint uMapType);
+
+        private void lviContent_KeyDown(object sender, KeyEventArgs e)
+        {
+            int firstNumber;
+
+            if (int.TryParse(((char)MapVirtualKey((uint)e.KeyValue, 2)).ToString(), out firstNumber))
+                StartEdit(firstNumber);
+            else if (e.KeyCode == Keys.Enter)
+                StartEdit(-1);
+        }
+
+        
     }
 }
