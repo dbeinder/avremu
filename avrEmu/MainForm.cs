@@ -30,7 +30,7 @@ namespace avrEmu
         {
             InitializeComponent();
             at2313.ProgramMemory = this.memoryLink; //use input from this form instead of fixed memory
-           
+
             this.extByteEditors.AddRange(new ExtByteEditor[] //register editors, for format changing
             {
                 this.ebeWorkingRegs,
@@ -53,6 +53,7 @@ namespace avrEmu
 
             RegisterWorkingRegs();
             RegisterSram();
+            RegisterIORegs();
         }
 
         void richTextBox1_Paint(object sender, PaintEventArgs e)
@@ -125,9 +126,15 @@ namespace avrEmu
         private void tsCboFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
             NumberFormat selectedFormat = (NumberFormat)this.tsCboFormat.SelectedItem;
-          
+
             foreach (ExtByteEditor ebe in this.extByteEditors)
                 ebe.DisplayFormat = selectedFormat;
+        }
+
+        private void RegisterIORegs()
+        {
+            foreach (KeyValuePair<string, ExtByte> ioReg in this.at2313.PeripheralRegisters)
+                ebeIORegs.RegisterByte(ioReg.Value, ioReg.Key);
         }
 
     }

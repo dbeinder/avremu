@@ -12,6 +12,7 @@ namespace avrEmu
         public AtTinyAlu(AvrController controller)
             : base(controller)
         {
+            this.StackPointer = new ExtByte(0);
             this.IORegisters.Add("SP", this.StackPointer);
 
             this.InstructionSet = new Dictionary<string, VI>() {
@@ -1098,16 +1099,16 @@ namespace avrEmu
 
         protected void Push(List<AvrInstrArg> args)
         {
-            ExtByte rr = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
             PushToStack(rr);
         }
 
         protected void Pop(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd = PopFromStack();
+            rd.Value = PopFromStack().Value;
         }
         #endregion
 
