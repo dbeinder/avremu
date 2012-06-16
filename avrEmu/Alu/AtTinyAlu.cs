@@ -19,24 +19,24 @@ namespace avrEmu
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
                 { "adc", new VI(this.Adc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "adiw", new VI(this.Adiw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                {"sub", new VI(this.Sub, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"subi",new VI(this.Subi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sbc",new VI(this.Sbc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"sbci",new VI(this.Sbci,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"and",new VI(this.And,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"andi",new VI(this.Andi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"or",new VI(this.Or,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"ori",new VI(this.Ori,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"eor",new VI(this.Eor, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"com",new VI(this.Com,AvrInstrArgType.WorkingRegister)},
-                {"neg",new VI(this.Neg,AvrInstrArgType.WorkingRegister)},
-                {"sbr",new VI(this.Sbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"cbr",new VI(this.Cbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"inc",new VI(this.Inc,AvrInstrArgType.WorkingRegister)},
-                {"dec",new VI(this.Dec,AvrInstrArgType.WorkingRegister)},
-                {"tst",new VI(this.Tst,AvrInstrArgType.WorkingRegister)},
-                {"clr",new VI(this.Clr,AvrInstrArgType.WorkingRegister)},
-                {"ser",new VI(this.Ser,AvrInstrArgType.WorkingRegister)},
+                { "sub", new VI(this.Sub, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                { "subi", new VI(this.Subi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "sbc", new VI(this.Sbc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                { "sbci", new VI(this.Sbci,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "and", new VI(this.And,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                { "andi", new VI(this.Andi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "or", new VI(this.Or,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                { "ori", new VI(this.Ori,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "eor", new VI(this.Eor, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                { "com", new VI(this.Com,AvrInstrArgType.WorkingRegister)},
+                { "neg", new VI(this.Neg,AvrInstrArgType.WorkingRegister)},
+                { "sbr", new VI(this.Sbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "cbr", new VI(this.Cbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                { "inc", new VI(this.Inc,AvrInstrArgType.WorkingRegister)},
+                { "dec", new VI(this.Dec,AvrInstrArgType.WorkingRegister)},
+                { "tst", new VI(this.Tst,AvrInstrArgType.WorkingRegister)},
+                { "clr", new VI(this.Clr,AvrInstrArgType.WorkingRegister)},
+                { "ser", new VI(this.Ser,AvrInstrArgType.WorkingRegister)},
 
                 //Branch
                 { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
@@ -109,11 +109,24 @@ namespace avrEmu
                 { "mov", new VI(this.Mov, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "movw", new VI(this.Movw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "ldi", new VI(this.Ldi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                {"ld",new VI(this.Ld,AvrInstrArgType.WorkingRegister,AvrInstrArgType.Register16Bit)},
+                { "lds", new VI(this.Lds, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "ldd", new VI(this.Ld) },
+                {"st",new VI(this.St,AvrInstrArgType.NumericConstant,AvrInstrArgType.WorkingRegister)},
+                { "sts", new VI(this.Sts, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "std", new VI(this.St) },
+                { "lpm", new VI(this.Lpm) },
+                { "spm", new VI(this.Spm) },
                 { "in", new VI(this.In, AvrInstrArgType.WorkingRegister, AvrInstrArgType.IORegister) },
                 { "out", new VI(this.Out, AvrInstrArgType.IORegister, AvrInstrArgType.WorkingRegister) },
+                { "push", new VI(this.Push, AvrInstrArgType.WorkingRegister) },
+                { "pop", new VI(this.Push, AvrInstrArgType.WorkingRegister) },
                  
                 //MCU Control
-                { "nop", new VI(this.Nop) }
+                { "nop", new VI(this.Nop) },
+                { "sleep", new VI(this.Sleep) },
+                { "wdr", new VI(this.Wdr) },
+                { "break", new VI(this.Break) }
             };
 
         }
@@ -721,7 +734,7 @@ namespace avrEmu
                 rd[i] = rd[i - 1];
             }
             rd[0] = false;
-            
+
             rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
         }
 
@@ -809,7 +822,7 @@ namespace avrEmu
         {
             int s = (args[0] as AvrInstrArgConst).Constant;
 
-            SREG[s]=true;
+            SREG[s] = true;
         }
 
         protected void Bclr(List<AvrInstrArg> args)
@@ -832,13 +845,13 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int b = (args[0] as AvrInstrArgConst).Constant;
 
-            rd[b]=SREG["T"];
+            rd[b] = SREG["T"];
             rd.Value = SetFlags(rd.Value, SregFlags.None);
         }
 
         protected void Sec(List<AvrInstrArg> args)
         {
-            SREG["C"]=true;
+            SREG["C"] = true;
         }
 
         protected void Clc(List<AvrInstrArg> args)
@@ -946,6 +959,127 @@ namespace avrEmu
             rd.Value = (byte)k;
         }
 
+        protected void Ld(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            AvrInstrArg16BReg longRegArg = args[1] as AvrInstrArg16BReg;
+            ushort reg16;
+            switch (longRegArg.Register)
+            {
+                case 'x':
+                    reg16 = X;
+                    break;
+                case 'y':
+                    reg16 = Y;
+                    break;
+                case 'z':
+                    reg16 = Z;
+                    break;
+                default:
+                    throw new Exception("Unknown 16Bit Register!");
+            }
+
+            switch (longRegArg.Type)
+            {
+                case AvrInstrArg16BType.PostIncrement:
+                    reg16 += 1;
+                    break;
+                case AvrInstrArg16BType.PreDecrement:
+                    reg16 -= 1;
+                    break;
+                case AvrInstrArg16BType.Offset:
+                    reg16 += (ushort)longRegArg.Offset;
+                    break;
+                case AvrInstrArg16BType.Normal:
+                    break;
+                default:
+                    break;
+
+            }
+            rd.Value = (byte)reg16;
+        }
+
+        protected void Lds(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            rd = this.Controller.WorkingRegisters[k];
+        }
+        protected void St(List<AvrInstrArg> args)
+        {
+            AvrInstrArg16BReg longRegArg = args[0] as AvrInstrArg16BReg;
+            ExtByte rd = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            ushort reg16;
+            switch (longRegArg.Register)
+            {
+                case 'x':
+                    reg16 = X;
+                    break;
+                case 'y':
+                    reg16 = Y;
+                    break;
+                case 'z':
+                    reg16 = Z;
+                    break;
+                default:
+                    throw new Exception("Unknown 16Bit Register!");
+            }
+
+            switch (longRegArg.Type)
+            {
+                case AvrInstrArg16BType.PostIncrement:
+                    reg16 += 1;
+                    break;
+                case AvrInstrArg16BType.PreDecrement:
+                    reg16 -= 1;
+                    break;
+                case AvrInstrArg16BType.Offset:
+                    reg16 += (ushort)longRegArg.Offset;
+                    break;
+                case AvrInstrArg16BType.Normal:
+                    break;
+                default:
+                    break;
+
+            }
+
+            switch (longRegArg.Register)
+            {
+                case 'x':
+                    X = reg16;
+                    break;
+                case 'y':
+                    Y = reg16;
+                    break;
+                case 'z':
+                    Z = reg16;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        protected void Sts(List<AvrInstrArg> args)
+        {
+            //16bit
+            ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            this.Controller.WorkingRegisters[k] = rr;
+        }
+
+        protected void Lpm(List<AvrInstrArg> args)
+        {
+            new Exception("Instruction not yet implemented!");
+        }
+
+        protected void Spm(List<AvrInstrArg> args)
+        {
+            new Exception("Instruction not yet implemented!");
+        }
+
         protected void In(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
@@ -961,6 +1095,20 @@ namespace avrEmu
 
             ior.Value = rd.Value;
         }
+
+        protected void Push(List<AvrInstrArg> args)
+        {
+            ExtByte rr = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+
+            PushToStack(rr);
+        }
+
+        protected void Pop(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+
+            rd = PopFromStack();
+        }
         #endregion
 
         #region MCU Control
@@ -970,6 +1118,20 @@ namespace avrEmu
             //No Operation
         }
 
+        protected void Sleep(List<AvrInstrArg> args)
+        {
+            new Exception("Instruction not yet implemented!");
+        }
+
+        protected void Wdr(List<AvrInstrArg> args)
+        {
+            new Exception("Instruction not yet implemented!");
+        }
+
+        protected void Break(List<AvrInstrArg> args)
+        {
+            new Exception("Instruction not yet implemented!");
+        }
         #endregion
     }
 
