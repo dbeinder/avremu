@@ -98,6 +98,7 @@
             this.MinimizeBox = false;
             this.Name = "ValueEdit";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Value";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.nudValue)).EndInit();

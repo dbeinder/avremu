@@ -52,7 +52,7 @@ namespace avrEmu
         {
             int availableWidth = lviContent.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth;
 
-            lviContent.Columns[0].Width = (int)(availableWidth * 0.4d) - 1;
+            lviContent.Columns[0].Width = (int)(availableWidth * 0.4d) - 2;
 
             lviContent.Columns[1].Width = (int)(availableWidth * 0.6d) - 2;
         }
@@ -141,10 +141,8 @@ namespace avrEmu
         private void StartEdit(int newValue)
         {
             ExtByte eb = this.lviContent.SelectedItems[0].Tag as ExtByte;
-
             ValueEdit ve = new ValueEdit(newValue == -1 ? eb.Value : newValue, 255, newValue == -1);
-            ve.StartPosition = FormStartPosition.CenterParent;
-
+            
             if (ve.ShowDialog() == DialogResult.OK)
                 eb.Value = (byte)ve.Value;
         }

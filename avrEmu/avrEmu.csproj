@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0398EEF7-54C1-4BC5-AF2F-5F830F94CB1B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>avrEmu</RootNamespace>
     <AssemblyName>avrEmu</AssemblyName>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +50,12 @@
     <Compile Include="Alu\AvrAlu.cs" />
     <Compile Include="Controller\AtTiny2313.cs" />
     <Compile Include="Controller\AvrController.cs" />
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExtByte.cs" />
     <Compile Include="ExtByteEditor.cs">
       <SubType>UserControl</SubType>
@@ -99,6 +108,9 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExtByteEditor.resx">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -145,5 +157,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bullet_error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Help\std.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Help\index.html">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

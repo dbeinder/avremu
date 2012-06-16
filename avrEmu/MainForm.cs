@@ -44,21 +44,13 @@ namespace avrEmu
             bulletExec = Image.FromHbitmap(Properties.Resources.bullet_go.GetHbitmap(pbCodeIcons.BackColor));
             bulletError = Image.FromHbitmap(Properties.Resources.bullet_red.GetHbitmap(pbCodeIcons.BackColor));
 
-            this.TopMost = true;
-
             foreach (NumberFormat nf in this.possibleFormats)
                 this.tsCboFormat.Items.Add(nf);
             this.tsCboFormat.SelectedIndex = 0;
 
-
             RegisterWorkingRegs();
             RegisterSram();
             RegisterIORegs();
-        }
-
-        void richTextBox1_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawLine(Pens.Black, 0, 0, 100, 100);
         }
 
         private void rtbCode_TextChanged(object sender, EventArgs e)
@@ -108,7 +100,7 @@ namespace avrEmu
         {
             int lastAddres = (int)(nudStartSram.Value + nudSramLength.Value);
             if (lastAddres >= this.at2313.SRAM.Memory.Length)
-                lastAddres = this.at2313.SRAM.Memory.Length - 1;
+                lastAddres = this.at2313.SRAM.Memory.Length;
 
             for (int i = (int)nudStartSram.Value; i < lastAddres; i++)
             {
@@ -135,6 +127,11 @@ namespace avrEmu
         {
             foreach (KeyValuePair<string, ExtByte> ioReg in this.at2313.PeripheralRegisters)
                 ebeIORegs.RegisterByte(ioReg.Value, ioReg.Key);
+        }
+
+        private void helpToolStripButton_Click(object sender, EventArgs e)
+        {
+            (new AboutForm()).ShowDialog();
         }
 
     }

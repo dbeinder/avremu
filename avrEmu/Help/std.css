@@ -1,0 +1,117 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+a:link {
+    color: #11d;
+    text-decoration: none;
+}
+a:visited {
+    color: #11d;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:active {
+    color: #f00;
+}
+
+html {
+    background-color: #eee;
+    padding: 1em;
+    font-family: consolas, monotype;
+}
+
+body {
+    border: 1px #ccc solid;
+    background-color: #fefefe;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 0.3em;
+}
+
+h1 {
+    border-bottom: 1px #ccc dotted;
+    background-color: #f3f3f3;
+    padding: 0.3em 3em;
+    color: #666;
+    background-image: url('db.png');
+    background-position: 80% bottom;
+    background-repeat: no-repeat;
+    border-radius: 0.15em 0.15em 0 0;
+}
+
+h1 a {
+    color: #666 !important;
+}
+
+#cnt {
+    padding: 1em;
+    overflow: auto;
+}
+
+.fl {
+    float: left;
+    border-right: 1px #ccc solid;
+    border-left: 1px #ccc solid;
+    padding: 0 1em;
+    margin-right: -1px;
+}
+
+.fl:last-child {
+    border-right: none;
+}
+
+.fl:first-child {
+    border-left: none;
+}
+
+.fl ul {
+    list-style-position: inside;
+    list-style-image: url('l.png');
+}
+
+#footer {
+    border-top: 1px #ccc dotted;
+    padding: 0.1em 0 0.2em 0;
+    text-align: center;
+}
+
+#impr {
+    margin: 1em auto;
+    width: 30%;
+}
+
+#validcss {
+    float: right;
+    border: none;
+    margin: 0.2em 0.3em;
+}
+
+#validxhtml {
+    float: left;
+    border: none;
+    margin: 0.2em 0.3em;
+}
+
+#dirl {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#dirl hr { /* apache dirlist*/
+    background-color: #ccc;
+    border: none;
+    height: 1px;
+    margin: 0.5em 0;
+}
+
+#dirl table {
+    width: 100%;
+}
+
+#dirl a img {
+    border: none;
+}
