@@ -41,12 +41,15 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.pbCodeIcons = new System.Windows.Forms.PictureBox();
             this.rtbCode = new System.Windows.Forms.RichTextBox();
             this.pnlCode = new System.Windows.Forms.Panel();
+            this.pbCodeIcons = new System.Windows.Forms.PictureBox();
+            this.extByteEditor1 = new avrEmu.ExtByteEditor();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
             this.pnlCode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -161,18 +164,6 @@
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "toolStripButton5";
             // 
-            // pbCodeIcons
-            // 
-            this.pbCodeIcons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.pbCodeIcons.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.pbCodeIcons.Location = new System.Drawing.Point(0, 0);
-            this.pbCodeIcons.Name = "pbCodeIcons";
-            this.pbCodeIcons.Size = new System.Drawing.Size(16, 226);
-            this.pbCodeIcons.TabIndex = 2;
-            this.pbCodeIcons.TabStop = false;
-            this.pbCodeIcons.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCodeIcons_Paint);
-            // 
             // rtbCode
             // 
             this.rtbCode.AcceptsTab = true;
@@ -185,7 +176,7 @@
             this.rtbCode.HideSelection = false;
             this.rtbCode.Location = new System.Drawing.Point(16, 3);
             this.rtbCode.Name = "rtbCode";
-            this.rtbCode.Size = new System.Drawing.Size(484, 219);
+            this.rtbCode.Size = new System.Drawing.Size(484, 94);
             this.rtbCode.TabIndex = 3;
             this.rtbCode.Text = "loop:\tldi\tr15, 7\t;Trollala\n\tadd\tr2, r15\t\n\tsubi\tr2, 9\n\tbreq\tloop\t;jump back";
             this.rtbCode.WordWrap = false;
@@ -202,14 +193,47 @@
             this.pnlCode.Controls.Add(this.pbCodeIcons);
             this.pnlCode.Location = new System.Drawing.Point(12, 39);
             this.pnlCode.Name = "pnlCode";
-            this.pnlCode.Size = new System.Drawing.Size(501, 227);
+            this.pnlCode.Size = new System.Drawing.Size(501, 102);
             this.pnlCode.TabIndex = 4;
+            // 
+            // pbCodeIcons
+            // 
+            this.pbCodeIcons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbCodeIcons.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.pbCodeIcons.Location = new System.Drawing.Point(0, 0);
+            this.pbCodeIcons.Name = "pbCodeIcons";
+            this.pbCodeIcons.Size = new System.Drawing.Size(16, 101);
+            this.pbCodeIcons.TabIndex = 2;
+            this.pbCodeIcons.TabStop = false;
+            this.pbCodeIcons.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCodeIcons_Paint);
+            // 
+            // extByteEditor1
+            // 
+            this.extByteEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.extByteEditor1.Location = new System.Drawing.Point(6, 19);
+            this.extByteEditor1.Name = "extByteEditor1";
+            this.extByteEditor1.Size = new System.Drawing.Size(180, 181);
+            this.extByteEditor1.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.extByteEditor1);
+            this.groupBox1.Location = new System.Drawing.Point(12, 147);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(192, 206);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Working Registers";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(525, 365);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.pnlCode);
             this.Name = "MainForm";
@@ -217,8 +241,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).EndInit();
             this.pnlCode.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,6 +266,8 @@
         private System.Windows.Forms.PictureBox pbCodeIcons;
         private System.Windows.Forms.RichTextBox rtbCode;
         private System.Windows.Forms.Panel pnlCode;
+        private ExtByteEditor extByteEditor1;
+        private System.Windows.Forms.GroupBox groupBox1;
 
     }
 }
