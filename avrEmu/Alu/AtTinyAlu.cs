@@ -74,7 +74,36 @@ namespace avrEmu
                 {"brie",new VI(this.Brie,AvrInstrArgType.NumericConstant)},
                 {"brid",new VI(this.Brid,AvrInstrArgType.NumericConstant)},
 
+
                 //Bit and Bit-Test
+                {"sbi",new VI(this.Sbi,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
+                {"cbi",new VI(this.Cbi,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
+                {"lsl",new VI(this.Lsl,AvrInstrArgType.WorkingRegister)},
+                {"lsr",new VI(this.Lsr,AvrInstrArgType.WorkingRegister)},
+                {"rol",new VI(this.Rol,AvrInstrArgType.WorkingRegister)},
+                {"ror",new VI(this.Ror,AvrInstrArgType.WorkingRegister)},
+                {"asr",new VI(this.Asr,AvrInstrArgType.WorkingRegister)},
+                {"swap",new VI(this.Swap,AvrInstrArgType.WorkingRegister)},
+                {"bset",new VI(this.Bset,AvrInstrArgType.NumericConstant)},
+                {"bclr",new VI(this.Bclr,AvrInstrArgType.NumericConstant)},
+                {"bst",new VI(this.Bst,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"bld",new VI(this.Bld,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"sec",new VI(this.Sec)},
+                {"clc",new VI(this.Clc)},
+                {"sen",new VI(this.Sen)},
+                {"cln",new VI(this.Cln)},
+                {"sez",new VI(this.Sez)},
+                {"clz",new VI(this.Clz)},
+                {"sei",new VI(this.Sei)},
+                {"cli",new VI(this.Cli)},
+                {"ses",new VI(this.Ses)},
+                {"cls",new VI(this.Cls)},
+                {"sev",new VI(this.Sev)},
+                {"clv",new VI(this.Clv)},
+                {"set",new VI(this.Set)},
+                {"clt",new VI(this.Clt)},
+                {"seh",new VI(this.Seh)},
+                {"clh",new VI(this.Clh)},
 
                 //Data Transfer
                 { "mov", new VI(this.Mov, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
@@ -664,6 +693,228 @@ namespace avrEmu
 
         #region Bit and Bit-Test
 
+        protected void Sbi(List<AvrInstrArg> args)
+        {
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            a[b] = true;
+        }
+
+        protected void Cbi(List<AvrInstrArg> args)
+        {
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            a[b] = false;
+        }
+
+        protected void Lsl(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+
+            this.SREG["C"] = rd[7];
+            this.SREG["H"] = rd[3];
+
+            for (int i = 7; i > 0; i--)
+            {
+                rd[i] = rd[i - 1];
+            }
+            rd[0] = false;
+            
+            rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
+        }
+
+        protected void Lsr(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+
+            this.SREG["C"] = rd[0];
+
+            for (int i = 0; i < 7; i++)
+            {
+                rd[i] = rd[i + 1];
+            }
+            rd[7] = false;
+
+            rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
+        }
+
+        protected void Rol(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+
+            bool helpbool = this.SREG["C"];
+            this.SREG["C"] = rd[7];
+            this.SREG["H"] = rd[3];
+
+            for (int i = 7; i > 0; i--)
+            {
+                rd[i] = rd[i - 1];
+            }
+            rd[0] = helpbool;
+
+            rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
+        }
+
+        protected void Ror(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+
+            bool helpbool = this.SREG["C"];
+            this.SREG["C"] = rd[0];
+
+            for (int i = 0; i < 7; i++)
+            {
+                rd[i] = rd[i + 1];
+            }
+            rd[7] = helpbool;
+
+            rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
+        }
+
+        protected void Asr(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+
+            bool helpbool = rd[7];
+            this.SREG["C"] = rd[0];
+
+            for (int i = 0; i < 7; i++)
+            {
+                rd[i] = rd[i + 1];
+            }
+            rd[7] = helpbool;
+
+            rd.Value = SetFlags(rd.Value, SregFlags.ZNV);
+        }
+
+        protected void Swap(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte res = new ExtByte(rd[3], rd[2], rd[1], rd[0], rd[7], rd[6], rd[5], rd[4]);
+            bool helpbool = rd[7];
+            this.SREG["C"] = rd[0];
+
+            for (int i = 0; i < 7; i++)
+            {
+                rd[i] = rd[i + 1];
+            }
+            rd[7] = helpbool;
+
+            rd.Value = SetFlags(res.Value, SregFlags.None);
+        }
+
+        protected void Bset(List<AvrInstrArg> args)
+        {
+            int s = (args[0] as AvrInstrArgConst).Constant;
+
+            SREG[s]=true;
+        }
+
+        protected void Bclr(List<AvrInstrArg> args)
+        {
+            int s = (args[0] as AvrInstrArgConst).Constant;
+
+            SREG[s] = false;
+        }
+
+        protected void Bst(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int b = (args[0] as AvrInstrArgConst).Constant;
+
+            SREG["T"] = rd[b];
+        }
+
+        protected void Bld(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int b = (args[0] as AvrInstrArgConst).Constant;
+
+            rd[b]=SREG["T"];
+            rd.Value = SetFlags(rd.Value, SregFlags.None);
+        }
+
+        protected void Sec(List<AvrInstrArg> args)
+        {
+            SREG["C"]=true;
+        }
+
+        protected void Clc(List<AvrInstrArg> args)
+        {
+            SREG["C"] = false;
+        }
+
+        protected void Sen(List<AvrInstrArg> args)
+        {
+            SREG["N"] = true;
+        }
+
+        protected void Cln(List<AvrInstrArg> args)
+        {
+            SREG["N"] = false;
+        }
+
+        protected void Sez(List<AvrInstrArg> args)
+        {
+            SREG["Z"] = true;
+        }
+
+        protected void Clz(List<AvrInstrArg> args)
+        {
+            SREG["Z"] = false;
+        }
+
+        protected void Sei(List<AvrInstrArg> args)
+        {
+            SREG["I"] = true;
+        }
+
+        protected void Cli(List<AvrInstrArg> args)
+        {
+            SREG["I"] = false;
+        }
+
+        protected void Ses(List<AvrInstrArg> args)
+        {
+            SREG["S"] = true;
+        }
+
+        protected void Cls(List<AvrInstrArg> args)
+        {
+            SREG["S"] = false;
+        }
+
+        protected void Sev(List<AvrInstrArg> args)
+        {
+            SREG["V"] = true;
+        }
+
+        protected void Clv(List<AvrInstrArg> args)
+        {
+            SREG["V"] = false;
+        }
+
+        protected void Set(List<AvrInstrArg> args)
+        {
+            SREG["T"] = true;
+        }
+
+        protected void Clt(List<AvrInstrArg> args)
+        {
+            SREG["T"] = false;
+        }
+
+        protected void Seh(List<AvrInstrArg> args)
+        {
+            SREG["H"] = true;
+        }
+
+        protected void Clh(List<AvrInstrArg> args)
+        {
+            SREG["H"] = false;
+        }
         #endregion
 
         #region Data Transfer
