@@ -45,6 +45,34 @@ namespace avrEmu
                 { "icall", new VI(this.Icall) },
                 { "ret", new VI(this.Ret) },
                 { "reti", new VI(this.Reti) },
+                {"cpse", new VI(this.Cpse,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"cp", new VI(this.Cp,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"cpc",new VI(this.Cpc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
+                {"cpi",new VI(this.Cpi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"sbrc",new VI(this.Sbrc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"sbrs",new VI(this.Sbrs,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
+                {"sbic",new VI(this.Sbic,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
+                {"sbis",new VI(this.Sbis,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
+                {"brbs",new VI(this.Brbs,AvrInstrArgType.NumericConstant,AvrInstrArgType.NumericConstant)},
+                {"brbc",new VI(this.Brbc,AvrInstrArgType.NumericConstant,AvrInstrArgType.NumericConstant)},
+                {"breq",new VI(this.Breq,AvrInstrArgType.NumericConstant)},
+                {"brne",new VI(this.Brne,AvrInstrArgType.NumericConstant)},
+                {"brcs",new VI(this.Brcs,AvrInstrArgType.NumericConstant)},
+                {"brcc",new VI(this.Brcc,AvrInstrArgType.NumericConstant)},
+                {"brsh",new VI(this.Brcc,AvrInstrArgType.NumericConstant)},
+                {"brlo",new VI(this.Brcs,AvrInstrArgType.NumericConstant)},
+                {"brmi",new VI(this.Brmi,AvrInstrArgType.NumericConstant)},
+                {"brpl",new VI(this.Brpl,AvrInstrArgType.NumericConstant)},
+                {"brge",new VI(this.Brge,AvrInstrArgType.NumericConstant)},
+                {"brlt",new VI(this.Brlt,AvrInstrArgType.NumericConstant)},
+                {"brhs",new VI(this.Brhs,AvrInstrArgType.NumericConstant)},
+                {"brhc",new VI(this.Brhc,AvrInstrArgType.NumericConstant)},
+                {"brts",new VI(this.Brts,AvrInstrArgType.NumericConstant)},
+                {"brtc",new VI(this.Brtc,AvrInstrArgType.NumericConstant)},
+                {"brvs",new VI(this.Brvs,AvrInstrArgType.NumericConstant)},
+                {"brvc",new VI(this.Brvc,AvrInstrArgType.NumericConstant)},
+                {"brie",new VI(this.Brie,AvrInstrArgType.NumericConstant)},
+                {"brid",new VI(this.Brid,AvrInstrArgType.NumericConstant)},
 
                 //Bit and Bit-Test
 
@@ -166,7 +194,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value & rr.Value, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value & rr.Value, SregFlags.ZNV);
         }
 
         protected void Andi(List<AvrInstrArg> args)
@@ -174,7 +202,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            rd.Value = SetFlags(rd.Value & k, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value & k, SregFlags.ZNV);
         }
 
         protected void Or(List<AvrInstrArg> args)
@@ -182,7 +210,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value | rr.Value, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value | rr.Value, SregFlags.ZNV);
         }
 
         protected void Ori(List<AvrInstrArg> args)
@@ -190,7 +218,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            rd.Value = SetFlags(rd.Value | k, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value | k, SregFlags.ZNV);
         }
 
         protected void Eor(List<AvrInstrArg> args)
@@ -198,7 +226,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value ^ rr.Value, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value ^ rr.Value, SregFlags.ZNV);
         }
 
         protected void Com(List<AvrInstrArg> args)
@@ -225,7 +253,7 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            rd.Value = SetFlags(rd.Value | k, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value | k, SregFlags.ZNV);
         }
 
         protected void Cbr(List<AvrInstrArg> args)
@@ -233,35 +261,35 @@ namespace avrEmu
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            rd.Value = SetFlags(rd.Value & (0xff - k), SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value & (0xff - k), SregFlags.ZNV);
         }
 
         protected void Inc(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value + 1, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value + 1, SregFlags.ZNV);
         }
 
         protected void Dec(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value - 1, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value - 1, SregFlags.ZNV);
         }
 
         protected void Tst(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value & rd.Value, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value & rd.Value, SregFlags.ZNV);
         }
 
         protected void Clr(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd.Value = SetFlags(rd.Value ^ rd.Value, SregFlags.CZNV);
+            rd.Value = SetFlags(rd.Value ^ rd.Value, SregFlags.ZNV);
         }
 
         protected void Ser(List<AvrInstrArg> args)
@@ -278,7 +306,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            this.PC += k + 1;
+            this.PC += k;
         }
 
         protected void Ijmp(List<AvrInstrArg> args)
@@ -293,7 +321,7 @@ namespace avrEmu
             PushToStack(WordHelper.GetHighByte((ushort)this.PC));
             PushToStack(WordHelper.GetLowByte((ushort)this.PC));
 
-            this.PC = k + 1;
+            this.PC = k;
         }
 
         protected void Icall(List<AvrInstrArg> args)
@@ -315,7 +343,323 @@ namespace avrEmu
             this.PC = WordHelper.FromBytes(PopFromStack(), PopFromStack());
         }
 
+        protected void Cpse(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
+            if (rd.Value == rr.Value)
+            {
+                this.PC += 2;
+            }
+
+            else
+                this.PC += 1;
+        }
+
+        protected void Cp(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            ExtByte res = new ExtByte((byte)(rd.Value - rr.Value));
+
+            this.SREG["H"] = !rd[3] && rr[3] || rr[3] && res[3] || res[3] && !rd[3];
+            rd.Value = SetFlags(rd.Value, SregFlags.CZNV);
+        }
+
+        protected void Cpc(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
+
+            ExtByte res = new ExtByte((byte)(rd.Value - rr.Value - this.CarryAsInt));
+
+            this.SREG["H"] = !rd[3] && rr[3] || rr[3] && res[3] || res[3] && !rd[3];
+            rd.Value = SetFlags(rd.Value, SregFlags.CZNV);
+        }
+
+        protected void Cpi(List<AvrInstrArg> args)
+        {
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int k = (args[1] as AvrInstrArgConst).Constant;
+            ExtByte kex = new ExtByte((byte)k);
+
+            ExtByte res = new ExtByte((byte)(rd.Value - k));
+
+            this.SREG["H"] = !rd[3] && kex[3] || kex[3] && res[3] || res[3] && !rd[3];
+            rd.Value = SetFlags(rd.Value, SregFlags.CZNV);
+        }
+
+        protected void Sbrc(List<AvrInstrArg> args)
+        {
+            ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            if (Convert.ToInt32(rr[b]) == 0)
+            {
+                this.PC += 2;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Sbrs(List<AvrInstrArg> args)
+        {
+            ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            if (Convert.ToInt32(rr[b]) == 1)
+            {
+                this.PC += 2;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Sbic(List<AvrInstrArg> args)
+        {
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            if (Convert.ToInt32(a[b]) == 0)
+            {
+                this.PC += 2;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Sbis(List<AvrInstrArg> args)
+        {
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            int b = (args[1] as AvrInstrArgConst).Constant;
+
+            if (Convert.ToInt32(a[b]) == 1)
+            {
+                this.PC += 2;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brbs(List<AvrInstrArg> args)
+        {
+            int s = (args[0] as AvrInstrArgConst).Constant;
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            if (this.SREG[s] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brbc(List<AvrInstrArg> args)
+        {
+            int s = (args[0] as AvrInstrArgConst).Constant;
+            int k = (args[1] as AvrInstrArgConst).Constant;
+
+            if (this.SREG[s] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Breq(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["Z"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brne(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["Z"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brcs(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["C"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brcc(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["C"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brmi(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["N"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brpl(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["N"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brge(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["N"] ^ this.SREG["V"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brlt(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["N"] ^ this.SREG["V"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brhs(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["H"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brhc(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["H"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brts(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["T"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brtc(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["T"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brvs(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["V"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brvc(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["V"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brie(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["I"] == true)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
+
+        protected void Brid(List<AvrInstrArg> args)
+        {
+            int k = (args[0] as AvrInstrArgConst).Constant;
+
+            if (this.SREG["I"] == false)
+            {
+                this.PC += k + 1;
+            }
+            else
+                this.PC += 1;
+        }
         #endregion
 
         #region Bit and Bit-Test
