@@ -49,6 +49,8 @@ namespace avrEmu
                 this.tsCboFormat.Items.Add(nf);
             this.tsCboFormat.SelectedIndex = 0;
 
+            this.ebbvSreg.WatchedByte = this.at2313.ALU.SREG;
+
             RegisterWorkingRegs();
             RegisterSram();
             RegisterIORegs();

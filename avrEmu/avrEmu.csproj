@@ -73,11 +73,29 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtByte.cs" />
-    <Compile Include="ExtByteEditor.cs">
+    <Compile Include="CreditsForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreditsForms.Designer.cs">
+      <DependentUpon>CreditsForms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtByte\ExtByte.cs" />
+    <Compile Include="ExtByte\ExtByteBit.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ExtByteEditor.Designer.cs">
+    <Compile Include="ExtByte\ExtByteBit.Designer.cs">
+      <DependentUpon>ExtByteBit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtByte\ExtByteBitViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExtByte\ExtByteBitViewer.Designer.cs">
+      <DependentUpon>ExtByteBitViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtByte\ExtByteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExtByte\ExtByteEditor.Designer.cs">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -87,7 +105,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\AvrModule.cs" />
-    <Compile Include="Modules\AvrIOPort.cs" />
     <Compile Include="Modules\AvrProgramMemoryFlash.cs" />
     <Compile Include="PreProcessor\Preprocessor.cs" />
     <Compile Include="Program.cs" />
@@ -106,10 +123,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ValueEdit.cs">
+    <Compile Include="ExtByte\ValueEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ValueEdit.Designer.cs">
+    <Compile Include="ExtByte\ValueEdit.Designer.cs">
       <DependentUpon>ValueEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="WordHelper.cs" />
@@ -129,7 +146,16 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExtByteEditor.resx">
+    <EmbeddedResource Include="CreditsForms.resx">
+      <DependentUpon>CreditsForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExtByte\ExtByteBit.resx">
+      <DependentUpon>ExtByteBit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExtByte\ExtByteBitViewer.resx">
+      <DependentUpon>ExtByteBitViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExtByte\ExtByteEditor.resx">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
@@ -139,7 +165,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ValueEdit.resx">
+    <EmbeddedResource Include="ExtByte\ValueEdit.resx">
       <DependentUpon>ValueEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -208,5 +234,8 @@
     <EmbeddedResource Include="Help\index.html">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet_green.png" />
   </ItemGroup>
 </Project>

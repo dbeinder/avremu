@@ -35,6 +35,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lLblCredits = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,6 +108,17 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
+            // lLblCredits
+            // 
+            this.lLblCredits.AutoSize = true;
+            this.lLblCredits.Location = new System.Drawing.Point(171, 117);
+            this.lLblCredits.Name = "lLblCredits";
+            this.lLblCredits.Size = new System.Drawing.Size(57, 13);
+            this.lLblCredits.TabIndex = 8;
+            this.lLblCredits.TabStop = true;
+            this.lLblCredits.Text = "and others";
+            this.lLblCredits.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lLblCredits_LinkClicked);
+            // 
             // AboutForm
             // 
             this.AcceptButton = this.btnClose;
@@ -114,6 +126,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(248, 225);
+            this.Controls.Add(this.lLblCredits);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -144,5 +157,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.LinkLabel lLblCredits;
     }
 }
