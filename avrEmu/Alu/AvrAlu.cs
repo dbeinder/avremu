@@ -113,8 +113,8 @@ namespace avrEmu
 
             this.SREG.BitNames = new List<string>() { "C", "Z", "N", "V", "S", "H", "T", "I" };
 
-            this.SREG.BitEvents["N"].BitChanged += new ExtByte.BitChangedEventHandler(SREG_BitChanged);
-            this.SREG.BitEvents["V"].BitChanged += new ExtByte.BitChangedEventHandler(SREG_BitChanged);
+            this.SREG.BitEvents["N"].BitChanged += new BitChangedEventHandler(SREG_BitChanged);
+            this.SREG.BitEvents["V"].BitChanged += new BitChangedEventHandler(SREG_BitChanged);
 
             this.IORegisters.Add("SREG", this.SREG);
         }

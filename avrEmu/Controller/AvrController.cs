@@ -21,6 +21,8 @@ namespace avrEmu
 
         public Dictionary<string, ExtByte> PeripheralRegisters { get; protected set; }
 
+        public Dictionary<char, AvrIOPort> Ports { get; protected set; }
+
         protected List<AvrModule> Modules = new List<AvrModule>();
         
         public virtual void Reset()

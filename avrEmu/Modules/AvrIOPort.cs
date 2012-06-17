@@ -11,7 +11,7 @@ namespace avrEmu
         private ExtByte PIN = new ExtByte(0);
 
         public List<AvrIOPin> Pins = new List<AvrIOPin>();
-
+        public int PinCount { get; protected set; }
 
         public AvrIOPort(char name, int pinCount)
         {
@@ -23,18 +23,20 @@ namespace avrEmu
             {
                 Pins.Add(new AvrIOPin(DDR, PORT, PIN, i));
             }
+
+            this.PinCount = pinCount;
         }
 
         public override void Reset()
         {
-            //alle auf 0
+            this.DDR.Value = this.PORT.Value = this.PIN.Value = 0;
         }
     }
 
     public class AvrIOPin : AvrModule
     {
         private ExtByte Ddr, Port, Pin;
-        private int bitNum;
+        public int PinNumber;
 
         public event BitChangedEventHandler PinChanged;
 
@@ -43,7 +45,7 @@ namespace avrEmu
             this.Ddr = ddr;
             this.Port = port;
             this.Pin = pin;
-            this.bitNum = bitNum;
+            this.PinNumber = bitNum;
 
             ddr.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
             port.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
@@ -53,14 +55,14 @@ namespace avrEmu
         void AvrIOPin_BitChanged(object sender, BitChangedEventArgs e)
         {
             if (PinChanged != null)
-                PinChanged(this, new BitChangedEventArgs(e.ChangedByte, this.bitNum, e.NewValue));
+                PinChanged(this, new BitChangedEventArgs(e.ChangedByte, this.PinNumber, e.NewValue));
         }
 
         public bool IsOutput
         {
             get
             {
-                return this.Ddr[bitNum];
+                return this.Ddr[PinNumber];
             }
         }
 
@@ -69,7 +71,7 @@ namespace avrEmu
         {
             get
             {
-                return this.Port[bitNum];
+                return this.Port[PinNumber];
             }
         }
 
@@ -77,12 +79,12 @@ namespace avrEmu
         {
             get
             {
-                return this.Pin[bitNum];
+                return this.Pin[PinNumber];
             }
 
             set
             {
-                this.Pin[bitNum] = value;
+                this.Pin[PinNumber] = value;
             }
         }
     }

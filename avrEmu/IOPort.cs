@@ -11,33 +11,28 @@ namespace avrEmu
 {
     public partial class IOPort : UserControl
     {
-        public List<AvrIOPin> pins = new List<AvrIOPin>();
         public IOPort()
         {
             InitializeComponent();
-            
-            AvrIOPin pinf = new AvrIOPin();
-            pinf.IsOutput = false;
-            pinf.OutputValue=true;
-            pinf.InputValue=true;
-            pins.Add(pinf);
-            AvrIOPin pinp = new AvrIOPin();
-            pinp.IsOutput = true;
-            pinp.OutputValue = true;
-            pinp.InputValue = true;
-            pins.Add(pinp);
-            for (int i = 0; i < pins.Count; i++)
-            {
-                IOPin pin = new IOPin();
-                pin.Input = pins[i].IsOutput;
-                if (pins[i].IsOutput)
-                    pin.High = pins[i].OutputValue;
-                if (!pins[i].IsOutput)
-                    pin.High = pins[i].InputValue;
-                pin.Number = i;
-                flowLayoutPanel1.Controls.Add(pin);
-            }
+        }
 
+        protected AvrIOPort avrPort;
+        public AvrIOPort AvrPort
+        {
+            get { return this.AvrPort; }
+
+            set
+            {
+                this.flpPins.Controls.Clear();
+                this.avrPort = value;
+
+                for (int i = 0; i < value.PinCount; i++)
+                {
+                    IOPin pin = new IOPin();
+                    pin.AvrPin = value.Pins[i];
+                    this.flpPins.Controls.Add(pin);
+                }
+            }
         }
     }
 }

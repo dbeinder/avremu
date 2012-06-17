@@ -62,7 +62,7 @@ namespace avrEmu
             item.Tag = extByte;
             item.SubItems.Add(GetFormated(extByte));
             this.lviContent.Items.Add(item);
-            extByte.ByteChanged += new ExtByte.ByteChangedEventHandler(extByte_ByteChanged);
+            extByte.ByteChanged += new ByteChangedEventHandler(extByte_ByteChanged);
         }
 
         void extByte_ByteChanged(object sender, ByteChangedEventArgs e)

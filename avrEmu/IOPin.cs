@@ -11,53 +11,57 @@ namespace avrEmu
 {
     public partial class IOPin : UserControl
     {
-        public bool Input { get; private set; }
-        public bool High { get; set; }
-        public int Number { get; set; }
-        public bool Changed { get; set; }
-        private CheckBox chkInput;
+        protected AvrIOPin avrPin;
+
+        public AvrIOPin AvrPin
+        {
+            get { return this.avrPin; }
+            set
+            {
+                if (this.avrPin != null)
+                    this.avrPin.PinChanged -= avrPin_PinChanged;
+
+                this.avrPin = value;
+                value.PinChanged += new BitChangedEventHandler(avrPin_PinChanged);
+                UpdateData();
+            }
+        }
+
+        void avrPin_PinChanged(object sender, BitChangedEventArgs e)
+        {
+            UpdateData();
+        }
 
         public IOPin()
         {
             InitializeComponent();
         }
 
-        void input_CheckedChanged(object sender, EventArgs e)
+        void chkInput_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkInput.Checked)
-            {
-                this.pbBitStatus.Image = Properties.Resources.bullet_green;
-            }
-            else
-            {
-                this.pbBitStatus.Image = Properties.Resources.bullet_red;
-            }
-            this.Changed = !this.Changed;
+            this.avrPin.InputValue = chkInput.Checked;
         }
 
-        private void IOPin_Load(object sender, EventArgs e)
+        private void UpdateData()
         {
+            this.lblDesc.Text = "Pin " + this.avrPin.PinNumber.ToString() + ": " +
+                (this.avrPin.IsOutput ? "Output" : "Input");
 
-            if (this.Input)
-            {
-                labelIO.Text = "Input";
-                chkInput = new CheckBox();
-                chkInput.CheckState = CheckState.Checked;
-                chkInput.Location = new Point(5, 15);
-                chkInput.Text = "Set";
-                this.Controls.Add(chkInput);
-                chkInput.CheckedChanged += new EventHandler(input_CheckedChanged);
-            }
+            this.chkInput.Visible = !this.avrPin.IsOutput;
+            this.chkInput.Checked = this.avrPin.InputValue;
+            
+            this.lblOutput.Visible = this.avrPin.IsOutput;
+            this.lblOutput.Text = this.avrPin.OutputValue ? "High" : "Low";
 
-            else
-                labelIO.Text = "Output";
+            SetIcon(this.avrPin.IsOutput ? this.avrPin.OutputValue : this.avrPin.InputValue);
+        }
 
-            if (this.High)
+        private void SetIcon(bool value)
+        {
+            if (value)
                 this.pbBitStatus.Image = Properties.Resources.bullet_green;
-
             else
                 this.pbBitStatus.Image = Properties.Resources.bullet_red;
-            label1.Text = Convert.ToString(Number);
         }
     }
 }

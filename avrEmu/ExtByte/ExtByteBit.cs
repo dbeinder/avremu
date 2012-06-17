@@ -23,7 +23,7 @@ namespace avrEmu
             else
                 lblCaption.Text = "B" + bit.ToString();
 
-            eb.BitEvents[bit].BitChanged += new ExtByte.BitChangedEventHandler(ExtByteBit_BitChanged);
+            eb.BitEvents[bit].BitChanged += new BitChangedEventHandler(ExtByteBit_BitChanged);
             UpdateIcon(eb[bit]);
         }
 
@@ -37,7 +37,7 @@ namespace avrEmu
 
             this.extByte = eb;
             lblCaption.Text = bitName;
-            eb.BitEvents[bitName].BitChanged += new ExtByte.BitChangedEventHandler(ExtByteBit_BitChanged);
+            eb.BitEvents[bitName].BitChanged += new BitChangedEventHandler(ExtByteBit_BitChanged);
             UpdateIcon(eb[bitName]);
         }
 

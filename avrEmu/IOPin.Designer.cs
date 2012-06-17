@@ -31,6 +31,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pbBitStatus = new System.Windows.Forms.PictureBox();
             this.labelIO = new System.Windows.Forms.Label();
+            this.lblDesc = new System.Windows.Forms.Label();
+            this.chkInput = new System.Windows.Forms.CheckBox();
+            this.lblOutput = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitStatus)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,7 +48,7 @@
             // pbBitStatus
             // 
             this.pbBitStatus.Image = global::avrEmu.Properties.Resources.bullet_red;
-            this.pbBitStatus.Location = new System.Drawing.Point(3, 35);
+            this.pbBitStatus.Location = new System.Drawing.Point(28, 20);
             this.pbBitStatus.Name = "pbBitStatus";
             this.pbBitStatus.Size = new System.Drawing.Size(16, 16);
             this.pbBitStatus.TabIndex = 3;
@@ -59,16 +62,49 @@
             this.labelIO.Size = new System.Drawing.Size(0, 13);
             this.labelIO.TabIndex = 4;
             // 
+            // lblDesc
+            // 
+            this.lblDesc.AutoSize = true;
+            this.lblDesc.Location = new System.Drawing.Point(4, 4);
+            this.lblDesc.Name = "lblDesc";
+            this.lblDesc.Size = new System.Drawing.Size(69, 13);
+            this.lblDesc.TabIndex = 5;
+            this.lblDesc.Text = "Pin 5: Output";
+            // 
+            // chkInput
+            // 
+            this.chkInput.AutoSize = true;
+            this.chkInput.Location = new System.Drawing.Point(7, 38);
+            this.chkInput.Name = "chkInput";
+            this.chkInput.Size = new System.Drawing.Size(62, 17);
+            this.chkInput.TabIndex = 6;
+            this.chkInput.Text = "Voltage";
+            this.chkInput.UseVisualStyleBackColor = true;
+            this.chkInput.Visible = false;
+            this.chkInput.CheckedChanged += new System.EventHandler(this.chkInput_CheckedChanged);
+            // 
+            // lblOutput
+            // 
+            this.lblOutput.Location = new System.Drawing.Point(0, 39);
+            this.lblOutput.Name = "lblOutput";
+            this.lblOutput.Size = new System.Drawing.Size(75, 16);
+            this.lblOutput.TabIndex = 7;
+            this.lblOutput.Text = "High";
+            this.lblOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOutput.Visible = false;
+            // 
             // IOPin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblOutput);
+            this.Controls.Add(this.chkInput);
+            this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.labelIO);
             this.Controls.Add(this.pbBitStatus);
             this.Controls.Add(this.label1);
             this.Name = "IOPin";
-            this.Size = new System.Drawing.Size(49, 54);
-            this.Load += new System.EventHandler(this.IOPin_Load);
+            this.Size = new System.Drawing.Size(75, 58);
             ((System.ComponentModel.ISupportInitialize)(this.pbBitStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -80,5 +116,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pbBitStatus;
         private System.Windows.Forms.Label labelIO;
+        private System.Windows.Forms.Label lblDesc;
+        private System.Windows.Forms.CheckBox chkInput;
+        private System.Windows.Forms.Label lblOutput;
     }
 }
