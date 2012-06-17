@@ -74,6 +74,13 @@ namespace avrEmu.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap bullet_green {
+            get {
+                object obj = ResourceManager.GetObject("bullet_green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap bullet_red {
             get {
                 object obj = ResourceManager.GetObject("bullet_red", resourceCulture);

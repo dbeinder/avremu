@@ -17,11 +17,13 @@ namespace avrEmu
 
         public ExtByte[] WorkingRegisters { get; protected set; }
 
+        public Dictionary<string, string> Constants { get; protected set; }
+
         public Dictionary<string, ExtByte> PeripheralRegisters { get; protected set; }
 
         protected List<AvrModule> Modules = new List<AvrModule>();
         
-        protected virtual void Reset()
+        public virtual void Reset()
         {
             this.ProgramCounter = 0;
             this.PeripheralRegisters = new Dictionary<string, ExtByte>();
@@ -40,7 +42,7 @@ namespace avrEmu
         {
             for (int i = 0; i < this.WorkingRegisters.Length; i++)
             {
-                this.WorkingRegisters [i] = new ExtByte(0);
+                this.WorkingRegisters[i].Value = 0;
             }
         }
         

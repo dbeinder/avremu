@@ -15,7 +15,9 @@ namespace avrEmu
         public AtTiny2313()
         {
             this.WorkingRegisters = new ExtByte[WorkingRegisterCount];
-            
+            for (int i = 0; i < this.WorkingRegisters.Length; i++)
+                this.WorkingRegisters[i] = new ExtByte(0);
+
             this.ALU = new AtTinyAlu(this);
             this.ProgramMemory = new AvrProgramMemoryFlash();
             this.SRAM = new AvrSram(CapacitySRAM);
@@ -24,6 +26,10 @@ namespace avrEmu
             this.Modules.Add(this.ProgramMemory);
             this.Modules.Add(this.SRAM);
             this.Modules.Add(this.PortA);
+            this.Constants = new Dictionary<string, string>() 
+            {
+                { "ramend", "127" }
+            };
 
             Reset();
         }

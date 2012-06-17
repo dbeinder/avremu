@@ -35,14 +35,18 @@
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.tsBtnReset = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.tsBtnManualStep = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.tsBtnAutoRun = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tsCboSpeed = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
             this.tsCboFormat = new System.Windows.Forms.ToolStripComboBox();
             this.rtbCode = new System.Windows.Forms.RichTextBox();
             this.pnlCode = new System.Windows.Forms.Panel();
@@ -54,9 +58,14 @@
             this.nudStartSram = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.spcCodeSplitter = new System.Windows.Forms.SplitContainer();
+            this.openFileDialogAsm = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialogAsm = new System.Windows.Forms.SaveFileDialog();
+            this.ebbvSreg = new avrEmu.ExtByteBitViewer();
             this.ebeIORegs = new avrEmu.ExtByteEditor();
-            this.ebeSram = new avrEmu.ExtByteEditor();
             this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
+            this.ebeSram = new avrEmu.ExtByteEditor();
             this.toolStrip1.SuspendLayout();
             this.pnlCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
@@ -65,6 +74,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSramLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartSram)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spcCodeSplitter)).BeginInit();
+            this.spcCodeSplitter.Panel1.SuspendLayout();
+            this.spcCodeSplitter.Panel2.SuspendLayout();
+            this.spcCodeSplitter.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -75,14 +89,18 @@
             this.saveToolStripButton,
             this.toolStripSeparator,
             this.helpToolStripButton,
-            this.toolStripButton1,
-            this.toolStripButton2,
+            this.tsBtnReset,
+            this.toolStripSeparator3,
+            this.toolStripLabel2,
+            this.tsBtnManualStep,
             this.toolStripSeparator1,
-            this.toolStripButton3,
-            this.toolStripButton4,
-            this.toolStripButton5,
-            this.toolStripSeparator2,
+            this.toolStripLabel3,
+            this.tsBtnAutoRun,
+            this.toolStripSeparator4,
             this.toolStripLabel1,
+            this.tsCboSpeed,
+            this.toolStripSeparator2,
+            this.toolStripLabel4,
             this.tsCboFormat});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -98,6 +116,7 @@
             this.newToolStripButton.Name = "newToolStripButton";
             this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.newToolStripButton.Text = "&New";
+            this.newToolStripButton.Click += new System.EventHandler(this.newToolStripButton_Click);
             // 
             // openToolStripButton
             // 
@@ -107,6 +126,7 @@
             this.openToolStripButton.Name = "openToolStripButton";
             this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.openToolStripButton.Text = "&Open";
+            this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
             // 
             // saveToolStripButton
             // 
@@ -116,6 +136,7 @@
             this.saveToolStripButton.Name = "saveToolStripButton";
             this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
             this.saveToolStripButton.Text = "&Save";
+            this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
             // 
             // toolStripSeparator
             // 
@@ -133,73 +154,93 @@
             this.helpToolStripButton.Text = "He&lp";
             this.helpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
             // 
-            // toolStripButton1
+            // tsBtnReset
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::avrEmu.Properties.Resources.control_start_blue;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.tsBtnReset.Image = global::avrEmu.Properties.Resources.control_repeat_blue;
+            this.tsBtnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnReset.Name = "tsBtnReset";
+            this.tsBtnReset.Size = new System.Drawing.Size(55, 22);
+            this.tsBtnReset.Text = "Reset";
+            this.tsBtnReset.Click += new System.EventHandler(this.tsBtnReset_Click);
             // 
-            // toolStripButton2
+            // toolStripSeparator3
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::avrEmu.Properties.Resources.control_end_blue;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel2.Text = "Manual:";
+            // 
+            // tsBtnManualStep
+            // 
+            this.tsBtnManualStep.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsBtnManualStep.Image = global::avrEmu.Properties.Resources.control_end_blue;
+            this.tsBtnManualStep.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnManualStep.Name = "tsBtnManualStep";
+            this.tsBtnManualStep.Size = new System.Drawing.Size(23, 22);
+            this.tsBtnManualStep.Text = "toolStripButton2";
+            this.tsBtnManualStep.Click += new System.EventHandler(this.tsBtnManualStep_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton3
+            // toolStripLabel3
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = global::avrEmu.Properties.Resources.control_play_blue;
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(59, 22);
+            this.toolStripLabel3.Text = "Automatic:";
             // 
-            // toolStripButton4
+            // tsBtnAutoRun
             // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = global::avrEmu.Properties.Resources.control_pause_blue;
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton4.Text = "toolStripButton4";
+            this.tsBtnAutoRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsBtnAutoRun.Image = global::avrEmu.Properties.Resources.control_play_blue;
+            this.tsBtnAutoRun.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnAutoRun.Name = "tsBtnAutoRun";
+            this.tsBtnAutoRun.Size = new System.Drawing.Size(23, 22);
+            this.tsBtnAutoRun.Text = "toolStripButton3";
             // 
-            // toolStripButton5
+            // toolStripSeparator4
             // 
-            this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton5.Image = global::avrEmu.Properties.Resources.control_stop_blue;
-            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton5.Text = "toolStripButton5";
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(41, 22);
+            this.toolStripLabel1.Text = "Speed:";
+            // 
+            // tsCboSpeed
+            // 
+            this.tsCboSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tsCboSpeed.DropDownWidth = 75;
+            this.tsCboSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.tsCboSpeed.Name = "tsCboSpeed";
+            this.tsCboSpeed.Size = new System.Drawing.Size(75, 25);
+            this.tsCboSpeed.SelectedIndexChanged += new System.EventHandler(this.tsCboSpeed_SelectedIndexChanged);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripLabel1
+            // toolStripLabel4
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(85, 22);
-            this.toolStripLabel1.Text = "Number Format:";
+            this.toolStripLabel4.Name = "toolStripLabel4";
+            this.toolStripLabel4.Size = new System.Drawing.Size(85, 22);
+            this.toolStripLabel4.Text = "Number Format:";
             // 
             // tsCboFormat
             // 
             this.tsCboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tsCboFormat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.tsCboFormat.Name = "tsCboFormat";
-            this.tsCboFormat.Size = new System.Drawing.Size(121, 25);
+            this.tsCboFormat.Size = new System.Drawing.Size(90, 25);
             this.tsCboFormat.SelectedIndexChanged += new System.EventHandler(this.tsCboFormat_SelectedIndexChanged);
             // 
             // rtbCode
@@ -214,7 +255,7 @@
             this.rtbCode.HideSelection = false;
             this.rtbCode.Location = new System.Drawing.Point(16, 3);
             this.rtbCode.Name = "rtbCode";
-            this.rtbCode.Size = new System.Drawing.Size(602, 107);
+            this.rtbCode.Size = new System.Drawing.Size(602, 138);
             this.rtbCode.TabIndex = 3;
             this.rtbCode.Text = resources.GetString("rtbCode.Text");
             this.rtbCode.WordWrap = false;
@@ -230,9 +271,9 @@
             this.pnlCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlCode.Controls.Add(this.rtbCode);
             this.pnlCode.Controls.Add(this.pbCodeIcons);
-            this.pnlCode.Location = new System.Drawing.Point(12, 39);
+            this.pnlCode.Location = new System.Drawing.Point(12, 11);
             this.pnlCode.Name = "pnlCode";
-            this.pnlCode.Size = new System.Drawing.Size(619, 115);
+            this.pnlCode.Size = new System.Drawing.Size(619, 147);
             this.pnlCode.TabIndex = 4;
             // 
             // pbCodeIcons
@@ -242,33 +283,35 @@
             this.pbCodeIcons.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.pbCodeIcons.Location = new System.Drawing.Point(0, 0);
             this.pbCodeIcons.Name = "pbCodeIcons";
-            this.pbCodeIcons.Size = new System.Drawing.Size(16, 114);
+            this.pbCodeIcons.Size = new System.Drawing.Size(16, 145);
             this.pbCodeIcons.TabIndex = 2;
             this.pbCodeIcons.TabStop = false;
             this.pbCodeIcons.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCodeIcons_Paint);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox1.Controls.Add(this.ebeWorkingRegs);
-            this.groupBox1.Location = new System.Drawing.Point(12, 160);
+            this.groupBox1.Location = new System.Drawing.Point(12, 52);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(195, 206);
+            this.groupBox1.Size = new System.Drawing.Size(195, 162);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Working Registers";
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox2.Controls.Add(this.nudSramLength);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.nudStartSram);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.ebeSram);
-            this.groupBox2.Location = new System.Drawing.Point(213, 160);
+            this.groupBox2.Location = new System.Drawing.Point(213, 52);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(219, 206);
+            this.groupBox2.Size = new System.Drawing.Size(219, 162);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Random Access Memory";
@@ -330,14 +373,66 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox3.Controls.Add(this.ebeIORegs);
-            this.groupBox3.Location = new System.Drawing.Point(438, 160);
+            this.groupBox3.Location = new System.Drawing.Point(438, 52);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(195, 206);
+            this.groupBox3.Size = new System.Drawing.Size(193, 162);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Peripheral Registers";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.ebbvSreg);
+            this.groupBox4.Location = new System.Drawing.Point(12, -1);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(619, 47);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Status Register";
+            // 
+            // spcCodeSplitter
+            // 
+            this.spcCodeSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spcCodeSplitter.Location = new System.Drawing.Point(0, 25);
+            this.spcCodeSplitter.Name = "spcCodeSplitter";
+            this.spcCodeSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // spcCodeSplitter.Panel1
+            // 
+            this.spcCodeSplitter.Panel1.Controls.Add(this.pnlCode);
+            this.spcCodeSplitter.Panel1MinSize = 150;
+            // 
+            // spcCodeSplitter.Panel2
+            // 
+            this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox4);
+            this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox3);
+            this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox1);
+            this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox2);
+            this.spcCodeSplitter.Panel2MinSize = 170;
+            this.spcCodeSplitter.Size = new System.Drawing.Size(643, 393);
+            this.spcCodeSplitter.SplitterDistance = 163;
+            this.spcCodeSplitter.TabIndex = 10;
+            // 
+            // openFileDialogAsm
+            // 
+            this.openFileDialogAsm.Filter = "Assembler Code|*.asm|All Files|*.*";
+            // 
+            // saveFileDialogAsm
+            // 
+            this.saveFileDialogAsm.Filter = "Assembler Code|*.asm|All Files|*.*";
+            // 
+            // ebbvSreg
+            // 
+            this.ebbvSreg.Location = new System.Drawing.Point(8, 16);
+            this.ebbvSreg.Name = "ebbvSreg";
+            this.ebbvSreg.Size = new System.Drawing.Size(550, 16);
+            this.ebbvSreg.TabIndex = 0;
+            this.ebbvSreg.WatchedByte = null;
             // 
             // ebeIORegs
             // 
@@ -348,20 +443,8 @@
             this.ebeIORegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
             this.ebeIORegs.Location = new System.Drawing.Point(6, 19);
             this.ebeIORegs.Name = "ebeIORegs";
-            this.ebeIORegs.Size = new System.Drawing.Size(183, 181);
+            this.ebeIORegs.Size = new System.Drawing.Size(181, 137);
             this.ebeIORegs.TabIndex = 6;
-            // 
-            // ebeSram
-            // 
-            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeSram.DescriptionText = "Adress";
-            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeSram.Location = new System.Drawing.Point(6, 43);
-            this.ebeSram.Name = "ebeSram";
-            this.ebeSram.Size = new System.Drawing.Size(207, 157);
-            this.ebeSram.TabIndex = 6;
             // 
             // ebeWorkingRegs
             // 
@@ -372,19 +455,28 @@
             this.ebeWorkingRegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
             this.ebeWorkingRegs.Location = new System.Drawing.Point(6, 19);
             this.ebeWorkingRegs.Name = "ebeWorkingRegs";
-            this.ebeWorkingRegs.Size = new System.Drawing.Size(183, 181);
+            this.ebeWorkingRegs.Size = new System.Drawing.Size(183, 137);
             this.ebeWorkingRegs.TabIndex = 6;
+            // 
+            // ebeSram
+            // 
+            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeSram.DescriptionText = "Adress";
+            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeSram.Location = new System.Drawing.Point(6, 43);
+            this.ebeSram.Name = "ebeSram";
+            this.ebeSram.Size = new System.Drawing.Size(207, 113);
+            this.ebeSram.TabIndex = 6;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 376);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(643, 418);
+            this.Controls.Add(this.spcCodeSplitter);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.pnlCode);
             this.Name = "MainForm";
             this.Text = "AVR Emulator";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -398,6 +490,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudSramLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartSram)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.spcCodeSplitter.Panel1.ResumeLayout(false);
+            this.spcCodeSplitter.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spcCodeSplitter)).EndInit();
+            this.spcCodeSplitter.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -411,12 +508,9 @@
         private System.Windows.Forms.ToolStripButton saveToolStripButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton tsBtnManualStep;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButton5;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton tsBtnAutoRun;
         private System.Windows.Forms.PictureBox pbCodeIcons;
         private System.Windows.Forms.RichTextBox rtbCode;
         private System.Windows.Forms.Panel pnlCode;
@@ -430,9 +524,21 @@
         private ExtByteEditor ebeSram;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripComboBox tsCboFormat;
         private System.Windows.Forms.GroupBox groupBox3;
         private ExtByteEditor ebeIORegs;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private ExtByteBitViewer ebbvSreg;
+        private System.Windows.Forms.SplitContainer spcCodeSplitter;
+        private System.Windows.Forms.OpenFileDialog openFileDialogAsm;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogAsm;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripButton tsBtnReset;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel4;
+        private System.Windows.Forms.ToolStripComboBox tsCboFormat;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripComboBox tsCboSpeed;
 
     }
 }

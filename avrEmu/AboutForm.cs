@@ -56,9 +56,7 @@ namespace avrEmu
                     }
                 }
 
-                Process proc = new Process();
-                proc.StartInfo = new ProcessStartInfo(tmpPath + '/' + startHelpFile);
-                proc.Start();
+                Process.Start(tmpPath + '/' + startHelpFile);
             }
             catch
             {
@@ -74,6 +72,11 @@ namespace avrEmu
                 Directory.Delete(tmpPath, true);
             }
             catch { }
+        }
+
+        private void lLblCredits_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            (new CreditsForm()).ShowDialog();
         }
     }
 }

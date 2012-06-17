@@ -8,54 +8,66 @@ namespace avrEmu
 {
     class Preprocessor
     {
-        List<string> inputToList = new List<string>();
+        private List<string> inputToList;
+        private List<int> linesToRemove;
+        private Dictionary<string, int> jumpMarks;
+        private Dictionary<string, string> definitions = new Dictionary<string, string>();
 
-        public List<string> afterPrePro = new List<string>();
+        public List<string> ProcessedLines { get; private set; }
 
-        public List<int> lineMapping = new List<int>();
+        public List<int> LineMapping { get; private set; }
 
-        Dictionary<string, string> replacer = new Dictionary<string, string>();
+        private Dictionary<string, string> replacer = new Dictionary<string, string>();
 
-        //Regex regEx = new Regex();
 
-        void Init(Dictionary<string, string> initDict)
+        public Preprocessor(Dictionary<string, string> constants)
         {
+            foreach (KeyValuePair<string, string> item in constants)
+                this.replacer.Add(item.Key, item.Value);
         }
 
-        void AddReplacer()
+        public List<string> Process(string input)
         {
-            replacer.Add("ramend", "260");
-        }
-        public List<string> PreProcess(string input)
-        {
-            string[] inputToArray = input.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            inputToList = new List<string>();
+            ProcessedLines = new List<string>();
+            LineMapping = new List<int>();
+            linesToRemove = new List<int>();
+            jumpMarks = new Dictionary<string, int>();
+            definitions = new Dictionary<string, string>();
+
+            string[] inputToArray = input.Split(Environment.NewLine.ToCharArray());
+
             inputToList.AddRange(inputToArray);
-
-            inputToList = CleanUp(inputToList);
 
             SearchForDef(inputToList);
 
-            AddReplacer();
+            inputToList = FindJumpMarks(inputToList);
 
-            inputToList = ReplaceDef(inputToList);
+            inputToList = CleanUp(inputToList, linesToRemove);
+
+            inputToList = Replace(inputToList);
+
+            inputToList = ReplaceJumpMarks(inputToList);
 
             inputToList = Calculate(inputToList);
 
             inputToList = SearchForHighAndLow(inputToList);
 
-            inputToList = SearchForDoublePoint(inputToList);
 
-            afterPrePro.AddRange(inputToList);
-            //    //line = Calculate(line);
-            //    //line = Calculate("((1+1)*1-1)");
-            return afterPrePro;
+
+            ProcessedLines.AddRange(inputToList);
+
+            return ProcessedLines;
         }
 
 
-        private List<string> CleanUp(List<string> line)
+        private List<string> CleanUp(List<string> line, List<int> linesToRemove)
         {
             for (int i = 0; i < line.Count; i++)
             {
+                if (linesToRemove.Contains(i))
+                    continue;
+
                 // search for comments and delete them
                 line[i] = line[i].Replace('\t', ' ');
                 string[] elements = line[i].Split(';');
@@ -80,22 +92,16 @@ namespace avrEmu
                 // save numbers of lines in which there is something
                 if (inputToList[i] != "")
                 {
-                    lineMapping.Add(i);
-                }
-
-            }
-            // Delete lines in which there is nothing
-            for (int i = 0; i < line.Count; i++)
-            {
-                if (line[i] == "")
-                {
-                    line.RemoveAt(i);
-                    i--;
+                    LineMapping.Add(i);
                 }
             }
 
-            return line;
+            // Build new list with all line with content
+            List<string> cleanedLines = new List<string>();
+            foreach (int contentLine in LineMapping)
+                cleanedLines.Add(line[contentLine]);
 
+            return cleanedLines;
         }
 
         private void SearchForDef(List<string> line)
@@ -103,28 +109,31 @@ namespace avrEmu
             for (int i = 0; i < line.Count; i++)
             {
                 // .def ...
-                string[] elementsb = line[i].Split(' ');
+                if (line[i].Length < 1)
+                    continue;
+
                 if (line[i][0] == '.')
                 {
+                    string[] elementsb = line[i].Split(' ');
+
                     // if .def than add to dictionary replacer
                     if (elementsb[0] == ".def")
                     {
-                        replacer.Add(elementsb[1], elementsb[3]);
+                        definitions.Add(elementsb[1], elementsb[3]);
                     }
-                    line.RemoveAt(i);
+                    linesToRemove.Add(i);
                 }
             }
         }
 
-        private List<string> ReplaceDef(List<string> line)
+        private List<string> Replace(List<string> line)
         {
             for (int i = 0; i < line.Count; i++)
             {
                 string[] elementsb = line[i].Split(' ');
                 // search for replacers
-                foreach (KeyValuePair<string, string> kvp in replacer)
+                foreach (KeyValuePair<string, string> kvp in replacer.Concat(definitions))
                 {
-
                     for (int a = 1; a < elementsb.Length; a++)
                     {
                         elementsb[a] = elementsb[a].Replace(kvp.Key, kvp.Value);
@@ -284,7 +293,7 @@ namespace avrEmu
                         } while (integer == true && count < line[a].Length);
                         b = Convert.ToInt32(helpstring);
 
-                        b = b & 0xff00 - 255;
+                        b = (b & 0xff00) / 256;
                         line[a] = line[a].Replace("high" + helpstring, Convert.ToString(b));
                         i = 0;
                     }
@@ -313,8 +322,7 @@ namespace avrEmu
 
             return line;
         }
-
-        private List<string> SearchForDoublePoint(List<string> line)
+        private List<string> FindJumpMarks(List<string> line)
         {
             for (int i = 0; i < line.Count; i++)
             {
@@ -328,25 +336,34 @@ namespace avrEmu
 
                         if (line[i] == "")
                         {
-                            line.RemoveAt(i);
-                            a = 0;
+                            linesToRemove.Add(i);
                         }
 
-                        replacer.Add(helpstring, Convert.ToString(i));
+                        jumpMarks.Add(helpstring, i);
                     }
-
-
                 }
             }
 
-            foreach (KeyValuePair<string, string> kvp in replacer)
+            return line;
+        }
+
+        private List<string> ReplaceJumpMarks(List<string> line)
+        {
+            int max = LineMapping.Max();
+
+            foreach (KeyValuePair<string, int> kvp in jumpMarks)
             {
+                int target = kvp.Value;
+
+                while (LineMapping.IndexOf(target) == -1 && target < max)
+                    target++;
 
                 for (int i = 1; i < line.Count; i++)
                 {
-                    line[i] = line[i].Replace(kvp.Key, kvp.Value);
+                    line[i] = line[i].Replace(kvp.Key, (LineMapping.IndexOf(target) - i).ToString()).Trim();
                 }
             }
+
             return line;
         }
     }

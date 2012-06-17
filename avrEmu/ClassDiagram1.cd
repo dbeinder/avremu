@@ -3,31 +3,14 @@
   <Class Name="avrEmu.AtTinyAlu" Collapsed="true">
     <Position X="0.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QEIAAAAAAAEAAAIAAAAAAAAAACQAAAAAAAAAAAAAACA=</HashCode>
+      <HashCode>YEKCAAAgAQEAByaBBBLkQsYCJCWDSgAwgDAAkACADKY=</HashCode>
       <FileName>Alu\AtTinyAlu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.AvrAlu" Collapsed="true">
     <Position X="0.5" Y="4.75" Width="1.5" />
-    <NestedTypes>
-      <Delegate Name="avrEmu.AvrAlu.Instruction" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-      <Class Name="avrEmu.AvrAlu.VI" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Enum Name="avrEmu.AvrAlu.SregFlags" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Alu\AvrAlu.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAACAQEAAAIAAAAAAAAAABAQAAAQAAAAAABAAAQ=</HashCode>
+      <HashCode>AAAAAAACAQEAIAIAAAAAEAAAgBAQAAAQAAAAAABAYAU=</HashCode>
       <FileName>Alu\AvrAlu.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -49,21 +32,21 @@
     <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ExtByte.cs</FileName>
+      <FileName>ExtByte\ExtByte.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.BitChangedEventArgs" Collapsed="true">
     <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAAAQAA=</HashCode>
-      <FileName>ExtByte.cs</FileName>
+      <FileName>ExtByte\ExtByte.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.ExtByte" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="9.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAAAAAAAAAAAQEjAACAAAAABAAAAAABEAgAAAAABA=</HashCode>
-      <FileName>ExtByte.cs</FileName>
+      <FileName>ExtByte\ExtByte.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -82,7 +65,16 @@
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.AvrInstrArgConst" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <InheritanceLine Type="avrEmu.AvrInstrArg" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="1.015" />
+        <Point X="4.5" Y="1.375" />
+        <Point X="4.873" Y="1.375" />
+        <Point X="4.873" Y="2.395" />
+        <Point X="4.75" Y="2.395" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>Instruction\AvrInstrArgConst.cs</FileName>
@@ -96,7 +88,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.AvrInstrArgRegister" Collapsed="true">
-    <Position X="7.25" Y="1.75" Width="1.5" />
+    <Position X="6.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Instruction\AvrInstrArgRegister.cs</FileName>
@@ -145,24 +137,79 @@
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.Program" Collapsed="true">
-    <Position X="6.75" Y="8.75" Width="1.5" />
+    <Position X="16" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="avrEmu.WordHelper" Collapsed="true">
-    <Position X="9.75" Y="1.75" Width="1.5" />
+    <Position X="13.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAACAAAAAAAAAAAAAEAAAgAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>WordHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Preprozessor.Preprocessor" Collapsed="true">
-    <Position X="8.5" Y="8.75" Width="1.5" />
+  <Class Name="avrEmu.AboutForm" Collapsed="true">
+    <Position X="12.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAQAAAAAASAAAAAAAAAAAACAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABACAAAFAAAACAAAACAAAAQAAABIAAYABgAAA=</HashCode>
+      <FileName>AboutForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ExtByteBit" Collapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAGgAAAAABACACAACAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExtByte\ExtByteBit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ExtByteBitViewer" Collapsed="true">
+    <Position X="9.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAIAAACAAAACAAAAAAAAAAAAAQAAAAE=</HashCode>
+      <FileName>ExtByte\ExtByteBitViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ExtByteEditor" Collapsed="true">
+    <Position X="9.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAKAAACAgACAAAACAQAQDAAAAAAAAAAAgQhBAAAk=</HashCode>
+      <FileName>ExtByte\ExtByteEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.ValueEdit" Collapsed="true">
+    <Position X="11.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABEAABCACEACAAAAAAAAAAAgAAAAAEA=</HashCode>
+      <FileName>ExtByte\ValueEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.MainForm" Collapsed="true">
+    <Position X="12.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGACACkAADAAABABAEaAkF4yBAKQACgRACIQQQhgAAQ=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.AvrProgramMemoryFlash" Collapsed="true">
+    <Position X="4.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Modules\AvrProgramMemoryFlash.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.Preprocessor" Collapsed="true">
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAIARAAAAAASABAAAAAAAAAACEAAAAAASACAUAAAAI=</HashCode>
       <FileName>PreProcessor\Preprocessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="avrEmu.Properties.Resources" Collapsed="true">
+    <Position X="14.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAEAABAQAEAAQAAAAABEAgAIQAQAEBAAAAAAAAABIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Enum Name="avrEmu.AvrInstrArgType" Collapsed="true">
@@ -177,6 +224,13 @@
     <TypeIdentifier>
       <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAA=</HashCode>
       <FileName>Instruction\AvrInstrArg16BReg.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="avrEmu.NumberFormat" Collapsed="true">
+    <Position X="13.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAg=</HashCode>
+      <FileName>ExtByte\ExtByteEditor.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
