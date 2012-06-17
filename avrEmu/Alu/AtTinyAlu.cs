@@ -1024,8 +1024,7 @@ namespace avrEmu
                     reg16 = Z;
                     break;
                 default:
-                    throw new Exception("Unknown 16Bit Register!");
-                    break;
+                    throw new Exception("Unknown 16Bit Register!");                    
             }
 
             switch (longRegArg.Type)
