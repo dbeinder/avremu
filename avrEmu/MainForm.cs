@@ -18,6 +18,7 @@ namespace avrEmu
         private AvrController at2313 = new AtTiny2313();
         private AvrPMFormLink memoryLink = new AvrPMFormLink();
         private Preprocessor prePro;
+        private AvrIOPort iOPort = new AvrIOPort('A', 3);
 
         private Dictionary<string, int> possibleSpeeds = new Dictionary<string, int>()
         {
@@ -48,16 +49,22 @@ namespace avrEmu
         public MainForm()
         {
             InitializeComponent();
-           
+
             this.at2313.ProgramMemory = this.memoryLink; //use input from this form instead of fixed memory
             this.memoryLink.FetchInstruction += new AvrPMFormLink.FetchInstructionEventHandler(memoryLink_FetchInstruction);
-           
+
             this.extByteEditors.AddRange(new ExtByteEditor[] //register editors, for format changing
             {
                 this.ebeWorkingRegs,
                 this.ebeSram,
                 this.ebeIORegs
             });
+
+            IOPort ioPort = new IOPort();
+         (  (AtTiny2313) this.at2313).PortA.Pins[0].pin
+            ioPort.pins.AddRange(iOPort.Pins);
+            ioPort.Location = new Point(3, 3);
+            flowLayoutPanel1.Controls.Add(ioPort);
         }
 
         private void MainForm_Load(object sender, EventArgs e)

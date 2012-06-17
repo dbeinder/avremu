@@ -98,6 +98,18 @@
     <Compile Include="ExtByte\ExtByteEditor.Designer.cs">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="IOPin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IOPin.Designer.cs">
+      <DependentUpon>IOPin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IOPort.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IOPort.Designer.cs">
+      <DependentUpon>IOPort.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +170,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ExtByte\ExtByteEditor.resx">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IOPin.resx">
+      <DependentUpon>IOPin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IOPort.resx">
+      <DependentUpon>IOPort.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

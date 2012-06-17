@@ -52,20 +52,22 @@
             this.pnlCode = new System.Windows.Forms.Panel();
             this.pbCodeIcons = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nudSramLength = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.nudStartSram = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.ebeSram = new avrEmu.ExtByteEditor();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ebeIORegs = new avrEmu.ExtByteEditor();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ebbvSreg = new avrEmu.ExtByteBitViewer();
             this.spcCodeSplitter = new System.Windows.Forms.SplitContainer();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.openFileDialogAsm = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogAsm = new System.Windows.Forms.SaveFileDialog();
-            this.ebbvSreg = new avrEmu.ExtByteBitViewer();
-            this.ebeIORegs = new avrEmu.ExtByteEditor();
-            this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
-            this.ebeSram = new avrEmu.ExtByteEditor();
             this.toolStrip1.SuspendLayout();
             this.pnlCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
@@ -79,6 +81,7 @@
             this.spcCodeSplitter.Panel1.SuspendLayout();
             this.spcCodeSplitter.Panel2.SuspendLayout();
             this.spcCodeSplitter.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -171,7 +174,7 @@
             // toolStripLabel2
             // 
             this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel2.Size = new System.Drawing.Size(50, 22);
             this.toolStripLabel2.Text = "Manual:";
             // 
             // tsBtnManualStep
@@ -192,7 +195,7 @@
             // toolStripLabel3
             // 
             this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(59, 22);
+            this.toolStripLabel3.Size = new System.Drawing.Size(66, 22);
             this.toolStripLabel3.Text = "Automatic:";
             // 
             // tsBtnAutoRun
@@ -212,7 +215,7 @@
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(41, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(42, 22);
             this.toolStripLabel1.Text = "Speed:";
             // 
             // tsCboSpeed
@@ -232,7 +235,7 @@
             // toolStripLabel4
             // 
             this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(85, 22);
+            this.toolStripLabel4.Size = new System.Drawing.Size(95, 22);
             this.toolStripLabel4.Text = "Number Format:";
             // 
             // tsCboFormat
@@ -240,22 +243,22 @@
             this.tsCboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tsCboFormat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.tsCboFormat.Name = "tsCboFormat";
-            this.tsCboFormat.Size = new System.Drawing.Size(90, 25);
+            this.tsCboFormat.Size = new System.Drawing.Size(90, 21);
             this.tsCboFormat.SelectedIndexChanged += new System.EventHandler(this.tsCboFormat_SelectedIndexChanged);
             // 
             // rtbCode
             // 
             this.rtbCode.AcceptsTab = true;
-            this.rtbCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbCode.DetectUrls = false;
             this.rtbCode.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbCode.HideSelection = false;
             this.rtbCode.Location = new System.Drawing.Point(16, 3);
             this.rtbCode.Name = "rtbCode";
-            this.rtbCode.Size = new System.Drawing.Size(602, 138);
+            this.rtbCode.Size = new System.Drawing.Size(602, 190);
             this.rtbCode.TabIndex = 3;
             this.rtbCode.Text = resources.GetString("rtbCode.Text");
             this.rtbCode.WordWrap = false;
@@ -264,46 +267,60 @@
             // 
             // pnlCode
             // 
-            this.pnlCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCode.BackColor = System.Drawing.SystemColors.Window;
             this.pnlCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlCode.Controls.Add(this.rtbCode);
             this.pnlCode.Controls.Add(this.pbCodeIcons);
             this.pnlCode.Location = new System.Drawing.Point(12, 11);
             this.pnlCode.Name = "pnlCode";
-            this.pnlCode.Size = new System.Drawing.Size(619, 147);
+            this.pnlCode.Size = new System.Drawing.Size(619, 195);
             this.pnlCode.TabIndex = 4;
             // 
             // pbCodeIcons
             // 
-            this.pbCodeIcons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbCodeIcons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.pbCodeIcons.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.pbCodeIcons.Location = new System.Drawing.Point(0, 0);
             this.pbCodeIcons.Name = "pbCodeIcons";
-            this.pbCodeIcons.Size = new System.Drawing.Size(16, 145);
+            this.pbCodeIcons.Size = new System.Drawing.Size(16, 197);
             this.pbCodeIcons.TabIndex = 2;
             this.pbCodeIcons.TabStop = false;
             this.pbCodeIcons.Paint += new System.Windows.Forms.PaintEventHandler(this.pbCodeIcons_Paint);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.ebeWorkingRegs);
             this.groupBox1.Location = new System.Drawing.Point(12, 52);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(195, 162);
+            this.groupBox1.Size = new System.Drawing.Size(195, 157);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Working Registers";
             // 
+            // ebeWorkingRegs
+            // 
+            this.ebeWorkingRegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeWorkingRegs.DescriptionText = "Register";
+            this.ebeWorkingRegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeWorkingRegs.Location = new System.Drawing.Point(6, 19);
+            this.ebeWorkingRegs.Name = "ebeWorkingRegs";
+            this.ebeWorkingRegs.Size = new System.Drawing.Size(183, 128);
+            this.ebeWorkingRegs.TabIndex = 6;
+            // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.nudSramLength);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.nudStartSram);
@@ -311,7 +328,7 @@
             this.groupBox2.Controls.Add(this.ebeSram);
             this.groupBox2.Location = new System.Drawing.Point(213, 52);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(219, 162);
+            this.groupBox2.Size = new System.Drawing.Size(219, 157);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Random Access Memory";
@@ -371,22 +388,47 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Start Adress:";
             // 
+            // ebeSram
+            // 
+            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeSram.DescriptionText = "Adress";
+            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeSram.Location = new System.Drawing.Point(6, 43);
+            this.ebeSram.Name = "ebeSram";
+            this.ebeSram.Size = new System.Drawing.Size(207, 104);
+            this.ebeSram.TabIndex = 6;
+            // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.ebeIORegs);
             this.groupBox3.Location = new System.Drawing.Point(438, 52);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(193, 162);
+            this.groupBox3.Size = new System.Drawing.Size(193, 157);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Peripheral Registers";
             // 
+            // ebeIORegs
+            // 
+            this.ebeIORegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeIORegs.DescriptionText = "Name";
+            this.ebeIORegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeIORegs.Location = new System.Drawing.Point(6, 19);
+            this.ebeIORegs.Name = "ebeIORegs";
+            this.ebeIORegs.Size = new System.Drawing.Size(181, 128);
+            this.ebeIORegs.TabIndex = 6;
+            // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.ebbvSreg);
             this.groupBox4.Location = new System.Drawing.Point(12, -1);
             this.groupBox4.Name = "groupBox4";
@@ -394,6 +436,14 @@
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Status Register";
+            // 
+            // ebbvSreg
+            // 
+            this.ebbvSreg.Location = new System.Drawing.Point(8, 16);
+            this.ebbvSreg.Name = "ebbvSreg";
+            this.ebbvSreg.Size = new System.Drawing.Size(550, 16);
+            this.ebbvSreg.TabIndex = 0;
+            this.ebbvSreg.WatchedByte = null;
             // 
             // spcCodeSplitter
             // 
@@ -409,14 +459,35 @@
             // 
             // spcCodeSplitter.Panel2
             // 
+            this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox5);
             this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox4);
             this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox3);
             this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox1);
             this.spcCodeSplitter.Panel2.Controls.Add(this.groupBox2);
             this.spcCodeSplitter.Panel2MinSize = 170;
-            this.spcCodeSplitter.Size = new System.Drawing.Size(643, 393);
-            this.spcCodeSplitter.SplitterDistance = 163;
+            this.spcCodeSplitter.Size = new System.Drawing.Size(643, 537);
+            this.spcCodeSplitter.SplitterDistance = 216;
             this.spcCodeSplitter.TabIndex = 10;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.flowLayoutPanel1);
+            this.groupBox5.Location = new System.Drawing.Point(12, 216);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(619, 89);
+            this.groupBox5.TabIndex = 10;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "IOPorts";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(8, 19);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(605, 64);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // openFileDialogAsm
             // 
@@ -426,55 +497,11 @@
             // 
             this.saveFileDialogAsm.Filter = "Assembler Code|*.asm|All Files|*.*";
             // 
-            // ebbvSreg
-            // 
-            this.ebbvSreg.Location = new System.Drawing.Point(8, 16);
-            this.ebbvSreg.Name = "ebbvSreg";
-            this.ebbvSreg.Size = new System.Drawing.Size(550, 16);
-            this.ebbvSreg.TabIndex = 0;
-            this.ebbvSreg.WatchedByte = null;
-            // 
-            // ebeIORegs
-            // 
-            this.ebeIORegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeIORegs.DescriptionText = "Name";
-            this.ebeIORegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeIORegs.Location = new System.Drawing.Point(6, 19);
-            this.ebeIORegs.Name = "ebeIORegs";
-            this.ebeIORegs.Size = new System.Drawing.Size(181, 137);
-            this.ebeIORegs.TabIndex = 6;
-            // 
-            // ebeWorkingRegs
-            // 
-            this.ebeWorkingRegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeWorkingRegs.DescriptionText = "Register";
-            this.ebeWorkingRegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeWorkingRegs.Location = new System.Drawing.Point(6, 19);
-            this.ebeWorkingRegs.Name = "ebeWorkingRegs";
-            this.ebeWorkingRegs.Size = new System.Drawing.Size(183, 137);
-            this.ebeWorkingRegs.TabIndex = 6;
-            // 
-            // ebeSram
-            // 
-            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeSram.DescriptionText = "Adress";
-            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeSram.Location = new System.Drawing.Point(6, 43);
-            this.ebeSram.Name = "ebeSram";
-            this.ebeSram.Size = new System.Drawing.Size(207, 113);
-            this.ebeSram.TabIndex = 6;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(643, 418);
+            this.ClientSize = new System.Drawing.Size(643, 562);
             this.Controls.Add(this.spcCodeSplitter);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainForm";
@@ -495,6 +522,7 @@
             this.spcCodeSplitter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spcCodeSplitter)).EndInit();
             this.spcCodeSplitter.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -539,6 +567,8 @@
         private System.Windows.Forms.ToolStripComboBox tsCboFormat;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripComboBox tsCboSpeed;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 
     }
 }
