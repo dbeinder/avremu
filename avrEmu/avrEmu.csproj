@@ -104,6 +104,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\AvrIOPort.cs" />
     <Compile Include="Modules\AvrModule.cs" />
     <Compile Include="Modules\AvrProgramMemoryFlash.cs" />
     <Compile Include="Preprocessor\Preprocessor.cs" />
