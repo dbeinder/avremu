@@ -50,6 +50,8 @@
             this.lviContent.TabIndex = 0;
             this.lviContent.UseCompatibleStateImageBehavior = false;
             this.lviContent.View = System.Windows.Forms.View.Details;
+            this.lviContent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lviContent_KeyDown);
+            this.lviContent.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lviContent_MouseDoubleClick);
             this.lviContent.Resize += new System.EventHandler(this.lviContent_Resize);
             // 
             // Desc

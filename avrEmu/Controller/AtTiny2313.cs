@@ -15,7 +15,7 @@ namespace avrEmu
             this.WorkingRegisters = new ExtByte[WorkingRegisterCount];
             
             this.ALU = new AtTinyAlu(this);
-            this.ProgramMemory = new AvrPMFormLink();
+            this.ProgramMemory = new AvrProgramMemoryFlash();
             this.SRAM = new AvrSram(CapacitySRAM);
             this.Modules.Add(this.ALU);
             this.Modules.Add(this.ProgramMemory);

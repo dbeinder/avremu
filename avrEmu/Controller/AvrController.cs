@@ -9,7 +9,7 @@ namespace avrEmu
     {
         public AvrAlu ALU { get; protected set; }
 
-        public AvrProgramMemory ProgramMemory { get; protected set; }
+        public AvrProgramMemory ProgramMemory { get; set; }
 
         public AvrSram SRAM { get; protected set; }
 

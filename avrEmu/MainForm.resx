@@ -181,6 +181,30 @@
         TkSuQmCC
 </value>
   </data>
+  <data name="rtbCode.Text" xml:space="preserve">
+    <value>.def temp = r16 
+         
+ldi temp, HIGH(RAMEND)        ; HIGH-Byte der obersten RAM-Adresse
+out SP, temp 
+ldi temp, LOW(RAMEND)         ; LOW-Byte der obersten RAM-Adresse
+out SP, temp
+
+rcall sub1                    ; sub1 aufrufen
+
+loop:    rjmp loop 
+
+
+sub1: 
+                              ; hier könnten ein paar Befehle stehen
+       rcall sub2             ; sub2 aufrufen 
+                              ; hier könnten auch Befehle stehen
+       ret                    ; wieder zurück 
+
+sub2:
+                              ; hier stehen normalerweise die Befehle,
+                              ; die in sub2 ausgeführt werden sollen
+         ret                  ; wieder zurück </value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>32</value>
   </metadata>

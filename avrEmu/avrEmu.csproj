@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0398EEF7-54C1-4BC5-AF2F-5F830F94CB1B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>avrEmu</RootNamespace>
     <AssemblyName>avrEmu</AssemblyName>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +50,12 @@
     <Compile Include="Alu\AvrAlu.cs" />
     <Compile Include="Controller\AtTiny2313.cs" />
     <Compile Include="Controller\AvrController.cs" />
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExtByte.cs" />
     <Compile Include="ExtByteEditor.cs">
       <SubType>UserControl</SubType>
@@ -62,6 +71,7 @@
     </Compile>
     <Compile Include="Modules\AvrModule.cs" />
     <Compile Include="Modules\AvrIOPort.cs" />
+    <Compile Include="Modules\AvrProgramMemoryFlash.cs" />
     <Compile Include="PreProcessor\Preprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,6 +89,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ValueEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueEdit.Designer.cs">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="WordHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -93,6 +109,9 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExtByteEditor.resx">
       <DependentUpon>ExtByteEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,6 +121,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValueEdit.resx">
+      <DependentUpon>ValueEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -136,5 +158,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bullet_error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Help\std.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Help\index.html">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ namespace avrEmu
         public AtTinyAlu(AvrController controller)
             : base(controller)
         {
+            this.StackPointer = new ExtByte(0);
             this.IORegisters.Add("SP", this.StackPointer);
 
             this.InstructionSet = new Dictionary<string, VI>() {
@@ -19,24 +20,24 @@ namespace avrEmu
                 { "add", new VI(this.Add, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) }, 
                 { "adc", new VI(this.Adc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "adiw", new VI(this.Adiw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                {"sub", new VI(this.Sub, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"subi",new VI(this.Subi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sbc",new VI(this.Sbc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"sbci",new VI(this.Sbci,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"and",new VI(this.And,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"andi",new VI(this.Andi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"or",new VI(this.Or,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"ori",new VI(this.Ori,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"eor",new VI(this.Eor, AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"com",new VI(this.Com,AvrInstrArgType.WorkingRegister)},
-                {"neg",new VI(this.Neg,AvrInstrArgType.WorkingRegister)},
-                {"sbr",new VI(this.Sbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"cbr",new VI(this.Cbr,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"inc",new VI(this.Inc,AvrInstrArgType.WorkingRegister)},
-                {"dec",new VI(this.Dec,AvrInstrArgType.WorkingRegister)},
-                {"tst",new VI(this.Tst,AvrInstrArgType.WorkingRegister)},
-                {"clr",new VI(this.Clr,AvrInstrArgType.WorkingRegister)},
-                {"ser",new VI(this.Ser,AvrInstrArgType.WorkingRegister)},
+                { "sub", new VI(this.Sub, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "subi", new VI(this.Subi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "sbc", new VI(this.Sbc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "sbci", new VI(this.Sbci, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "and", new VI(this.And, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "andi", new VI(this.Andi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "or", new VI(this.Or, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "ori", new VI(this.Ori, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "eor", new VI(this.Eor, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "com", new VI(this.Com, AvrInstrArgType.WorkingRegister) },
+                { "neg", new VI(this.Neg, AvrInstrArgType.WorkingRegister) },
+                { "sbr", new VI(this.Sbr, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "cbr", new VI(this.Cbr, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "inc", new VI(this.Inc, AvrInstrArgType.WorkingRegister) },
+                { "dec", new VI(this.Dec, AvrInstrArgType.WorkingRegister) },
+                { "tst", new VI(this.Tst, AvrInstrArgType.WorkingRegister) },
+                { "clr", new VI(this.Clr, AvrInstrArgType.WorkingRegister) },
+                { "ser", new VI(this.Ser, AvrInstrArgType.WorkingRegister) },
 
                 //Branch
                 { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
@@ -45,74 +46,74 @@ namespace avrEmu
                 { "icall", new VI(this.Icall) },
                 { "ret", new VI(this.Ret) },
                 { "reti", new VI(this.Reti) },
-                {"cpse", new VI(this.Cpse,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"cp", new VI(this.Cp,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"cpc",new VI(this.Cpc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.WorkingRegister)},
-                {"cpi",new VI(this.Cpi,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sbrc",new VI(this.Sbrc,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sbrs",new VI(this.Sbrs,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sbic",new VI(this.Sbic,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
-                {"sbis",new VI(this.Sbis,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
-                {"brbs",new VI(this.Brbs,AvrInstrArgType.NumericConstant,AvrInstrArgType.NumericConstant)},
-                {"brbc",new VI(this.Brbc,AvrInstrArgType.NumericConstant,AvrInstrArgType.NumericConstant)},
-                {"breq",new VI(this.Breq,AvrInstrArgType.NumericConstant)},
-                {"brne",new VI(this.Brne,AvrInstrArgType.NumericConstant)},
-                {"brcs",new VI(this.Brcs,AvrInstrArgType.NumericConstant)},
-                {"brcc",new VI(this.Brcc,AvrInstrArgType.NumericConstant)},
-                {"brsh",new VI(this.Brcc,AvrInstrArgType.NumericConstant)},
-                {"brlo",new VI(this.Brcs,AvrInstrArgType.NumericConstant)},
-                {"brmi",new VI(this.Brmi,AvrInstrArgType.NumericConstant)},
-                {"brpl",new VI(this.Brpl,AvrInstrArgType.NumericConstant)},
-                {"brge",new VI(this.Brge,AvrInstrArgType.NumericConstant)},
-                {"brlt",new VI(this.Brlt,AvrInstrArgType.NumericConstant)},
-                {"brhs",new VI(this.Brhs,AvrInstrArgType.NumericConstant)},
-                {"brhc",new VI(this.Brhc,AvrInstrArgType.NumericConstant)},
-                {"brts",new VI(this.Brts,AvrInstrArgType.NumericConstant)},
-                {"brtc",new VI(this.Brtc,AvrInstrArgType.NumericConstant)},
-                {"brvs",new VI(this.Brvs,AvrInstrArgType.NumericConstant)},
-                {"brvc",new VI(this.Brvc,AvrInstrArgType.NumericConstant)},
-                {"brie",new VI(this.Brie,AvrInstrArgType.NumericConstant)},
-                {"brid",new VI(this.Brid,AvrInstrArgType.NumericConstant)},
+                { "cpse", new VI(this.Cpse, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "cp", new VI(this.Cp, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "cpc", new VI(this.Cpc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
+                { "cpi", new VI(this.Cpi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "sbrc", new VI(this.Sbrc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "sbrs", new VI(this.Sbrs, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "sbic", new VI(this.Sbic, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
+                { "sbis", new VI(this.Sbis, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
+                { "brbs", new VI(this.Brbs, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant) },
+                { "brbc", new VI(this.Brbc, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant) },
+                { "breq", new VI(this.Breq, AvrInstrArgType.NumericConstant) },
+                { "brne", new VI(this.Brne, AvrInstrArgType.NumericConstant) },
+                { "brcs", new VI(this.Brcs, AvrInstrArgType.NumericConstant) },
+                { "brcc", new VI(this.Brcc, AvrInstrArgType.NumericConstant) },
+                { "brsh", new VI(this.Brcc, AvrInstrArgType.NumericConstant) },
+                { "brlo", new VI(this.Brcs, AvrInstrArgType.NumericConstant) },
+                { "brmi", new VI(this.Brmi, AvrInstrArgType.NumericConstant) },
+                { "brpl", new VI(this.Brpl, AvrInstrArgType.NumericConstant) },
+                { "brge", new VI(this.Brge, AvrInstrArgType.NumericConstant) },
+                { "brlt", new VI(this.Brlt, AvrInstrArgType.NumericConstant) },
+                { "brhs", new VI(this.Brhs, AvrInstrArgType.NumericConstant) },
+                { "brhc", new VI(this.Brhc, AvrInstrArgType.NumericConstant) },
+                { "brts", new VI(this.Brts, AvrInstrArgType.NumericConstant) },
+                { "brtc", new VI(this.Brtc, AvrInstrArgType.NumericConstant) },
+                { "brvs", new VI(this.Brvs, AvrInstrArgType.NumericConstant) },
+                { "brvc", new VI(this.Brvc, AvrInstrArgType.NumericConstant) },
+                { "brie", new VI(this.Brie, AvrInstrArgType.NumericConstant) },
+                { "brid", new VI(this.Brid, AvrInstrArgType.NumericConstant) },
 
 
                 //Bit and Bit-Test
-                {"sbi",new VI(this.Sbi,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
-                {"cbi",new VI(this.Cbi,AvrInstrArgType.IORegister,AvrInstrArgType.NumericConstant)},
-                {"lsl",new VI(this.Lsl,AvrInstrArgType.WorkingRegister)},
-                {"lsr",new VI(this.Lsr,AvrInstrArgType.WorkingRegister)},
-                {"rol",new VI(this.Rol,AvrInstrArgType.WorkingRegister)},
-                {"ror",new VI(this.Ror,AvrInstrArgType.WorkingRegister)},
-                {"asr",new VI(this.Asr,AvrInstrArgType.WorkingRegister)},
-                {"swap",new VI(this.Swap,AvrInstrArgType.WorkingRegister)},
-                {"bset",new VI(this.Bset,AvrInstrArgType.NumericConstant)},
-                {"bclr",new VI(this.Bclr,AvrInstrArgType.NumericConstant)},
-                {"bst",new VI(this.Bst,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"bld",new VI(this.Bld,AvrInstrArgType.WorkingRegister,AvrInstrArgType.NumericConstant)},
-                {"sec",new VI(this.Sec)},
-                {"clc",new VI(this.Clc)},
-                {"sen",new VI(this.Sen)},
-                {"cln",new VI(this.Cln)},
-                {"sez",new VI(this.Sez)},
-                {"clz",new VI(this.Clz)},
-                {"sei",new VI(this.Sei)},
-                {"cli",new VI(this.Cli)},
-                {"ses",new VI(this.Ses)},
-                {"cls",new VI(this.Cls)},
-                {"sev",new VI(this.Sev)},
-                {"clv",new VI(this.Clv)},
-                {"set",new VI(this.Set)},
-                {"clt",new VI(this.Clt)},
-                {"seh",new VI(this.Seh)},
-                {"clh",new VI(this.Clh)},
+                { "sbi", new VI(this.Sbi, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
+                { "cbi", new VI(this.Cbi, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
+                { "lsl", new VI(this.Lsl, AvrInstrArgType.WorkingRegister) },
+                { "lsr", new VI(this.Lsr, AvrInstrArgType.WorkingRegister) },
+                { "rol", new VI(this.Rol, AvrInstrArgType.WorkingRegister) },
+                { "ror", new VI(this.Ror, AvrInstrArgType.WorkingRegister) },
+                { "asr", new VI(this.Asr, AvrInstrArgType.WorkingRegister) },
+                { "swap", new VI(this.Swap, AvrInstrArgType.WorkingRegister) },
+                { "bset", new VI(this.Bset, AvrInstrArgType.NumericConstant) },
+                { "bclr", new VI(this.Bclr, AvrInstrArgType.NumericConstant) },
+                { "bst", new VI(this.Bst, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "bld", new VI(this.Bld, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
+                { "sec", new VI(this.Sec) },
+                { "clc", new VI(this.Clc) },
+                { "sen", new VI(this.Sen) },
+                { "cln", new VI(this.Cln) },
+                { "sez", new VI(this.Sez) },
+                { "clz", new VI(this.Clz) },
+                { "sei", new VI(this.Sei) },
+                { "cli", new VI(this.Cli) },
+                { "ses", new VI(this.Ses) },
+                { "cls", new VI(this.Cls) },
+                { "sev", new VI(this.Sev) },
+                { "clv", new VI(this.Clv) },
+                { "set", new VI(this.Set) },
+                { "clt", new VI(this.Clt) },
+                { "seh", new VI(this.Seh) },
+                { "clh", new VI(this.Clh) },
 
                 //Data Transfer
                 { "mov", new VI(this.Mov, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "movw", new VI(this.Movw, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "ldi", new VI(this.Ldi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                {"ld",new VI(this.Ld,AvrInstrArgType.WorkingRegister,AvrInstrArgType.Register16Bit)},
+                { "ld", new VI(this.Ld, AvrInstrArgType.WorkingRegister, AvrInstrArgType.Register16Bit) },
                 { "lds", new VI(this.Lds, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
                 { "ldd", new VI(this.Ld) },
-                {"st",new VI(this.St,AvrInstrArgType.NumericConstant,AvrInstrArgType.WorkingRegister)},
+                { "st", new VI(this.St, AvrInstrArgType.NumericConstant, AvrInstrArgType.WorkingRegister) },
                 { "sts", new VI(this.Sts, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
                 { "std", new VI(this.St) },
                 { "lpm", new VI(this.Lpm) },
@@ -1024,7 +1025,7 @@ namespace avrEmu
                     reg16 = Z;
                     break;
                 default:
-                    throw new Exception("Unknown 16Bit Register!");                    
+                    throw new Exception("Unknown 16Bit Register!");
             }
 
             switch (longRegArg.Type)
@@ -1072,12 +1073,12 @@ namespace avrEmu
 
         protected void Lpm(List<AvrInstrArg> args)
         {
-            new Exception("This command can not be executed!");
+            new Exception("Instruction not yet implemented!");
         }
 
         protected void Spm(List<AvrInstrArg> args)
         {
-            new Exception("This command can not be executed!");
+            new Exception("Instruction not yet implemented!");
         }
 
         protected void In(List<AvrInstrArg> args)
@@ -1098,16 +1099,16 @@ namespace avrEmu
 
         protected void Push(List<AvrInstrArg> args)
         {
-            ExtByte rr = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
             PushToStack(rr);
         }
 
         protected void Pop(List<AvrInstrArg> args)
         {
-            ExtByte rd = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
 
-            rd = PopFromStack();
+            rd.Value = PopFromStack().Value;
         }
         #endregion
 
@@ -1120,17 +1121,17 @@ namespace avrEmu
 
         protected void Sleep(List<AvrInstrArg> args)
         {
-            new Exception("This command can not be executed!");
+            new Exception("Instruction not yet implemented!");
         }
 
         protected void Wdr(List<AvrInstrArg> args)
         {
-            new Exception("This command can not be executed!");
+            new Exception("Instruction not yet implemented!");
         }
 
         protected void Break(List<AvrInstrArg> args)
         {
-            new Exception("This command can not be executed!");
+            new Exception("Instruction not yet implemented!");
         }
         #endregion
     }
