@@ -137,12 +137,12 @@ namespace avrEmu
         protected void PushToStack(ExtByte value)
         {
             this.Controller.SRAM.Memory[this.StackPointer.Value].Value = value.Value;
-            this.StackPointer.Value++;
+            this.StackPointer.Value--;
         }
 
         protected ExtByte PopFromStack()
         {
-            this.StackPointer.Value--;
+            this.StackPointer.Value++;
             return new ExtByte(this.Controller.SRAM.Memory[this.StackPointer.Value].Value);
         }
 
@@ -462,7 +462,7 @@ namespace avrEmu
 
         protected void Sbic(List<AvrInstrArg> args)
         {
-            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
             if (Convert.ToInt32(a[b]) == 0)
@@ -475,7 +475,7 @@ namespace avrEmu
 
         protected void Sbis(List<AvrInstrArg> args)
         {
-            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
             if (Convert.ToInt32(a[b]) == 1)
@@ -709,7 +709,7 @@ namespace avrEmu
 
         protected void Sbi(List<AvrInstrArg> args)
         {
-            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
             a[b] = true;
@@ -717,7 +717,7 @@ namespace avrEmu
 
         protected void Cbi(List<AvrInstrArg> args)
         {
-            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
             a[b] = false;
@@ -1084,14 +1084,14 @@ namespace avrEmu
         protected void In(List<AvrInstrArg> args)
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
-            ExtByte ior = this.Controller.PeripheralRegisters[(args[1] as AvrInstrArgIOReg).IORegister];
+            ExtByte ior = this.Controller.PeripheralRegisters[(args[1] as AvrInstrArgIOReg).IORegister.ToUpper()];
 
             rd.Value = ior.Value;
         }
 
         protected void Out(List<AvrInstrArg> args)
         {
-            ExtByte ior = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister];
+            ExtByte ior = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             ExtByte rd = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
 
             ior.Value = rd.Value;

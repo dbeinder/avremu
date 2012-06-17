@@ -6,15 +6,34 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace avrEmu
 {
     public partial class MainForm : Form
     {
         private const int IconLineDarkness = 24;
-        private List<int> errorLines = new List<int>() { 2, 4, 12, 50 };
+        private bool simulationInProgress = false;
+        private List<int> errorLines = new List<int>() { };
         private AvrController at2313 = new AtTiny2313();
-        private AvrProgramMemory memoryLink = new AvrPMFormLink();
+        private AvrPMFormLink memoryLink = new AvrPMFormLink();
+        private Preprocessor prePro;
+
+        private Dictionary<string, int> possibleSpeeds = new Dictionary<string, int>()
+        {
+            { "¼ Hz", 4000 },
+            { "½ Hz", 2000 },
+            { "1 Hz", 1000 },
+            { "2 Hz", 500 },
+            { "4 Hz", 250 },
+            { "8 Hz", 125 },
+            { "16 Hz", 63 },
+            { "32 Hz", 31 },
+            { "64 Hz", 16 },
+            { "128 Hz", 8 },
+            { "256 Hz", 4 }
+        };
+
         private List<NumberFormat> possibleFormats = new List<NumberFormat>()
         {
             NumberFormat.Hexadecimal,
@@ -29,8 +48,10 @@ namespace avrEmu
         public MainForm()
         {
             InitializeComponent();
-            at2313.ProgramMemory = this.memoryLink; //use input from this form instead of fixed memory
-
+           
+            this.at2313.ProgramMemory = this.memoryLink; //use input from this form instead of fixed memory
+            this.memoryLink.FetchInstruction += new AvrPMFormLink.FetchInstructionEventHandler(memoryLink_FetchInstruction);
+           
             this.extByteEditors.AddRange(new ExtByteEditor[] //register editors, for format changing
             {
                 this.ebeWorkingRegs,
@@ -49,21 +70,31 @@ namespace avrEmu
                 this.tsCboFormat.Items.Add(nf);
             this.tsCboFormat.SelectedIndex = 0;
 
+            foreach (string speed in this.possibleSpeeds.Keys)
+                this.tsCboSpeed.Items.Add(speed);
+            this.tsCboSpeed.SelectedIndex = 3;
+
             this.ebbvSreg.WatchedByte = this.at2313.ALU.SREG;
 
             RegisterWorkingRegs();
             RegisterSram();
             RegisterIORegs();
+            this.prePro = new Preprocessor(this.at2313.Constants);
         }
 
         private void rtbCode_TextChanged(object sender, EventArgs e)
         {
-
+            if (simulationInProgress)
+            {
+                this.at2313.Reset();
+                UpdateCodeIcons();
+                simulationInProgress = false;
+            }
         }
 
         private void UpdateCodeIcons()
         {
-
+            this.pbCodeIcons.Invalidate();
         }
 
         private void RegisterWorkingRegs()
@@ -76,12 +107,17 @@ namespace avrEmu
 
         private void pbCodeIcons_Paint(object sender, PaintEventArgs e)
         {
+            if (!simulationInProgress)
+                return;
+
             int offset = 6 - rtbCode.Font.Height / 2;
 
-            e.Graphics.DrawImage(bulletExec, 0, rtbCode.Font.Height * this.at2313.ProgramCounter);
+            e.Graphics.DrawImage(this.bulletExec, 0,
+                this.rtbCode.Font.Height *
+                  this.prePro.LineMapping[this.at2313.ProgramCounter]);
 
             foreach (int errorPos in errorLines)
-                e.Graphics.DrawImage(bulletError, 0, rtbCode.Font.Height * errorPos);
+                e.Graphics.DrawImage(this.bulletError, 0, rtbCode.Font.Height * errorPos);
         }
 
         private void rtbCode_VScroll(object sender, EventArgs e)
@@ -136,5 +172,88 @@ namespace avrEmu
             (new AboutForm()).ShowDialog();
         }
 
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (rtbCode.Text == "" || MessageBox.Show("Clear all code in the box, and perform a reset?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.rtbCode.Text = "";
+                this.at2313.Reset();
+            }
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialogAsm.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    this.rtbCode.Text = File.ReadAllText(openFileDialogAsm.FileName);
+                    this.at2313.Reset();
+                }
+                catch
+                {
+                    MessageBox.Show("Error while reading file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialogAsm.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllText(saveFileDialogAsm.FileName, rtbCode.Text);
+                }
+                catch
+                {
+                    MessageBox.Show("Error while writing file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsBtnReset_Click(object sender, EventArgs e)
+        {
+            this.at2313.Reset();
+            this.simulationInProgress = false;
+            UpdateCodeIcons();
+        }
+
+        private void tsCboSpeed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsBtnManualStep_Click(object sender, EventArgs e)
+        {
+            SimulationStep();
+        }
+
+        private void SimulationStep()
+        {
+            if (!simulationInProgress)
+            {
+                try
+                {
+                    this.prePro.Process(this.rtbCode.Text);
+                    this.simulationInProgress = true;
+                    UpdateCodeIcons();
+                    return;
+                }
+                catch
+                {
+                    MessageBox.Show("Error while parsing code!");
+                    return;
+                }
+            }
+
+            this.at2313.ClockTick();
+            UpdateCodeIcons();
+        }
+
+        void memoryLink_FetchInstruction(object sender, FetchInstructionEventArgs e)
+        {
+            e.Instruction = new AvrInstruction(prePro.ProcessedLines[e.InstructionNr]);
+        }
     }
 }
