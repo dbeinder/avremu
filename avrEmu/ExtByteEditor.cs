@@ -39,9 +39,8 @@ namespace avrEmu
             set { this.lviContent.Columns[0].Text = value; }
         }
 
-
-        protected List<ExtByte> watchedBytes = new List<ExtByte>();
-
+        protected Dictionary<ExtByte, int> watchedBytes = new Dictionary<ExtByte, int>();
+        
         public ExtByteEditor()
         {
             InitializeComponent();
@@ -53,49 +52,34 @@ namespace avrEmu
             int availableWidth = lviContent.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth;
 
             lviContent.Columns[0].Width = (int)(availableWidth * 0.4d) - 2;
-
             lviContent.Columns[1].Width = (int)(availableWidth * 0.6d) - 2;
         }
 
         public void RegisterByte(ExtByte extByte, string name)
         {
-            this.watchedBytes.Add(extByte);
+            this.watchedBytes.Add(extByte, lviContent.Items.Count);
             ListViewItem item = new ListViewItem(name);
             item.Tag = extByte;
-            item.SubItems.Add(GetFormated(watchedBytes.Count - 1));
+            item.SubItems.Add(GetFormated(extByte));
             this.lviContent.Items.Add(item);
             extByte.ByteChanged += new ExtByte.ByteChangedEventHandler(extByte_ByteChanged);
         }
 
         void extByte_ByteChanged(object sender, ByteChangedEventArgs e)
         {
-            int nr = watchedBytes.IndexOf(e.ChangedByte);
-            this.lviContent.Items[nr].SubItems[1].Text = GetFormated(nr);
+            int nr = watchedBytes[e.ChangedByte];
+            this.lviContent.Items[nr].SubItems[1].Text = GetFormated(e.ChangedByte);
         }
 
-        public bool UnregisterByte(ExtByte extByte)
+        protected string GetFormated(ExtByte eb)
         {
-            int nr = watchedBytes.IndexOf(extByte);
-            if (nr == -1)
-                return false;
-
-            this.lviContent.Items.RemoveAt(nr);
-            this.watchedBytes.RemoveAt(nr);
-            extByte.ByteChanged -= extByte_ByteChanged;
-            return true;
-        }
-
-        protected string GetFormated(int nr)
-        {
-            ExtByte eb = this.watchedBytes[nr];
-
             switch (this.displayFormat)
             {
                 case NumberFormat.Unsigned:
                     return eb.Value.ToString();
 
                 case NumberFormat.Signed:
-                    return ((sbyte)(eb.Value)).ToString(); //untested
+                    return ((sbyte)(eb.Value)).ToString();
 
                 case NumberFormat.Hexadecimal:
                     return "0x" + eb.Value.ToString("x2");
@@ -118,15 +102,13 @@ namespace avrEmu
 
         protected void UpdateFormatting()
         {
-            for (int i = 0; i < watchedBytes.Count; i++)
-            {
-                this.lviContent.Items[i].SubItems[1].Text = GetFormated(i);
-            }
+            foreach (KeyValuePair<ExtByte, int> item in watchedBytes)
+                this.lviContent.Items[item.Value].SubItems[1].Text = GetFormated(item.Key);
         }
 
         public void Clear()
         {
-            foreach (ExtByte eb in this.watchedBytes)
+            foreach (ExtByte eb in this.watchedBytes.Keys)
                 eb.ByteChanged -= extByte_ByteChanged;
 
             this.watchedBytes.Clear();
@@ -142,7 +124,7 @@ namespace avrEmu
         {
             ExtByte eb = this.lviContent.SelectedItems[0].Tag as ExtByte;
             ValueEdit ve = new ValueEdit(newValue == -1 ? eb.Value : newValue, 255, newValue == -1);
-            
+
             if (ve.ShowDialog() == DialogResult.OK)
                 eb.Value = (byte)ve.Value;
         }
@@ -160,6 +142,6 @@ namespace avrEmu
                 StartEdit(-1);
         }
 
-        
+
     }
 }

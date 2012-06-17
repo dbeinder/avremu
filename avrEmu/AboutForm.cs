@@ -14,12 +14,7 @@ namespace avrEmu
 {
     public partial class AboutForm : Form
     {
-        private string[] helpFiles = new string[] 
-        {
-            "Help/index.html",
-            "Help/std.css"
-        };
-
+        private const string helpDirectory = "Help";
         private const string startHelpFile = "index.html";
 
         string tmpPath = Path.GetTempPath() + "avrEmuHelp-" + Guid.NewGuid().ToString("N").Substring(24);
@@ -36,18 +31,24 @@ namespace avrEmu
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string nameSpace = this.GetType().Namespace;
             Assembly localAssembly = Assembly.GetExecutingAssembly();
+            string[] resourceFiles = localAssembly.GetManifestResourceNames();
 
             try
             {
                 Directory.CreateDirectory(tmpPath);
 
-                foreach (string filename in this.helpFiles)
+                foreach (string resourceName in resourceFiles)
                 {
-                    string resName = nameSpace + "." + filename.Replace('/', '.');
-                    Stream resourceStream = localAssembly.GetManifestResourceStream(resName);
-                    string storeFilename = tmpPath + '/' + filename.Split('/').Last();
+                    string[] nameParts = resourceName.Split('.');
+                    if (nameParts[1] != helpDirectory)
+                        continue;
+
+                    Stream resourceStream = localAssembly.GetManifestResourceStream(resourceName);
+
+                    string storeFilename = tmpPath + '/' 
+                        + nameParts[nameParts.Length - 2] 
+                        + '.' + nameParts[nameParts.Length - 1];
 
                     using (FileStream fs = new FileStream(storeFilename, FileMode.Create))
                     {

@@ -34,7 +34,8 @@ namespace avrEmu
             this.extByteEditors.AddRange(new ExtByteEditor[] //register editors, for format changing
             {
                 this.ebeWorkingRegs,
-                this.ebeSram
+                this.ebeSram,
+                this.ebeIORegs
             });
         }
 
@@ -110,7 +111,6 @@ namespace avrEmu
 
         private void nudSramLength_ValueChanged(object sender, EventArgs e)
         {
-            this.at2313.WorkingRegisters[2].Value += 7; ///DEBUG!!!
             ebeSram.Clear();
             RegisterSram();
         }
