@@ -31,5 +31,13 @@ namespace avrEmu
         {
         }
     }
+
+    public class AvrIOPin : AvrModule
+    {
+        public AvrIOPin(int index)
+        {
+
+        }
+    }
 }
 
