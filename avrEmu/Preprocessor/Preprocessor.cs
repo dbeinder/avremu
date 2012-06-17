@@ -9,6 +9,9 @@ namespace avrEmu
     class Preprocessor
     {
         private List<string> inputToList;
+        private List<int> linesToRemove;
+        private Dictionary<string, int> jumpMarks;
+        private Dictionary<string, string> definitions = new Dictionary<string, string>();
 
         public List<string> ProcessedLines { get; private set; }
 
@@ -28,22 +31,29 @@ namespace avrEmu
             inputToList = new List<string>();
             ProcessedLines = new List<string>();
             LineMapping = new List<int>();
+            linesToRemove = new List<int>();
+            jumpMarks = new Dictionary<string, int>();
+            definitions = new Dictionary<string, string>();
 
             string[] inputToArray = input.Split(Environment.NewLine.ToCharArray());
 
             inputToList.AddRange(inputToArray);
 
-            List<int> linesToRemove = SearchForDef(inputToList);
+            SearchForDef(inputToList);
+
+            inputToList = FindJumpMarks(inputToList);
 
             inputToList = CleanUp(inputToList, linesToRemove);
 
-            inputToList = ReplaceDef(inputToList);
+            inputToList = Replace(inputToList);
+
+            inputToList = ReplaceJumpMarks(inputToList);
 
             inputToList = Calculate(inputToList);
 
             inputToList = SearchForHighAndLow(inputToList);
 
-            inputToList = SearchForDoublePoint(inputToList);
+
 
             ProcessedLines.AddRange(inputToList);
 
@@ -94,9 +104,8 @@ namespace avrEmu
             return cleanedLines;
         }
 
-        private List<int> SearchForDef(List<string> line)
+        private void SearchForDef(List<string> line)
         {
-            List<int> linesToRemove = new List<int>();
             for (int i = 0; i < line.Count; i++)
             {
                 // .def ...
@@ -110,24 +119,21 @@ namespace avrEmu
                     // if .def than add to dictionary replacer
                     if (elementsb[0] == ".def")
                     {
-                        replacer.Add(elementsb[1], elementsb[3]);
+                        definitions.Add(elementsb[1], elementsb[3]);
                     }
                     linesToRemove.Add(i);
                 }
             }
-
-            return linesToRemove;
         }
 
-        private List<string> ReplaceDef(List<string> line)
+        private List<string> Replace(List<string> line)
         {
             for (int i = 0; i < line.Count; i++)
             {
                 string[] elementsb = line[i].Split(' ');
                 // search for replacers
-                foreach (KeyValuePair<string, string> kvp in replacer)
+                foreach (KeyValuePair<string, string> kvp in replacer.Concat(definitions))
                 {
-
                     for (int a = 1; a < elementsb.Length; a++)
                     {
                         elementsb[a] = elementsb[a].Replace(kvp.Key, kvp.Value);
@@ -316,8 +322,7 @@ namespace avrEmu
 
             return line;
         }
-
-        private List<string> SearchForDoublePoint(List<string> line)
+        private List<string> FindJumpMarks(List<string> line)
         {
             for (int i = 0; i < line.Count; i++)
             {
@@ -331,25 +336,34 @@ namespace avrEmu
 
                         if (line[i] == "")
                         {
-                            line.RemoveAt(i);
-                            a = 0;
+                            linesToRemove.Add(i);
                         }
 
-                        replacer.Add(helpstring, Convert.ToString(i));
+                        jumpMarks.Add(helpstring, i);
                     }
-
-
                 }
             }
 
-            foreach (KeyValuePair<string, string> kvp in replacer)
+            return line;
+        }
+
+        private List<string> ReplaceJumpMarks(List<string> line)
+        {
+            int max = LineMapping.Max();
+
+            foreach (KeyValuePair<string, int> kvp in jumpMarks)
             {
+                int target = kvp.Value;
+
+                while (LineMapping.IndexOf(target) == -1 && target < max)
+                    target++;
 
                 for (int i = 1; i < line.Count; i++)
                 {
-                    line[i] = line[i].Replace(kvp.Key, kvp.Value);
+                    line[i] = line[i].Replace(kvp.Key, (LineMapping.IndexOf(target) - i).ToString()).Trim();
                 }
             }
+
             return line;
         }
     }

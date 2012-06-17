@@ -28,10 +28,16 @@ namespace avrEmu
 
             int oldPC = this.Controller.ProgramCounter;
             this.InstructionSet[instruction.Instruction].Exec(instruction.Arguments);
-            if (this.Controller.ProgramCounter == oldPC)
+            if (!this.InstructionSet[instruction.Instruction].ModifiesPC)
                 this.Controller.ProgramCounter++;
         }
-            
+
+        public override void Reset()
+        {
+            this.SREG.Value = 0;
+            base.Reset();
+        }
+
         #region Instruction Set
 
         protected delegate void Instruction(List<AvrInstrArg> args);
@@ -40,29 +46,55 @@ namespace avrEmu
         {
             public Instruction Exec;
             public List<AvrInstrArgType> Args;
+            public bool ModifiesPC;
 
             public VI(Instruction exec, List<AvrInstrArgType> args)
             {
                 this.Exec = exec;
                 this.Args = args;
+                this.ModifiesPC = false;
             }
 
             public VI(Instruction exec)
             {
                 this.Exec = exec;
                 this.Args = new List<AvrInstrArgType>();
+                this.ModifiesPC = false;
+            }
+
+            public VI(Instruction exec, bool modPC)
+            {
+                this.Exec = exec;
+                this.Args = new List<AvrInstrArgType>();
+                this.ModifiesPC = modPC;
             }
 
             public VI(Instruction exec, AvrInstrArgType arg0)
             {
                 this.Exec = exec;
                 this.Args = new List<AvrInstrArgType>() { arg0 };
+                this.ModifiesPC = false;
+            }
+
+            public VI(Instruction exec, AvrInstrArgType arg0, bool modPC)
+            {
+                this.Exec = exec;
+                this.Args = new List<AvrInstrArgType>() { arg0 };
+                this.ModifiesPC = modPC;
             }
 
             public VI(Instruction exec, AvrInstrArgType arg0, AvrInstrArgType arg1)
             {
                 this.Exec = exec;
                 this.Args = new List<AvrInstrArgType>() { arg0, arg1 };
+                this.ModifiesPC = false;
+            }
+
+            public VI(Instruction exec, AvrInstrArgType arg0, AvrInstrArgType arg1, bool modPC)
+            {
+                this.Exec = exec;
+                this.Args = new List<AvrInstrArgType>() { arg0, arg1 };
+                this.ModifiesPC = modPC;
             }
 
         }

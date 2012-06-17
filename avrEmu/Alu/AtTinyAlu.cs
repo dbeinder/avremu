@@ -40,40 +40,40 @@ namespace avrEmu
                 { "ser", new VI(this.Ser, AvrInstrArgType.WorkingRegister) },
 
                 //Branch
-                { "rjmp", new VI(this.Adiw, AvrInstrArgType.NumericConstant) },
-                { "ijmp", new VI(this.Ijmp) },
-                { "rcall", new VI(this.Rcall, AvrInstrArgType.NumericConstant) },
-                { "icall", new VI(this.Icall) },
-                { "ret", new VI(this.Ret) },
-                { "reti", new VI(this.Reti) },
+                { "rjmp", new VI(this.Rjmp, AvrInstrArgType.NumericConstant, true) },
+                { "ijmp", new VI(this.Ijmp, true) },
+                { "rcall", new VI(this.Rcall, AvrInstrArgType.NumericConstant, true) },
+                { "icall", new VI(this.Icall, true) },
+                { "ret", new VI(this.Ret, true) },
+                { "reti", new VI(this.Reti, true) },
                 { "cpse", new VI(this.Cpse, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "cp", new VI(this.Cp, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "cpc", new VI(this.Cpc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.WorkingRegister) },
                 { "cpi", new VI(this.Cpi, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                { "sbrc", new VI(this.Sbrc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                { "sbrs", new VI(this.Sbrs, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant) },
-                { "sbic", new VI(this.Sbic, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
-                { "sbis", new VI(this.Sbis, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant) },
-                { "brbs", new VI(this.Brbs, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant) },
-                { "brbc", new VI(this.Brbc, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant) },
-                { "breq", new VI(this.Breq, AvrInstrArgType.NumericConstant) },
-                { "brne", new VI(this.Brne, AvrInstrArgType.NumericConstant) },
-                { "brcs", new VI(this.Brcs, AvrInstrArgType.NumericConstant) },
-                { "brcc", new VI(this.Brcc, AvrInstrArgType.NumericConstant) },
-                { "brsh", new VI(this.Brcc, AvrInstrArgType.NumericConstant) },
-                { "brlo", new VI(this.Brcs, AvrInstrArgType.NumericConstant) },
-                { "brmi", new VI(this.Brmi, AvrInstrArgType.NumericConstant) },
-                { "brpl", new VI(this.Brpl, AvrInstrArgType.NumericConstant) },
-                { "brge", new VI(this.Brge, AvrInstrArgType.NumericConstant) },
-                { "brlt", new VI(this.Brlt, AvrInstrArgType.NumericConstant) },
-                { "brhs", new VI(this.Brhs, AvrInstrArgType.NumericConstant) },
-                { "brhc", new VI(this.Brhc, AvrInstrArgType.NumericConstant) },
-                { "brts", new VI(this.Brts, AvrInstrArgType.NumericConstant) },
-                { "brtc", new VI(this.Brtc, AvrInstrArgType.NumericConstant) },
-                { "brvs", new VI(this.Brvs, AvrInstrArgType.NumericConstant) },
-                { "brvc", new VI(this.Brvc, AvrInstrArgType.NumericConstant) },
-                { "brie", new VI(this.Brie, AvrInstrArgType.NumericConstant) },
-                { "brid", new VI(this.Brid, AvrInstrArgType.NumericConstant) },
+                { "sbrc", new VI(this.Sbrc, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant, true) },
+                { "sbrs", new VI(this.Sbrs, AvrInstrArgType.WorkingRegister, AvrInstrArgType.NumericConstant, true) },
+                { "sbic", new VI(this.Sbic, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant, true) },
+                { "sbis", new VI(this.Sbis, AvrInstrArgType.IORegister, AvrInstrArgType.NumericConstant, true) },
+                { "brbs", new VI(this.Brbs, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant, true) },
+                { "brbc", new VI(this.Brbc, AvrInstrArgType.NumericConstant, AvrInstrArgType.NumericConstant, true) },
+                { "breq", new VI(this.Breq, AvrInstrArgType.NumericConstant, true) },
+                { "brne", new VI(this.Brne, AvrInstrArgType.NumericConstant, true) },
+                { "brcs", new VI(this.Brcs, AvrInstrArgType.NumericConstant, true) },
+                { "brcc", new VI(this.Brcc, AvrInstrArgType.NumericConstant, true) },
+                { "brsh", new VI(this.Brcc, AvrInstrArgType.NumericConstant, true) },
+                { "brlo", new VI(this.Brcs, AvrInstrArgType.NumericConstant, true) },
+                { "brmi", new VI(this.Brmi, AvrInstrArgType.NumericConstant, true) },
+                { "brpl", new VI(this.Brpl, AvrInstrArgType.NumericConstant, true) },
+                { "brge", new VI(this.Brge, AvrInstrArgType.NumericConstant, true) },
+                { "brlt", new VI(this.Brlt, AvrInstrArgType.NumericConstant, true) },
+                { "brhs", new VI(this.Brhs, AvrInstrArgType.NumericConstant, true) },
+                { "brhc", new VI(this.Brhc, AvrInstrArgType.NumericConstant, true) },
+                { "brts", new VI(this.Brts, AvrInstrArgType.NumericConstant, true) },
+                { "brtc", new VI(this.Brtc, AvrInstrArgType.NumericConstant, true) },
+                { "brvs", new VI(this.Brvs, AvrInstrArgType.NumericConstant, true) },
+                { "brvc", new VI(this.Brvc, AvrInstrArgType.NumericConstant, true) },
+                { "brie", new VI(this.Brie, AvrInstrArgType.NumericConstant, true) },
+                { "brid", new VI(this.Brid, AvrInstrArgType.NumericConstant, true) },
 
 
                 //Bit and Bit-Test
@@ -130,6 +130,12 @@ namespace avrEmu
                 { "break", new VI(this.Break) }
             };
 
+        }
+
+        public override void Reset()
+        {
+            this.StackPointer.Value = 0;
+            base.Reset();
         }
 
         #region Internal Helpers
@@ -361,16 +367,16 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            PushToStack(WordHelper.GetHighByte((ushort)this.PC));
-            PushToStack(WordHelper.GetLowByte((ushort)this.PC));
+            PushToStack(WordHelper.GetHighByte((ushort)(this.PC + 1)));
+            PushToStack(WordHelper.GetLowByte((ushort)(this.PC + 1)));
 
-            this.PC = k;
+            this.PC += k;
         }
 
         protected void Icall(List<AvrInstrArg> args)
         {
-            PushToStack(WordHelper.GetHighByte((ushort)this.PC));
-            PushToStack(WordHelper.GetLowByte((ushort)this.PC));
+            PushToStack(WordHelper.GetHighByte((ushort)(this.PC + 1)));
+            PushToStack(WordHelper.GetLowByte((ushort)(this.PC + 1)));
 
             this.PC = this.Z;
         }

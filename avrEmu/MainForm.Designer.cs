@@ -35,11 +35,19 @@
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.tsBtnReset = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.tsBtnManualStep = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.tsBtnAutoRun = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tsCboSpeed = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
+            this.tsCboFormat = new System.Windows.Forms.ToolStripComboBox();
             this.rtbCode = new System.Windows.Forms.RichTextBox();
             this.pnlCode = new System.Windows.Forms.Panel();
             this.pbCodeIcons = new System.Windows.Forms.PictureBox();
@@ -54,14 +62,6 @@
             this.spcCodeSplitter = new System.Windows.Forms.SplitContainer();
             this.openFileDialogAsm = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogAsm = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
-            this.tsBtnReset = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel4 = new System.Windows.Forms.ToolStripLabel();
-            this.tsCboFormat = new System.Windows.Forms.ToolStripComboBox();
-            this.tsCboSpeed = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ebbvSreg = new avrEmu.ExtByteBitViewer();
             this.ebeIORegs = new avrEmu.ExtByteEditor();
             this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
@@ -154,6 +154,26 @@
             this.helpToolStripButton.Text = "He&lp";
             this.helpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
             // 
+            // tsBtnReset
+            // 
+            this.tsBtnReset.Image = global::avrEmu.Properties.Resources.control_repeat_blue;
+            this.tsBtnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnReset.Name = "tsBtnReset";
+            this.tsBtnReset.Size = new System.Drawing.Size(55, 22);
+            this.tsBtnReset.Text = "Reset";
+            this.tsBtnReset.Click += new System.EventHandler(this.tsBtnReset_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel2.Text = "Manual:";
+            // 
             // tsBtnManualStep
             // 
             this.tsBtnManualStep.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -169,6 +189,12 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // toolStripLabel3
+            // 
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(59, 22);
+            this.toolStripLabel3.Text = "Automatic:";
+            // 
             // tsBtnAutoRun
             // 
             this.tsBtnAutoRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -178,16 +204,44 @@
             this.tsBtnAutoRun.Size = new System.Drawing.Size(23, 22);
             this.tsBtnAutoRun.Text = "toolStripButton3";
             // 
-            // toolStripSeparator2
+            // toolStripSeparator4
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(41, 22);
             this.toolStripLabel1.Text = "Speed:";
+            // 
+            // tsCboSpeed
+            // 
+            this.tsCboSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tsCboSpeed.DropDownWidth = 75;
+            this.tsCboSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.tsCboSpeed.Name = "tsCboSpeed";
+            this.tsCboSpeed.Size = new System.Drawing.Size(75, 25);
+            this.tsCboSpeed.SelectedIndexChanged += new System.EventHandler(this.tsCboSpeed_SelectedIndexChanged);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel4
+            // 
+            this.toolStripLabel4.Name = "toolStripLabel4";
+            this.toolStripLabel4.Size = new System.Drawing.Size(85, 22);
+            this.toolStripLabel4.Text = "Number Format:";
+            // 
+            // tsCboFormat
+            // 
+            this.tsCboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tsCboFormat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.tsCboFormat.Name = "tsCboFormat";
+            this.tsCboFormat.Size = new System.Drawing.Size(90, 25);
+            this.tsCboFormat.SelectedIndexChanged += new System.EventHandler(this.tsCboFormat_SelectedIndexChanged);
             // 
             // rtbCode
             // 
@@ -371,60 +425,6 @@
             // saveFileDialogAsm
             // 
             this.saveFileDialogAsm.Filter = "Assembler Code|*.asm|All Files|*.*";
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(45, 22);
-            this.toolStripLabel2.Text = "Manual:";
-            // 
-            // toolStripLabel3
-            // 
-            this.toolStripLabel3.Name = "toolStripLabel3";
-            this.toolStripLabel3.Size = new System.Drawing.Size(59, 22);
-            this.toolStripLabel3.Text = "Automatic:";
-            // 
-            // tsBtnReset
-            // 
-            this.tsBtnReset.Image = global::avrEmu.Properties.Resources.control_repeat_blue;
-            this.tsBtnReset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsBtnReset.Name = "tsBtnReset";
-            this.tsBtnReset.Size = new System.Drawing.Size(55, 22);
-            this.tsBtnReset.Text = "Reset";
-            this.tsBtnReset.Click += new System.EventHandler(this.tsBtnReset_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripLabel4
-            // 
-            this.toolStripLabel4.Name = "toolStripLabel4";
-            this.toolStripLabel4.Size = new System.Drawing.Size(85, 22);
-            this.toolStripLabel4.Text = "Number Format:";
-            // 
-            // tsCboFormat
-            // 
-            this.tsCboFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tsCboFormat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tsCboFormat.Name = "tsCboFormat";
-            this.tsCboFormat.Size = new System.Drawing.Size(90, 21);
-            this.tsCboFormat.SelectedIndexChanged += new System.EventHandler(this.tsCboFormat_SelectedIndexChanged);
-            // 
-            // tsCboSpeed
-            // 
-            this.tsCboSpeed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tsCboSpeed.DropDownWidth = 75;
-            this.tsCboSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.tsCboSpeed.Name = "tsCboSpeed";
-            this.tsCboSpeed.Size = new System.Drawing.Size(75, 25);
-            this.tsCboSpeed.SelectedIndexChanged += new System.EventHandler(this.tsCboSpeed_SelectedIndexChanged);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // ebbvSreg
             // 
