@@ -105,6 +105,7 @@ namespace avrEmu
                 UpdateCodeIcons();
                 simulationInProgress = false;
             }
+            rtbCode_VScroll(this.rtbCode, new EventArgs());
         }
 
         private void UpdateCodeIcons()
@@ -141,7 +142,8 @@ namespace avrEmu
             int newIconLineHeight = pnlCode.Height - yOffset;
             if (pbCodeIcons.Height < newIconLineHeight)
                 pbCodeIcons.Height = newIconLineHeight;
-            pbCodeIcons.Top = yOffset;
+            if (pbCodeIcons.Top != yOffset)
+                pbCodeIcons.Top = yOffset;
         }
 
         private void nudStartSram_ValueChanged(object sender, EventArgs e)
@@ -268,7 +270,7 @@ namespace avrEmu
             }
             this.at2313.ClockTick();
 
-            if (this.at2313.ProgramCounter == this.prePro.ProcessedLines.Count - 1)
+            if (this.at2313.ProgramCounter == this.prePro.ProcessedLines.Count)
                 this.at2313.ProgramCounter = 0;
 
             UpdateCodeIcons();

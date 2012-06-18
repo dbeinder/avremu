@@ -52,23 +52,23 @@
             this.pnlCode = new System.Windows.Forms.Panel();
             this.pbCodeIcons = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nudSramLength = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.nudStartSram = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.ebeSram = new avrEmu.ExtByteEditor();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ebeIORegs = new avrEmu.ExtByteEditor();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ebbvSreg = new avrEmu.ExtByteBitViewer();
             this.spcCodeSplitter = new System.Windows.Forms.SplitContainer();
             this.tcPorts = new System.Windows.Forms.TabControl();
             this.tbpCaption = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.openFileDialogAsm = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogAsm = new System.Windows.Forms.SaveFileDialog();
-            this.ebbvSreg = new avrEmu.ExtByteBitViewer();
-            this.ebeIORegs = new avrEmu.ExtByteEditor();
-            this.ebeWorkingRegs = new avrEmu.ExtByteEditor();
-            this.ebeSram = new avrEmu.ExtByteEditor();
             this.toolStrip1.SuspendLayout();
             this.pnlCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCodeIcons)).BeginInit();
@@ -305,6 +305,18 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Working Registers";
             // 
+            // ebeWorkingRegs
+            // 
+            this.ebeWorkingRegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeWorkingRegs.DescriptionText = "Register";
+            this.ebeWorkingRegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeWorkingRegs.Location = new System.Drawing.Point(6, 19);
+            this.ebeWorkingRegs.Name = "ebeWorkingRegs";
+            this.ebeWorkingRegs.Size = new System.Drawing.Size(193, 136);
+            this.ebeWorkingRegs.TabIndex = 6;
+            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -376,6 +388,18 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Start Adress:";
             // 
+            // ebeSram
+            // 
+            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeSram.DescriptionText = "Adress";
+            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeSram.Location = new System.Drawing.Point(6, 43);
+            this.ebeSram.Name = "ebeSram";
+            this.ebeSram.Size = new System.Drawing.Size(214, 112);
+            this.ebeSram.TabIndex = 6;
+            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -388,6 +412,18 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Peripheral Registers";
             // 
+            // ebeIORegs
+            // 
+            this.ebeIORegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.ebeIORegs.DescriptionText = "Name";
+            this.ebeIORegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
+            this.ebeIORegs.Location = new System.Drawing.Point(6, 19);
+            this.ebeIORegs.Name = "ebeIORegs";
+            this.ebeIORegs.Size = new System.Drawing.Size(193, 136);
+            this.ebeIORegs.TabIndex = 6;
+            // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -399,6 +435,14 @@
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Status Register";
+            // 
+            // ebbvSreg
+            // 
+            this.ebbvSreg.Location = new System.Drawing.Point(8, 16);
+            this.ebbvSreg.Name = "ebbvSreg";
+            this.ebbvSreg.Size = new System.Drawing.Size(550, 16);
+            this.ebbvSreg.TabIndex = 0;
+            this.ebbvSreg.WatchedByte = null;
             // 
             // spcCodeSplitter
             // 
@@ -464,50 +508,6 @@
             // saveFileDialogAsm
             // 
             this.saveFileDialogAsm.Filter = "Assembler Code|*.asm|All Files|*.*";
-            // 
-            // ebbvSreg
-            // 
-            this.ebbvSreg.Location = new System.Drawing.Point(8, 16);
-            this.ebbvSreg.Name = "ebbvSreg";
-            this.ebbvSreg.Size = new System.Drawing.Size(550, 16);
-            this.ebbvSreg.TabIndex = 0;
-            this.ebbvSreg.WatchedByte = null;
-            // 
-            // ebeIORegs
-            // 
-            this.ebeIORegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeIORegs.DescriptionText = "Name";
-            this.ebeIORegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeIORegs.Location = new System.Drawing.Point(6, 19);
-            this.ebeIORegs.Name = "ebeIORegs";
-            this.ebeIORegs.Size = new System.Drawing.Size(193, 136);
-            this.ebeIORegs.TabIndex = 6;
-            // 
-            // ebeWorkingRegs
-            // 
-            this.ebeWorkingRegs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeWorkingRegs.DescriptionText = "Register";
-            this.ebeWorkingRegs.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeWorkingRegs.Location = new System.Drawing.Point(6, 19);
-            this.ebeWorkingRegs.Name = "ebeWorkingRegs";
-            this.ebeWorkingRegs.Size = new System.Drawing.Size(193, 136);
-            this.ebeWorkingRegs.TabIndex = 6;
-            // 
-            // ebeSram
-            // 
-            this.ebeSram.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.ebeSram.DescriptionText = "Adress";
-            this.ebeSram.DisplayFormat = avrEmu.NumberFormat.Hexadecimal;
-            this.ebeSram.Location = new System.Drawing.Point(6, 43);
-            this.ebeSram.Name = "ebeSram";
-            this.ebeSram.Size = new System.Drawing.Size(214, 112);
-            this.ebeSram.TabIndex = 6;
             // 
             // MainForm
             // 
