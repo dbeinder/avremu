@@ -78,7 +78,18 @@ namespace avrEmu
             this.tsCboSpeed.SelectedIndex = 3;
 
             this.ebbvSreg.WatchedByte = this.at2313.ALU.SREG;
-           // this.ioPortA.AvrPort = this.at2313.Ports['A'];
+
+            foreach (KeyValuePair<char, AvrIOPort> port in this.at2313.Ports)
+            {
+                TabPage tbPage = new TabPage("Port " + port.Key);
+                tbPage.UseVisualStyleBackColor = true;
+                IOPort portDisplay = new IOPort();
+                tbPage.Controls.Add(portDisplay);
+                portDisplay.AvrPort = port.Value;
+                portDisplay.Dock = DockStyle.Fill;
+                this.tcPorts.TabPages.Add(tbPage);
+            }
+            this.tcPorts.SelectedIndex = 1;
 
             RegisterWorkingRegs();
             RegisterSram();
@@ -255,14 +266,23 @@ namespace avrEmu
                     return;
                 }
             }
-
             this.at2313.ClockTick();
+
+            if (this.at2313.ProgramCounter == this.prePro.ProcessedLines.Count - 1)
+                this.at2313.ProgramCounter = 0;
+
             UpdateCodeIcons();
         }
 
         void memoryLink_FetchInstruction(object sender, FetchInstructionEventArgs e)
         {
             e.Instruction = new AvrInstruction(prePro.ProcessedLines[e.InstructionNr]);
+        }
+
+        private void tcPorts_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPageIndex == 0)
+                e.Cancel = true;
         }
     }
 }

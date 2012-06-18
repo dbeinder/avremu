@@ -24,7 +24,13 @@ namespace avrEmu
         public Dictionary<char, AvrIOPort> Ports { get; protected set; }
 
         protected List<AvrModule> Modules = new List<AvrModule>();
-        
+
+        protected void AddPortsToModules()
+        {
+            foreach (AvrIOPort port in this.Ports.Values)
+                this.Modules.Add(port);
+        }
+
         public virtual void Reset()
         {
             this.ProgramCounter = 0;

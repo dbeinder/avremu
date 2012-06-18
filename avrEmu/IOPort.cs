@@ -23,15 +23,20 @@ namespace avrEmu
 
             set
             {
+                if (value == null)
+                    return;
+
                 this.flpPins.Controls.Clear();
                 this.avrPort = value;
 
+                this.SuspendLayout();
                 for (int i = 0; i < value.PinCount; i++)
                 {
                     IOPin pin = new IOPin();
                     pin.AvrPin = value.Pins[i];
                     this.flpPins.Controls.Add(pin);
                 }
+                this.ResumeLayout();
             }
         }
     }
