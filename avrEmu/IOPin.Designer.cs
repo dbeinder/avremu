@@ -48,7 +48,7 @@
             // pbBitStatus
             // 
             this.pbBitStatus.Image = global::avrEmu.Properties.Resources.bullet_red;
-            this.pbBitStatus.Location = new System.Drawing.Point(28, 20);
+            this.pbBitStatus.Location = new System.Drawing.Point(28, 21);
             this.pbBitStatus.Name = "pbBitStatus";
             this.pbBitStatus.Size = new System.Drawing.Size(16, 16);
             this.pbBitStatus.TabIndex = 3;
@@ -65,7 +65,7 @@
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(4, 4);
+            this.lblDesc.Location = new System.Drawing.Point(4, 5);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(69, 13);
             this.lblDesc.TabIndex = 5;
@@ -85,7 +85,7 @@
             // 
             // lblOutput
             // 
-            this.lblOutput.Location = new System.Drawing.Point(0, 39);
+            this.lblOutput.Location = new System.Drawing.Point(0, 40);
             this.lblOutput.Name = "lblOutput";
             this.lblOutput.Size = new System.Drawing.Size(75, 16);
             this.lblOutput.TabIndex = 7;
@@ -97,6 +97,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.lblOutput);
             this.Controls.Add(this.chkInput);
             this.Controls.Add(this.lblDesc);
@@ -104,7 +105,7 @@
             this.Controls.Add(this.pbBitStatus);
             this.Controls.Add(this.label1);
             this.Name = "IOPin";
-            this.Size = new System.Drawing.Size(75, 58);
+            this.Size = new System.Drawing.Size(74, 58);
             ((System.ComponentModel.ISupportInitialize)(this.pbBitStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
