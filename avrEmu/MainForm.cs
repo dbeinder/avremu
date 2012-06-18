@@ -78,7 +78,7 @@ namespace avrEmu
             this.tsCboSpeed.SelectedIndex = 3;
 
             this.ebbvSreg.WatchedByte = this.at2313.ALU.SREG;
-            this.ioPortA.AvrPort = this.at2313.Ports['A'];
+           // this.ioPortA.AvrPort = this.at2313.Ports['A'];
 
             RegisterWorkingRegs();
             RegisterSram();
