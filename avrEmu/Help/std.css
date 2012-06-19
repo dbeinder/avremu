@@ -4,114 +4,99 @@
 }
 
 a:link {
-    color: #11d;
+    color: #111;
     text-decoration: none;
 }
 a:visited {
-    color: #11d;
+    color: #111;
     text-decoration: none;
 }
 a:hover {
+	color: #b22;
     text-decoration: underline;
 }
 a:active {
     color: #f00;
 }
 
-html {
-    background-color: #eee;
-    padding: 1em;
-    font-family: consolas, monotype;
+a[name]:hover {
+	color: #000;
 }
 
-body {
-    border: 1px #ccc solid;
-    background-color: #fefefe;
-    max-width: 1100px;
-    margin: 0 auto;
-    border-radius: 0.3em;
+html {
+    background-color: #f6f6f6;
+	font-family: sans-serif;
 }
 
 h1 {
-    border-bottom: 1px #ccc dotted;
-    background-color: #f3f3f3;
-    padding: 0.3em 3em;
+    border-bottom: 1px #aaa dotted;
+    background-color: #f6f6f6;
+    padding: 0.4em 3em;
     color: #666;
-    background-image: url('db.png');
-    background-position: 80% bottom;
-    background-repeat: no-repeat;
-    border-radius: 0.15em 0.15em 0 0;
 }
 
-h1 a {
-    color: #666 !important;
+#menu {
+	width: 13em;
+	padding: 1em 3em;
+	background-color: #f6f6f6;
+	border-right: 1px #aaa dotted;
+	border-bottom: 1px #aaa dotted;
+	float: left;
 }
 
-#cnt {
-    padding: 1em;
-    overflow: auto;
+#menu span {
+	font-size: 1.3em;
 }
 
-.fl {
-    float: left;
-    border-right: 1px #ccc solid;
-    border-left: 1px #ccc solid;
-    padding: 0 1em;
-    margin-right: -1px;
+#menu ul {
+	margin-left: 2em;
 }
 
-.fl:last-child {
-    border-right: none;
+#content {
+	margin-left: 19em;
+	border-left: 1px #aaa dotted;
+	padding: 2em;
+	background-color:#eee;
 }
 
-.fl:first-child {
-    border-left: none;
+#content h2 {
+	margin-top: 2em;
+	padding-left: 2em;
+	clear: right;
 }
 
-.fl ul {
-    list-style-position: inside;
-    list-style-image: url('l.png');
+#content h2:first-child {
+	margin: 0;
+}
+
+#content p {
+	text-align: justify;
+	padding: 0.5em 3em 0 0;
 }
 
 #footer {
-    border-top: 1px #ccc dotted;
-    padding: 0.1em 0 0.2em 0;
-    text-align: center;
+	clear: both;
+	border-top: 1px #aaa dotted;
+	background-color: #f6f6f6;
+	text-align: center;
+	padding: 0.4em;
 }
 
-#impr {
-    margin: 1em auto;
-    width: 30%;
+.picbox {
+	float: right;
+	margin: 0.5em;
+	padding: 0.5em;
+	background-color: #f6f6f6;
+	border: 1px #ccc solid;
 }
 
-#validcss {
-    float: right;
-    border: none;
-    margin: 0.2em 0.3em;
+.picbox span:before {
+	margin-left:1em;
+	margin-right:1em;
+	content: "—";
 }
 
-#validxhtml {
-    float: left;
-    border: none;
-    margin: 0.2em 0.3em;
-}
-
-#dirl {
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-#dirl hr { /* apache dirlist*/
-    background-color: #ccc;
-    border: none;
-    height: 1px;
-    margin: 0.5em 0;
-}
-
-#dirl table {
-    width: 100%;
-}
-
-#dirl a img {
-    border: none;
+.picbox img {
+	display: block;
+	margin: 0 0 0.5em 0;
 }
