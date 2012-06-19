@@ -193,6 +193,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram3.cd" />
     <None Include="Resources\control_start_blue.png" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +263,6 @@
     <None Include="Resources\bullet_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Help\Screenshot.bmp" />
+    <EmbeddedResource Include="Help\screen.png" />
   </ItemGroup>
 </Project>
