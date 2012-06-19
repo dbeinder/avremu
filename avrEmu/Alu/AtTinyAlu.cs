@@ -445,7 +445,7 @@ namespace avrEmu
             ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
-            if (Convert.ToInt32(rr[b]) == 0)
+            if (!rr[b])
             {
                 this.PC += 2;
             }
@@ -458,7 +458,7 @@ namespace avrEmu
             ExtByte rr = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
-            if (Convert.ToInt32(rr[b]) == 1)
+            if (rr[b])
             {
                 this.PC += 2;
             }
@@ -471,7 +471,7 @@ namespace avrEmu
             ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
-            if (Convert.ToInt32(a[b]) == 0)
+            if (!a[b])
             {
                 this.PC += 2;
             }
@@ -484,7 +484,7 @@ namespace avrEmu
             ExtByte a = this.Controller.PeripheralRegisters[(args[0] as AvrInstrArgIOReg).IORegister.ToUpper()];
             int b = (args[1] as AvrInstrArgConst).Constant;
 
-            if (Convert.ToInt32(a[b]) == 1)
+            if (a[b])
             {
                 this.PC += 2;
             }
@@ -497,7 +497,7 @@ namespace avrEmu
             int s = (args[0] as AvrInstrArgConst).Constant;
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            if (this.SREG[s] == true)
+            if (this.SREG[s])
             {
                 this.PC += k + 1;
             }
@@ -510,7 +510,7 @@ namespace avrEmu
             int s = (args[0] as AvrInstrArgConst).Constant;
             int k = (args[1] as AvrInstrArgConst).Constant;
 
-            if (this.SREG[s] == false)
+            if (!this.SREG[s])
             {
                 this.PC += k + 1;
             }
@@ -522,7 +522,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["Z"] == true)
+            if (this.SREG["Z"])
             {
                 this.PC += k + 1;
             }
@@ -534,7 +534,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["Z"] == false)
+            if (!this.SREG["Z"])
             {
                 this.PC += k + 1;
             }
@@ -546,7 +546,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["C"] == true)
+            if (this.SREG["C"])
             {
                 this.PC += k + 1;
             }
@@ -558,7 +558,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["C"] == false)
+            if (!this.SREG["C"])
             {
                 this.PC += k + 1;
             }
@@ -570,7 +570,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["N"] == true)
+            if (this.SREG["N"])
             {
                 this.PC += k + 1;
             }
@@ -582,7 +582,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["N"] == false)
+            if (!this.SREG["N"])
             {
                 this.PC += k + 1;
             }
@@ -594,7 +594,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["N"] ^ this.SREG["V"] == false)
+            if (!(this.SREG["N"] ^ this.SREG["V"]))
             {
                 this.PC += k + 1;
             }
@@ -606,7 +606,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["N"] ^ this.SREG["V"] == true)
+            if (this.SREG["N"] ^ this.SREG["V"])
             {
                 this.PC += k + 1;
             }
@@ -618,7 +618,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["H"] == true)
+            if (this.SREG["H"])
             {
                 this.PC += k + 1;
             }
@@ -630,7 +630,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["H"] == false)
+            if (!this.SREG["H"])
             {
                 this.PC += k + 1;
             }
@@ -642,7 +642,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["T"] == true)
+            if (this.SREG["T"])
             {
                 this.PC += k + 1;
             }
@@ -654,7 +654,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["T"] == false)
+            if (!this.SREG["T"])
             {
                 this.PC += k + 1;
             }
@@ -666,7 +666,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["V"] == true)
+            if (this.SREG["V"])
             {
                 this.PC += k + 1;
             }
@@ -678,7 +678,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["V"] == false)
+            if (!this.SREG["V"])
             {
                 this.PC += k + 1;
             }
@@ -690,7 +690,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["I"] == true)
+            if (this.SREG["I"])
             {
                 this.PC += k + 1;
             }
@@ -702,7 +702,7 @@ namespace avrEmu
         {
             int k = (args[0] as AvrInstrArgConst).Constant;
 
-            if (this.SREG["I"] == false)
+            if (!this.SREG["I"])
             {
                 this.PC += k + 1;
             }
