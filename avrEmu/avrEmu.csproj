@@ -144,6 +144,7 @@
     <Compile Include="ExtByte\ValueEdit.Designer.cs">
       <DependentUpon>ValueEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinApiHelper.cs" />
     <Compile Include="WordHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

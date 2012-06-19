@@ -160,8 +160,6 @@ namespace avrEmu
         {
             ExtByte rd = this.Controller.WorkingRegisters[(args[0] as AvrInstrArgRegister).Register];
             ExtByte rr = this.Controller.WorkingRegisters[(args[1] as AvrInstrArgRegister).Register];
-            rd.Value = (byte)(rd.Value + rr.Value);
-
 
             this.SREG["H"] = ((rd.Value & 0x0f) + (rr.Value & 0x0f)) > 15;
             rd.Value = SetFlags(rd.Value + rr.Value, SregFlags.CZNV);
