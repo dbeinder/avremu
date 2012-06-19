@@ -54,6 +54,7 @@ namespace avrEmu
             this.memoryLink.FetchInstruction += new AvrPMFormLink.FetchInstructionEventHandler(memoryLink_FetchInstruction);
 
             this.autoSimTimer.Tick += new EventHandler(autoSimTimer_Tick);
+            this.autoSimTimer.Enabled = false;
 
             this.extByteEditors.AddRange(new ExtByteEditor[] //register editors, for format changing
             {
@@ -101,6 +102,7 @@ namespace avrEmu
         {
             if (simulationInProgress)
             {
+                StopAutoSim();
                 this.at2313.Reset();
                 UpdateCodeIcons();
                 simulationInProgress = false;
@@ -231,6 +233,7 @@ namespace avrEmu
 
         private void tsBtnReset_Click(object sender, EventArgs e)
         {
+            StopAutoSim();
             this.at2313.Reset();
             this.simulationInProgress = false;
             UpdateCodeIcons();
@@ -285,6 +288,26 @@ namespace avrEmu
         {
             if (e.TabPageIndex == 0)
                 e.Cancel = true;
+        }
+
+        private void tsBtnAutoRun_Click(object sender, EventArgs e)
+        {
+            if (this.autoSimTimer.Enabled)
+                StopAutoSim();
+            else
+                StartAutoSim();
+        }
+
+        private void StartAutoSim()
+        {
+            this.tsBtnAutoRun.Image = Properties.Resources.control_pause_blue;
+            this.autoSimTimer.Enabled = true;
+        }
+
+        private void StopAutoSim()
+        {
+            this.autoSimTimer.Enabled = false;
+            this.tsBtnAutoRun.Image = Properties.Resources.control_play_blue;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
