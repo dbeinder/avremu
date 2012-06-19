@@ -109,6 +109,7 @@ namespace avrEmu
                 UpdateCodeIcons();
                 simulationInProgress = false;
             }
+            this.ttError.RemoveAll();
             rtbCode_VScroll(this.rtbCode, new EventArgs());
         }
 
@@ -289,6 +290,10 @@ namespace avrEmu
                 this.errorOccured = true;
                 this.tsBtnManualStep.Enabled = false;
                 this.tsBtnAutoRun.Enabled = false;
+                ttError.Show(ex.Message, this, rtbCode.Left - 7,
+                    this.rtbCode.GetPositionFromCharIndex(
+                    this.rtbCode.GetFirstCharIndexFromLine(
+                    this.prePro.LineMapping[this.at2313.ProgramCounter])).Y - 2);
                 StopAutoSim();
             }
 
