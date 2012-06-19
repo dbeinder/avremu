@@ -28,6 +28,7 @@ namespace avrEmu
             this.SRAM = new AvrSram(CapacitySRAM);
             this.Modules.Add(this.ALU);
             this.Modules.Add(this.ProgramMemory);
+            this.Modules.Add(this.SRAM);
             AddPortsToModules();
             this.Constants = new Dictionary<string, string>() 
             {

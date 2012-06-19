@@ -13,8 +13,10 @@ namespace avrEmu
     public partial class MainForm : Form
     {
         private const int IconLineDarkness = 24;
+        private const int AutoScrollSpace = 50;
         private bool simulationInProgress = false;
-        private List<int> errorLines = new List<int>() { };
+        private int errorLine = 0;
+        private bool errorOccured = false;
         private AvrController at2313 = new AtTiny2313();
         private AvrPMFormLink memoryLink = new AvrPMFormLink();
         private Preprocessor prePro;
@@ -107,6 +109,7 @@ namespace avrEmu
                 UpdateCodeIcons();
                 simulationInProgress = false;
             }
+            this.ttError.RemoveAll();
             rtbCode_VScroll(this.rtbCode, new EventArgs());
         }
 
@@ -125,17 +128,17 @@ namespace avrEmu
 
         private void pbCodeIcons_Paint(object sender, PaintEventArgs e)
         {
-            if (!simulationInProgress)
-                return;
-
             int offset = 6 - rtbCode.Font.Height / 2;
 
-            e.Graphics.DrawImage(this.bulletExec, 0,
-                this.rtbCode.Font.Height *
-                  this.prePro.LineMapping[this.at2313.ProgramCounter]);
+            if (simulationInProgress)
+                e.Graphics.DrawImage(this.bulletExec, 0,
+                    this.rtbCode.Font.Height *
+                      this.prePro.LineMapping[this.at2313.ProgramCounter]);
 
-            foreach (int errorPos in errorLines)
-                e.Graphics.DrawImage(this.bulletError, 0, rtbCode.Font.Height * errorPos);
+            if (errorOccured)
+                e.Graphics.DrawImage(this.bulletError, 0,
+                this.rtbCode.Font.Height *
+                  this.prePro.LineMapping[errorLine]);
         }
 
         private void rtbCode_VScroll(object sender, EventArgs e)
@@ -218,7 +221,7 @@ namespace avrEmu
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
-            if (openFileDialogAsm.ShowDialog() == DialogResult.OK)
+            if (saveFileDialogAsm.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
@@ -234,6 +237,9 @@ namespace avrEmu
         private void tsBtnReset_Click(object sender, EventArgs e)
         {
             StopAutoSim();
+            this.errorOccured = false;
+            this.tsBtnAutoRun.Enabled = true;
+            this.tsBtnManualStep.Enabled = true;
             this.at2313.Reset();
             this.simulationInProgress = false;
             UpdateCodeIcons();
@@ -262,6 +268,7 @@ namespace avrEmu
                 {
                     this.prePro.Process(this.rtbCode.Text);
                     this.simulationInProgress = true;
+                    ScrollToCursor();
                     UpdateCodeIcons();
                     return;
                 }
@@ -271,15 +278,54 @@ namespace avrEmu
                     return;
                 }
             }
-            this.at2313.ClockTick();
+
+            try
+            {
+                this.at2313.ClockTick();
+            }
+            catch (Exception ex)
+            {
+                this.errorLine = this.at2313.ProgramCounter;
+                this.simulationInProgress = false;
+                this.errorOccured = true;
+                this.tsBtnManualStep.Enabled = false;
+                this.tsBtnAutoRun.Enabled = false;
+                ttError.Show(ex.Message, this, rtbCode.Left - 7,
+                    this.rtbCode.GetPositionFromCharIndex(
+                    this.rtbCode.GetFirstCharIndexFromLine(
+                    this.prePro.LineMapping[this.at2313.ProgramCounter])).Y - 2);
+                StopAutoSim();
+            }
 
             if (this.at2313.ProgramCounter == this.prePro.ProcessedLines.Count)
                 this.at2313.ProgramCounter = 0;
 
+            ScrollToCursor();
             UpdateCodeIcons();
         }
 
-        void memoryLink_FetchInstruction(object sender, FetchInstructionEventArgs e)
+        private void ScrollToCursor()
+        {
+            int scrolled = WinApiHelper.GetVScrollPos(this.rtbCode.Handle);
+            int currentCursorPos = this.rtbCode.GetPositionFromCharIndex(
+                this.rtbCode.GetFirstCharIndexFromLine(
+                this.prePro.LineMapping[this.at2313.ProgramCounter])).Y;
+
+            int nextScroll = 0;
+
+            if (currentCursorPos < AutoScrollSpace)
+                nextScroll = scrolled - AutoScrollSpace + currentCursorPos;
+            else if (currentCursorPos > (this.rtbCode.Height - AutoScrollSpace))
+                nextScroll = scrolled + currentCursorPos - this.rtbCode.Height + AutoScrollSpace;
+            else
+                return;
+
+            if (nextScroll < 0)
+                nextScroll = 0;
+            WinApiHelper.SetVScrollPos(this.rtbCode.Handle, nextScroll);
+        }
+
+        private void memoryLink_FetchInstruction(object sender, FetchInstructionEventArgs e)
         {
             e.Instruction = new AvrInstruction(prePro.ProcessedLines[e.InstructionNr]);
         }
@@ -310,7 +356,8 @@ namespace avrEmu
             this.tsBtnAutoRun.Image = Properties.Resources.control_play_blue;
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
         {
             switch (keyData)
             {

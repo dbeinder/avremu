@@ -23,7 +23,7 @@ namespace avrEmu
             for (int i = 0; i < instruction.Arguments.Count; i++)
             {
                 if (instruction.Arguments[i].InstructionArgType != this.InstructionSet[instruction.Instruction].Args[i])
-                    throw new Exception("Argument #" + i + " is of invalid Type!");
+                    throw new Exception("Argument #" + (i + 1) + " is of invalid Type!");
             }
 
             int oldPC = this.Controller.ProgramCounter;
@@ -178,7 +178,7 @@ namespace avrEmu
 
             return newValue;
         }
-        
+
         #endregion
 
         #endregion
