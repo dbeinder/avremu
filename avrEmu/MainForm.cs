@@ -312,10 +312,29 @@ namespace avrEmu
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.F))
+            switch (keyData)
             {
-                MessageBox.Show("What the Ctrl+F?");
-                return true;
+                case Keys.F10:
+                    tsBtnManualStep_Click(tsBtnManualStep, new EventArgs());
+                    break;
+                case Keys.F5:
+                    tsBtnAutoRun_Click(tsBtnAutoRun, new EventArgs());
+                    break;
+                case Keys.F2:
+                    tsBtnReset_Click(tsBtnReset, new EventArgs());
+                    break;
+                case (Keys.Control|Keys.O):
+                    openToolStripButton_Click(openToolStripButton, new EventArgs());
+                    break;
+                case (Keys.Control | Keys.S):
+                    saveToolStripButton_Click(saveToolStripButton, new EventArgs());
+                    break;
+                case (Keys.Control | Keys.N):
+                    newToolStripButton_Click(newToolStripButton, new EventArgs());
+                    break;
+                default:
+                    break;
+
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
