@@ -33,8 +33,7 @@ namespace avrEmu
             { "16 Hz", 63 },
             { "32 Hz", 31 },
             { "64 Hz", 16 },
-            { "128 Hz", 8 },
-            { "256 Hz", 4 }
+            { "128 Hz", 8 }
         };
 
         private List<NumberFormat> possibleFormats = new List<NumberFormat>()
@@ -361,7 +360,7 @@ namespace avrEmu
         {
             switch (keyData)
             {
-                case Keys.F10:
+                case Keys.F11:
                     tsBtnManualStep_Click(tsBtnManualStep, new EventArgs());
                     break;
                 case Keys.F5:
@@ -370,7 +369,7 @@ namespace avrEmu
                 case Keys.F2:
                     tsBtnReset_Click(tsBtnReset, new EventArgs());
                     break;
-                case (Keys.Control|Keys.O):
+                case (Keys.Control | Keys.O):
                     openToolStripButton_Click(openToolStripButton, new EventArgs());
                     break;
                 case (Keys.Control | Keys.S):
