@@ -261,4 +261,7 @@
   <ItemGroup>
     <None Include="Resources\bullet_green.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\Screenshot.bmp" />
+  </ItemGroup>
 </Project>

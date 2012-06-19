@@ -497,7 +497,7 @@ namespace avrEmu
 
             if (this.SREG[s])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -510,7 +510,7 @@ namespace avrEmu
 
             if (!this.SREG[s])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -522,7 +522,7 @@ namespace avrEmu
 
             if (this.SREG["Z"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -534,7 +534,7 @@ namespace avrEmu
 
             if (!this.SREG["Z"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -546,7 +546,7 @@ namespace avrEmu
 
             if (this.SREG["C"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -558,7 +558,7 @@ namespace avrEmu
 
             if (!this.SREG["C"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -570,7 +570,7 @@ namespace avrEmu
 
             if (this.SREG["N"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -582,7 +582,7 @@ namespace avrEmu
 
             if (!this.SREG["N"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -594,7 +594,7 @@ namespace avrEmu
 
             if (!(this.SREG["N"] ^ this.SREG["V"]))
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -606,7 +606,7 @@ namespace avrEmu
 
             if (this.SREG["N"] ^ this.SREG["V"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -618,7 +618,7 @@ namespace avrEmu
 
             if (this.SREG["H"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -630,7 +630,7 @@ namespace avrEmu
 
             if (!this.SREG["H"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -642,7 +642,7 @@ namespace avrEmu
 
             if (this.SREG["T"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -654,7 +654,7 @@ namespace avrEmu
 
             if (!this.SREG["T"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -666,7 +666,7 @@ namespace avrEmu
 
             if (this.SREG["V"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -678,7 +678,7 @@ namespace avrEmu
 
             if (!this.SREG["V"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -690,7 +690,7 @@ namespace avrEmu
 
             if (this.SREG["I"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
@@ -702,7 +702,7 @@ namespace avrEmu
 
             if (!this.SREG["I"])
             {
-                this.PC += k + 1;
+                this.PC += k;
             }
             else
                 this.PC += 1;
