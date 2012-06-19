@@ -286,5 +286,20 @@ namespace avrEmu
             if (e.TabPageIndex == 0)
                 e.Cancel = true;
         }
+
+        private void tsBtnAutoRun_Click(object sender, EventArgs e)
+        {
+            if (this.autoSimTimer.Enabled)
+            {
+                this.autoSimTimer.Enabled = false;
+                this.tsBtnAutoRun.Image = Properties.Resources.control_play_blue;
+            }
+            else
+            {
+                this.tsBtnAutoRun.Image = Properties.Resources.control_pause_blue;
+                this.autoSimTimer.Enabled = true;
+                this.autoSimTimer.Start();
+            }
+        }
     }
 }

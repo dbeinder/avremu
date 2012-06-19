@@ -208,6 +208,7 @@
             this.tsBtnAutoRun.Name = "tsBtnAutoRun";
             this.tsBtnAutoRun.Size = new System.Drawing.Size(23, 22);
             this.tsBtnAutoRun.Text = "toolStripButton3";
+            this.tsBtnAutoRun.Click += new System.EventHandler(this.tsBtnAutoRun_Click);
             // 
             // toolStripSeparator4
             // 
