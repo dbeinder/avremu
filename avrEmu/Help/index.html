@@ -12,7 +12,7 @@
         <span>Content</span>
         <ul>
             <li><a href="#about">About</a></li>
-            <li><a href="#overview">Overview</a></li>
+            <li><a href="#simulation">Simulation</a></li>
             <li><a href="#memories">Memories</a></li>
             <li><a href="#ports">Ports</a></li>
             <li><a href="#keybshort">Keyboard Shortcuts</a></li>
@@ -22,53 +22,57 @@
         <h2>
             <a name="about">About</a></h2>
         <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
-            eos et accusam et justo duo dolores et ea rebum.
+            AVR Emulator is a project of two students at the HTL Rankweil for AINF.
+            <!--This programm is licenced under the General Public License v3//-->
         </p>
-        <div class="picbox">
-            <img src="screen.png" />
-            <span>Ein Screenshot</span>
-        </div>
-        <p>
-            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
-            eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet.</p>
         <h2>
-            <a name="overview">Overview</a></h2>
+            <a name="simulation">Simulation</a></h2>
         <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
-            eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-            aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
-            ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-            sit amet.</p>
+            To start the simulation you can choose between two different kinds. You can simulate
+            it manually. Therefore, if you press the manual button, the next instruction is
+            being executed. If you want to simulate the programm without pressing the manual
+            button for each line, you can simulate it automatically. When you simulate it automatically
+            you can choose between different speeds for the simulation. To stop the simulation you
+            can press the reset button. Then the simulation stops and you can start it again.
+            If there is a syntax error somewhere in your code, an error is displayed when you try
+            to simulate that line. Otherwise a green arrow indicates which line will be simulated next.</p>
         <h2>
             <a name="memories">Memories</a></h2>
         <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
-            eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-            aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
-            ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-            sit amet.</p>
+            There are 3 types of Memory in the Atmel AtTiny2313 to store Data:</p>
+        <ul>
+            <li>Working Register: 32 Byte</li>
+            <li>Static RAM: 128 Byte</li>
+            <li>Peripheral Registers: Access to the internal Modules</li>
+        </ul>
+        <div class="picbox">
+            <img src="mem.png" />
+            <span>The Memories of the Tiny2313</span>
+        </div>
+        <p>
+            The value can be modified by doubleclicking on a entry.
+        </p>
         <h2>
             <a name="ports">Ports</a></h2>
         <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero
-            eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-            aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et
-            ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
-            sit amet.</p>
+            The Atmel AtTiny2313 features 18 bi-directional I/O pins, distrubuted over 3 ports:
+        </p>
+        <ul>
+            <li>Port A: 3 Pins</li>
+            <li>Port B: 8 Pins</li>
+            <li>Port C: 7 Pins</li>
+        </ul>
+        <p>
+            The direction of each ports is determined by the state of the DDRX register, and
+            also is displayed in the I/O-Ports section of the simulator. When in output Mode,
+            the digital state state (High / Low) of each pin corresponds to the bits in the
+            PORTX register. When in input mode, the state of a pin can be change from within
+            the GUI of the simulator and is reflected by the value of the PINX register.
+        </p>
+        <div class="picbox">
+            <img src="ports.png" />
+            <span>The I/O-Ports section</span>
+        </div>
         <h2>
             <a name="keybshort">Keyboard Shortcuts</a></h2>
         <p>

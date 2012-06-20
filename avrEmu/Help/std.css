@@ -74,6 +74,11 @@ h1 {
 	padding: 0.5em 3em 0 0;
 }
 
+#content ul 
+{
+    padding: 0.5em 0 0 1em;   
+}
+
 #footer {
 	clear: both;
 	border-top: 1px #aaa dotted;
