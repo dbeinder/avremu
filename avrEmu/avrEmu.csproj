@@ -260,6 +260,7 @@
     <None Include="Resources\bullet_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Help\screen.png" />
+    <EmbeddedResource Include="Help\mem.png" />
+    <EmbeddedResource Include="Help\ports.png" />
   </ItemGroup>
 </Project>
