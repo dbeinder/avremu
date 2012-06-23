@@ -190,11 +190,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram3.cd" />
-    <None Include="Resources\control_start_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\control_rewind_blue.png" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\control_pause_blue.png" />
@@ -203,13 +199,7 @@
     <None Include="Resources\control_play_blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\control_fastforward_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\control_end_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\control_stop_blue.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\control_repeat_blue.png" />
@@ -219,9 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\bullet_go.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bullet_error.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\logo.png" />
