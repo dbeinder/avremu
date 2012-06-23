@@ -1,4 +1,5 @@
 using System;
+
 namespace avrEmu
 {
     public abstract class AvrProgramMemory:AvrModule

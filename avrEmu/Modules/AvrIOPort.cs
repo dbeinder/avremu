@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 namespace avrEmu
 {
     public class AvrIOPort : AvrModule
@@ -33,30 +34,9 @@ namespace avrEmu
         }
     }
 
-    public class AvrIOPin : AvrModule
+    public class AvrIOPin
     {
         private ExtByte Ddr, Port, Pin;
-        public int PinNumber;
-
-        public event BitChangedEventHandler PinChanged;
-
-        public AvrIOPin(ExtByte ddr, ExtByte port, ExtByte pin, int bitNum)
-        {
-            this.Ddr = ddr;
-            this.Port = port;
-            this.Pin = pin;
-            this.PinNumber = bitNum;
-
-            ddr.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
-            port.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
-            pin.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
-        }
-
-        void AvrIOPin_BitChanged(object sender, BitChangedEventArgs e)
-        {
-            if (PinChanged != null)
-                PinChanged(this, new BitChangedEventArgs(e.ChangedByte, this.PinNumber, e.NewValue));
-        }
 
         public bool IsOutput
         {
@@ -65,7 +45,6 @@ namespace avrEmu
                 return this.Ddr[PinNumber];
             }
         }
-
 
         public bool OutputValue
         {
@@ -86,6 +65,30 @@ namespace avrEmu
             {
                 this.Pin[PinNumber] = value;
             }
+        }
+
+        public int PinNumber;
+
+        public event BitChangedEventHandler PinChanged;
+
+
+        public AvrIOPin(ExtByte ddr, ExtByte port, ExtByte pin, int bitNum)
+        {
+            this.Ddr = ddr;
+            this.Port = port;
+            this.Pin = pin;
+            this.PinNumber = bitNum;
+
+            ddr.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
+            port.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
+            pin.BitEvents[bitNum].BitChanged += new BitChangedEventHandler(AvrIOPin_BitChanged);
+        }
+
+        void AvrIOPin_BitChanged(object sender, BitChangedEventArgs e)
+        { 
+            //relaying event
+            if (PinChanged != null)
+                PinChanged(this, new BitChangedEventArgs(e.ChangedByte, this.PinNumber, e.NewValue));
         }
     }
 }

@@ -7,28 +7,36 @@ namespace avrEmu
 {
     abstract class AvrController
     {
+        public int ProgramCounter { get; set; }
+
+        protected List<AvrModule> Modules = new List<AvrModule>();
+
+        #region Standard Modules
+
         public AvrAlu ALU { get; protected set; }
 
         public AvrProgramMemory ProgramMemory { get; set; }
 
-        public AvrSram SRAM { get; protected set; }
-
-        public int ProgramCounter { get; set; }
-
-        public ExtByte[] WorkingRegisters { get; protected set; }
-
-        public Dictionary<string, string> Constants { get; protected set; }
-
-        public Dictionary<string, ExtByte> PeripheralRegisters { get; protected set; }
+        public AvrSram SRAM { get; protected set; } //todo: automated adding to modules
 
         public Dictionary<char, AvrIOPort> Ports { get; protected set; }
 
-        protected List<AvrModule> Modules = new List<AvrModule>();
+        #endregion
 
-        protected void AddPortsToModules()
+        public ExtByte[] WorkingRegisters { get; protected set; }
+
+        public Dictionary<string, ExtByte> PeripheralRegisters { get; protected set; }
+
+        //Controller-specific constants for the proprocessor, eg: RAMEND
+        public Dictionary<string, string> Constants { get; protected set; }
+
+
+        public virtual void ClockTick()
         {
-            foreach (AvrIOPort port in this.Ports.Values)
-                this.Modules.Add(port);
+            foreach (AvrModule module in this.Modules)
+                module.ClockTick();
+
+            this.ALU.ExecuteInstruction(this.ProgramMemory.GetInstruction(this.ProgramCounter));
         }
 
         public virtual void Reset()
@@ -39,21 +47,16 @@ namespace avrEmu
             LoadIORegisters();
             ResetWorkingRegisters();
         }
-        
-        protected virtual void ResetModules()
+
+
+        #region Init Helpers
+
+        protected virtual void AddPortsToModules()
         {
-            foreach (AvrModule module in this.Modules)
-                module.Reset();
+            foreach (AvrIOPort port in this.Ports.Values)
+                this.Modules.Add(port);
         }
-        
-        protected virtual void ResetWorkingRegisters()
-        {
-            for (int i = 0; i < this.WorkingRegisters.Length; i++)
-            {
-                this.WorkingRegisters[i].Value = 0;
-            }
-        }
-        
+
         protected virtual void LoadIORegisters()
         {
             foreach (AvrModule module in this.Modules)
@@ -65,13 +68,24 @@ namespace avrEmu
             }
         }
 
-        public virtual void ClockTick()
+        #endregion
+
+        #region Reset Helpers
+
+        protected virtual void ResetModules()
         {
             foreach (AvrModule module in this.Modules)
-                module.ClockTick();
-
-            this.ALU.ExecuteInstruction(this.ProgramMemory.GetInstruction(this.ProgramCounter));
+                module.Reset();
         }
-    }
 
+        protected virtual void ResetWorkingRegisters()
+        {
+            for (int i = 0; i < this.WorkingRegisters.Length; i++)
+            {
+                this.WorkingRegisters[i].Value = 0;
+            }
+        }
+
+        #endregion
+    }
 }

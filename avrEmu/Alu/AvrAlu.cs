@@ -7,6 +7,7 @@ namespace avrEmu
 {
     abstract class AvrAlu : AvrModule
     {
+        //reference to the AvrController, of which this ALU is a part of
         public AvrController Controller { get; protected set; }
 
         public AvrAlu(AvrController controller)
@@ -15,8 +16,14 @@ namespace avrEmu
             InitSREG();
         }
 
-        public virtual void ExecuteInstruction(AvrInstruction instruction)
+        public virtual void CheckInstruction(AvrInstruction instruction)
         {
+            //Checks if a AvrInstruction is valid for this ALU
+            //and throws a readeable Exception if not
+
+            if (!this.InstructionSet.ContainsKey(instruction.Instruction))
+                throw new Exception("Unkown Instrcution: " + instruction.Instruction);
+
             if (instruction.Arguments.Count != this.InstructionSet[instruction.Instruction].Args.Count)
                 throw new Exception("Invalid number of Arguments for Instruction!");
 
@@ -25,9 +32,14 @@ namespace avrEmu
                 if (instruction.Arguments[i].InstructionArgType != this.InstructionSet[instruction.Instruction].Args[i])
                     throw new Exception("Argument #" + (i + 1) + " is of invalid Type!");
             }
+        }
 
-            int oldPC = this.Controller.ProgramCounter;
+        public virtual void ExecuteInstruction(AvrInstruction instruction)
+        {
+            CheckInstruction(instruction);
+
             this.InstructionSet[instruction.Instruction].Exec(instruction.Arguments);
+
             if (!this.InstructionSet[instruction.Instruction].ModifiesPC)
                 this.Controller.ProgramCounter++;
         }
@@ -42,7 +54,7 @@ namespace avrEmu
 
         protected delegate void Instruction(List<AvrInstrArg> args);
 
-        protected class VI
+        protected class VI  //Valid Instruction, InstructionSet entry
         {
             public Instruction Exec;
             public List<AvrInstrArgType> Args;
@@ -234,5 +246,4 @@ namespace avrEmu
 
         #endregion
     }
-
 }

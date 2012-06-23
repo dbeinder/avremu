@@ -41,17 +41,17 @@ namespace avrEmu
 
             SearchForDef(inputToList);
 
-            FindJumpMarks(inputToList);
+            inputToList = FindJumpMarks(inputToList);
 
-            CleanUp(inputToList, linesToRemove);
+            inputToList = CleanUp(inputToList, linesToRemove);
 
-            Replace(inputToList);
+            inputToList = Replace(inputToList);
 
-            ReplaceJumpMarks(inputToList);
+            inputToList = ReplaceJumpMarks(inputToList);
 
-            Calculate(inputToList);
+            inputToList = Calculate(inputToList);
 
-            SearchForHighAndLow(inputToList);
+            inputToList = SearchForHighAndLow(inputToList);
 
 
 

@@ -1,4 +1,5 @@
 using System;
+
 namespace avrEmu
 {
     public class FetchInstructionEventArgs : EventArgs
@@ -12,9 +13,9 @@ namespace avrEmu
         }
     }
 
-    public class AvrPMFormLink:AvrProgramMemory
+    public class AvrPMFormLink : AvrProgramMemory
     {
-        public delegate void FetchInstructionEventHandler(object sender,FetchInstructionEventArgs e);
+        public delegate void FetchInstructionEventHandler(object sender, FetchInstructionEventArgs e);
 
         public event FetchInstructionEventHandler FetchInstruction;
 

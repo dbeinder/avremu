@@ -5,15 +5,7 @@ using System.Text;
 
 namespace avrEmu
 {
-    public class ByteChangedEventArgs : EventArgs
-    {
-        public ExtByte ChangedByte;
-
-        public ByteChangedEventArgs(ExtByte bt)
-        {
-            this.ChangedByte = bt;
-        }
-    }
+    #region BitChangedEvent
 
     public class BitChangedEventArgs : EventArgs
     {
@@ -29,18 +21,33 @@ namespace avrEmu
         }
     }
 
+    public delegate void BitChangedEventHandler(object sender, BitChangedEventArgs e);
+
+    #endregion
+
+    #region ByteChangedEvent
+
+    public class ByteChangedEventArgs : EventArgs
+    {
+        public ExtByte ChangedByte;
+
+        public ByteChangedEventArgs(ExtByte bt)
+        {
+            this.ChangedByte = bt;
+        }
+    }
+
     public delegate void ByteChangedEventHandler(object sender, ByteChangedEventArgs e);
 
-    public delegate void BitChangedEventHandler(object sender, BitChangedEventArgs e);
+    #endregion
 
     public class ExtByte : IComparable<ExtByte>, IEquatable<ExtByte>
     {
-
-
         public event ByteChangedEventHandler ByteChanged;
 
-        protected Dictionary<string, int> bitNumbers = new Dictionary<string, int>();
-        protected List<string> bitNames = new List<string>();
+        #region BitEvents
+
+        public BitEventsWrapper BitEvents;
 
         public class BitEvent
         {
@@ -90,11 +97,38 @@ namespace avrEmu
             }
         }
 
-        public class BN
+        #endregion
+
+        #region Bit Names and Numbers
+
+        public List<string> BitNames
+        {
+            get
+            {
+                return this.bitNames;
+            }
+            set
+            {
+                this.bitNumbers.Clear();
+
+                for (int i = 0; i < 8; i++)
+                    this.bitNumbers.Add(value[i], i);
+
+                this.bitNames = value;
+            }
+        }
+
+        public BitNamesWrapper BitNumbers;
+
+        protected List<string> bitNames = new List<string>();
+
+        protected Dictionary<string, int> bitNumbers = new Dictionary<string, int>();
+
+        public class BitNamesWrapper
         {
             private Dictionary<string, int> source;
 
-            public BN(Dictionary<string, int> source)
+            public BitNamesWrapper(Dictionary<string, int> source)
             {
                 this.source = source;
             }
@@ -116,37 +150,21 @@ namespace avrEmu
             }
         }
 
-        public List<string> BitNames
-        {
-            get
-            {
-                return this.bitNames;
-            }
-            set
-            {
-                this.bitNumbers.Clear();
+        #endregion
 
-                for (int i = 0; i < 8; i++)
-                    this.bitNumbers.Add(value[i], i);
+        protected byte internalValue;
 
-                this.bitNames = value;
-            }
-        }
-
-        public BitEventsWrapper BitEvents;
-        public BN BitNumbers;
-        protected byte _value;
 
         public byte Value
         {
             get
             {
-                return this._value;
+                return this.internalValue;
             }
             set
             {
                 ExtByte old = new ExtByte(this.Value);
-                this._value = value;
+                this.internalValue = value;
 
                 for (int i = 0; i < 8; i++)
                 {
@@ -163,14 +181,14 @@ namespace avrEmu
 
         public ExtByte(byte b)
         {
-            this._value = b;
-            this.BitNumbers = new BN(this.bitNumbers);
+            this.internalValue = b;
+            this.BitNumbers = new BitNamesWrapper(this.bitNumbers);
             this.BitEvents = new BitEventsWrapper(this);
         }
 
         public ExtByte(bool bit0, bool bit1, bool bit2, bool bit3, bool bit4, bool bit5, bool bit6, bool bit7)
         {
-            this._value = 0;
+            this.internalValue = 0;
             this[0] = bit0;
             this[1] = bit1;
             this[2] = bit2;
@@ -179,9 +197,11 @@ namespace avrEmu
             this[5] = bit5;
             this[6] = bit6;
             this[7] = bit7;
-            this.BitNumbers = new BN(this.bitNumbers);
+            this.BitNumbers = new BitNamesWrapper(this.bitNumbers);
             this.BitEvents = new BitEventsWrapper(this);
         }
+
+        #region Bit-wise access
 
         public bool this[int index]
         {
@@ -231,6 +251,8 @@ namespace avrEmu
             }
         }
 
+        #endregion
+
         public int CompareTo(ExtByte other)
         {
             return other.Value - this.Value;
@@ -239,6 +261,21 @@ namespace avrEmu
         public bool Equals(ExtByte other)
         {
             return this.Value == other.Value;
+        }
+
+        public override string ToString()
+        {
+            string output = "Byte:" + this.internalValue.ToString() + " [";
+            for (int i = 0; i < 8; i++)
+            {
+                if (this.BitNames.Count > i)
+                    output += this.BitNames[i];
+                else
+                    output += "B" + i.ToString();
+
+                output += "=" + (this[i] ? "1, " : "0, ");
+            }
+            return output.Substring(0, output.Length - 2) + "]";
         }
 
         #region Convenient but dangerous
@@ -254,21 +291,5 @@ namespace avrEmu
             return new ExtByte(bt);
         }*/
         #endregion
-
-        public override string ToString()
-        {
-            string output = "Byte:" + this._value.ToString() + " [";
-            for (int i = 0; i < 8; i++)
-            {
-                if (this.BitNames.Count > i)
-                    output += this.BitNames[i];
-                else
-                    output += "B" + i.ToString();
-
-                output += "=" + (this[i] ? "1, " : "0, ");
-            }
-            return output.Substring(0, output.Length - 2) + "]";
-        }
-
     }
 }

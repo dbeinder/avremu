@@ -9,6 +9,7 @@ namespace avrEmu
     {
         public Dictionary<string, ExtByte> IORegisters = new Dictionary<string, ExtByte>();
 
+        //Not every AvrModule has to react to a ClockTick, overriding them is optional
         public virtual void ClockTick()
         {
         }

@@ -1,4 +1,5 @@
 using System;
+
 namespace avrEmu
 {
     public class AvrProgramMemoryFlash:AvrProgramMemory

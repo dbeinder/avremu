@@ -5,6 +5,7 @@ using System.Text;
 
 namespace avrEmu
 {
+    //The only code specific to the AtTiny2313
     class AtTiny2313 : AvrController
     {
         private const int WorkingRegisterCount = 32;

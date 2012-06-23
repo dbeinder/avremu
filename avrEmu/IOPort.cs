@@ -11,12 +11,8 @@ namespace avrEmu
 {
     public partial class IOPort : UserControl
     {
-        public IOPort()
-        {
-            InitializeComponent();
-        }
-
         protected AvrIOPort avrPort;
+
         public AvrIOPort AvrPort
         {
             get { return this.AvrPort; }
@@ -38,6 +34,11 @@ namespace avrEmu
                 }
                 this.ResumeLayout();
             }
+        }
+
+        public IOPort()
+        {
+            InitializeComponent();
         }
     }
 }

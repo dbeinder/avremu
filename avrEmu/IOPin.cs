@@ -27,19 +27,16 @@ namespace avrEmu
             }
         }
 
-        void avrPin_PinChanged(object sender, BitChangedEventArgs e)
-        {
-            UpdateData();
-        }
 
         public IOPin()
         {
             InitializeComponent();
         }
 
-        void chkInput_CheckedChanged(object sender, EventArgs e)
+
+        void avrPin_PinChanged(object sender, BitChangedEventArgs e)
         {
-            this.avrPin.InputValue = chkInput.Checked;
+            UpdateData();
         }
 
         private void UpdateData()
@@ -63,5 +60,11 @@ namespace avrEmu
             else
                 this.pbBitStatus.Image = Properties.Resources.bullet_red;
         }
+
+        void chkInput_CheckedChanged(object sender, EventArgs e)
+        {
+            this.avrPin.InputValue = chkInput.Checked;
+        }
+
     }
 }

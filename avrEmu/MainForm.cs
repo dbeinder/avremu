@@ -19,8 +19,11 @@ namespace avrEmu
         private bool errorOccured = false;
         private AvrController at2313 = new AtTiny2313();
         private AvrPMFormLink memoryLink = new AvrPMFormLink();
+        private List<AvrInstruction> processedInstructions = new List<AvrInstruction>();
         private Preprocessor prePro;
         private Timer autoSimTimer = new Timer();
+        private List<ExtByteEditor> extByteEditors = new List<ExtByteEditor>();
+        private Image bulletExec, bulletError;
 
         private Dictionary<string, int> possibleSpeeds = new Dictionary<string, int>()
         {
@@ -43,9 +46,6 @@ namespace avrEmu
             NumberFormat.Signed,
             NumberFormat.Binary
         };
-
-        private List<ExtByteEditor> extByteEditors = new List<ExtByteEditor>();
-        private Image bulletExec, bulletError;
 
         public MainForm()
         {
@@ -99,30 +99,11 @@ namespace avrEmu
             this.prePro = new Preprocessor(this.at2313.Constants);
         }
 
-        private void rtbCode_TextChanged(object sender, EventArgs e)
-        {
-            if (simulationInProgress)
-            {
-                StopAutoSim();
-                this.at2313.Reset();
-                UpdateCodeIcons();
-                simulationInProgress = false;
-            }
-            this.ttError.RemoveAll();
-            rtbCode_VScroll(this.rtbCode, new EventArgs());
-        }
+        #region Code Icons
 
         private void UpdateCodeIcons()
         {
             this.pbCodeIcons.Invalidate();
-        }
-
-        private void RegisterWorkingRegs()
-        {
-            for (int i = 0; i < this.at2313.WorkingRegisters.Length; i++)
-            {
-                this.ebeWorkingRegs.RegisterByte(this.at2313.WorkingRegisters[i], "r" + i.ToString());
-            }
         }
 
         private void pbCodeIcons_Paint(object sender, PaintEventArgs e)
@@ -150,10 +131,16 @@ namespace avrEmu
                 pbCodeIcons.Top = yOffset;
         }
 
-        private void nudStartSram_ValueChanged(object sender, EventArgs e)
+        #endregion
+
+        #region GUI Helpers
+
+        private void RegisterWorkingRegs()
         {
-            this.ebeSram.Clear();
-            RegisterSram();
+            for (int i = 0; i < this.at2313.WorkingRegisters.Length; i++)
+            {
+                this.ebeWorkingRegs.RegisterByte(this.at2313.WorkingRegisters[i], "r" + i.ToString());
+            }
         }
 
         private void RegisterSram()
@@ -166,6 +153,22 @@ namespace avrEmu
             {
                 this.ebeSram.RegisterByte(this.at2313.SRAM.Memory[i], "0x" + i.ToString("x2"));
             }
+        }
+
+        private void RegisterIORegs()
+        {
+            foreach (KeyValuePair<string, ExtByte> ioReg in this.at2313.PeripheralRegisters)
+                ebeIORegs.RegisterByte(ioReg.Value, ioReg.Key);
+        }
+
+        #endregion
+
+        #region GUI Events
+
+        private void nudStartSram_ValueChanged(object sender, EventArgs e)
+        {
+            this.ebeSram.Clear();
+            RegisterSram();
         }
 
         private void nudSramLength_ValueChanged(object sender, EventArgs e)
@@ -182,10 +185,10 @@ namespace avrEmu
                 ebe.DisplayFormat = selectedFormat;
         }
 
-        private void RegisterIORegs()
+        private void tcPorts_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            foreach (KeyValuePair<string, ExtByte> ioReg in this.at2313.PeripheralRegisters)
-                ebeIORegs.RegisterByte(ioReg.Value, ioReg.Key);
+            if (e.TabPageIndex == 0)
+                e.Cancel = true;
         }
 
         private void helpToolStripButton_Click(object sender, EventArgs e)
@@ -201,6 +204,10 @@ namespace avrEmu
                 this.at2313.Reset();
             }
         }
+
+        #endregion
+
+        #region File Access
 
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
@@ -233,82 +240,109 @@ namespace avrEmu
             }
         }
 
-        private void tsBtnReset_Click(object sender, EventArgs e)
-        {
-            StopAutoSim();
-            this.errorOccured = false;
-            this.tsBtnAutoRun.Enabled = true;
-            this.tsBtnManualStep.Enabled = true;
-            this.at2313.Reset();
-            this.simulationInProgress = false;
-            UpdateCodeIcons();
-        }
+        #endregion
 
-        private void tsCboSpeed_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.autoSimTimer.Interval = this.possibleSpeeds[(string)this.tsCboSpeed.SelectedItem];
-        }
+        #region Simulation Control
 
-        private void tsBtnManualStep_Click(object sender, EventArgs e)
+        private void StartNewSimulation()
         {
-            SimulationStep();
-        }
+            //1. Run PrePro
+            try
+            {
+                this.prePro.Process(this.rtbCode.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Error while parsing code!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-        void autoSimTimer_Tick(object sender, EventArgs e)
-        {
-            SimulationStep();
+            //2. Convert Text to AvrInstructions
+            int currentLine = 0;
+            try
+            {
+                this.processedInstructions.Clear();
+
+                for (; currentLine < this.prePro.ProcessedLines.Count; currentLine++)
+                {
+                    AvrInstruction instr = new AvrInstruction(this.prePro.ProcessedLines[currentLine]);
+                    this.at2313.ALU.CheckInstruction(instr); //throws Exception if invalid
+                    this.processedInstructions.Add(instr);
+                }
+            }
+            catch (Exception ex)
+            {
+                StopAndShowError("Invalid Instruction", ex.Message, currentLine);
+                return;
+            }
+
+            //3. No Errors -> Start
+            ScrollToCodeLine(0);
+            this.simulationInProgress = true;
         }
 
         private void SimulationStep()
         {
-            if (!simulationInProgress)
+            if (simulationInProgress)
             {
                 try
                 {
-                    this.prePro.Process(this.rtbCode.Text);
-                    this.simulationInProgress = true;
-                    ScrollToCursor();
-                    UpdateCodeIcons();
-                    return;
+                    this.at2313.ClockTick();
+
+                    if (this.at2313.ProgramCounter == this.processedInstructions.Count)
+                        this.at2313.ProgramCounter = 0;
+
+                    ScrollToCodeLine(this.at2313.ProgramCounter);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error while parsing code!");
-                    return;
+                    StopAndShowError("Error while executing Instruction", ex.Message, this.at2313.ProgramCounter);
                 }
             }
-
-            try
+            else
             {
-                this.at2313.ClockTick();
-            }
-            catch (Exception ex)
-            {
-                this.errorLine = this.at2313.ProgramCounter;
-                this.simulationInProgress = false;
-                this.errorOccured = true;
-                this.tsBtnManualStep.Enabled = false;
-                this.tsBtnAutoRun.Enabled = false;
-                ttError.Show(ex.Message, this, rtbCode.Left - 7,
-                    this.rtbCode.GetPositionFromCharIndex(
-                    this.rtbCode.GetFirstCharIndexFromLine(
-                    this.prePro.LineMapping[this.at2313.ProgramCounter])).Y - 2);
-                StopAutoSim();
+                StartNewSimulation();
             }
 
-            if (this.at2313.ProgramCounter == this.prePro.ProcessedLines.Count)
-                this.at2313.ProgramCounter = 0;
-
-            ScrollToCursor();
             UpdateCodeIcons();
         }
 
-        private void ScrollToCursor()
+
+        private void StartAutoSim()
+        {
+            this.tsBtnAutoRun.Image = Properties.Resources.control_pause_blue;
+            this.autoSimTimer.Enabled = true;
+        }
+
+        private void StopAutoSim()
+        {
+            this.autoSimTimer.Enabled = false;
+            this.tsBtnAutoRun.Image = Properties.Resources.control_play_blue;
+        }
+
+
+        private void StopAndShowError(string errTitle, string errText, int line)
+        {
+            StopAutoSim();
+            ScrollToCodeLine(line);
+            this.errorLine = line;
+            this.simulationInProgress = false;
+            this.errorOccured = true;
+            this.tsBtnManualStep.Enabled = false;
+            this.tsBtnAutoRun.Enabled = false;
+            ttError.ToolTipTitle = errTitle; 
+            ttError.Show(errText, this, rtbCode.Left - 7,
+                this.rtbCode.GetPositionFromCharIndex(
+                this.rtbCode.GetFirstCharIndexFromLine(
+                this.prePro.LineMapping[line])).Y - 2);
+        }
+
+        private void ScrollToCodeLine(int line)
         {
             int scrolled = WinApiHelper.GetVScrollPos(this.rtbCode.Handle);
             int currentCursorPos = this.rtbCode.GetPositionFromCharIndex(
                 this.rtbCode.GetFirstCharIndexFromLine(
-                this.prePro.LineMapping[this.at2313.ProgramCounter])).Y;
+                this.prePro.LineMapping[line])).Y;
 
             int nextScroll = 0;
 
@@ -326,13 +360,27 @@ namespace avrEmu
 
         private void memoryLink_FetchInstruction(object sender, FetchInstructionEventArgs e)
         {
-            e.Instruction = new AvrInstruction(prePro.ProcessedLines[e.InstructionNr]);
+            e.Instruction = this.processedInstructions[e.InstructionNr];
         }
 
-        private void tcPorts_Selecting(object sender, TabControlCancelEventArgs e)
+        #region Form-Event Handler
+
+        private void rtbCode_TextChanged(object sender, EventArgs e)
         {
-            if (e.TabPageIndex == 0)
-                e.Cancel = true;
+            if (simulationInProgress)
+            {
+                StopAutoSim();
+                this.at2313.Reset();
+                UpdateCodeIcons();
+                simulationInProgress = false;
+            }
+            this.ttError.RemoveAll();
+            rtbCode_VScroll(this.rtbCode, new EventArgs());
+        }
+
+        private void tsBtnManualStep_Click(object sender, EventArgs e)
+        {
+            SimulationStep();
         }
 
         private void tsBtnAutoRun_Click(object sender, EventArgs e)
@@ -343,19 +391,32 @@ namespace avrEmu
                 StartAutoSim();
         }
 
-        private void StartAutoSim()
+        private void tsBtnReset_Click(object sender, EventArgs e)
         {
-            this.tsBtnAutoRun.Image = Properties.Resources.control_pause_blue;
-            this.autoSimTimer.Enabled = true;
+            StopAutoSim();
+            this.errorOccured = false;
+            this.tsBtnAutoRun.Enabled = true;
+            this.tsBtnManualStep.Enabled = true;
+            this.at2313.Reset();
+            this.simulationInProgress = false;
+            UpdateCodeIcons();
         }
 
-        private void StopAutoSim()
+        private void tsCboSpeed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.autoSimTimer.Enabled = false;
-            this.tsBtnAutoRun.Image = Properties.Resources.control_play_blue;
+            this.autoSimTimer.Interval = this.possibleSpeeds[(string)this.tsCboSpeed.SelectedItem];
         }
 
+        void autoSimTimer_Tick(object sender, EventArgs e)
+        {
+            SimulationStep();
+        }
 
+        #endregion
+
+        #endregion
+
+        //Keyboard Shortcuts
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
         {
             switch (keyData)

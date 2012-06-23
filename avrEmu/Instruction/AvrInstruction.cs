@@ -18,10 +18,10 @@ namespace avrEmu
         public AvrInstruction(string asmString)
         {
             this.Arguments = new List<AvrInstrArg>();
-            ParseFromString(asmString);
+            ParseFromAsm(asmString);
         }
 
-        private void ParseFromString(string instrStr)
+        private void ParseFromAsm(string instrStr)
         {
             string[] instrParts = instrStr.Split(
                 new char[] {' ', ','},
@@ -31,10 +31,10 @@ namespace avrEmu
             this.Instruction = instrParts [0];
 
             for (int i = 1; i < instrParts.Length; i++)
-                this.Arguments.Add(ParseArgFromString(instrParts [i]));
+                this.Arguments.Add(ParseArgFromAsm(instrParts [i]));
         }
 
-        private AvrInstrArg ParseArgFromString(string argStr)
+        private AvrInstrArg ParseArgFromAsm(string argStr)
         {
             int parseOut;
             if (int.TryParse(argStr, out parseOut))
@@ -105,7 +105,7 @@ namespace avrEmu
                         throw new Exception("Invalid Argument!");
                     }
                 } else
-                { // so it's probably a IO-Register
+                { // just a string, so it's a IO-Register
                     return new AvrInstrArgIOReg(argStr);
                 }
             }
