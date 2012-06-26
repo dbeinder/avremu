@@ -13,17 +13,17 @@ namespace avrEmu
 
         public List<AvrIOPin> Pins = new List<AvrIOPin>();
         public int PinCount { get; protected set; }
+        public char PortCharacter { get; protected set; }
 
         public AvrIOPort(char name, int pinCount)
         {
             this.IORegisters.Add("DDR" + name, this.DDR);
             this.IORegisters.Add("PORT" + name, this.PORT);
             this.IORegisters.Add("PIN" + name, this.PIN);
+            this.PortCharacter = name;
 
             for (int i = 0; i < pinCount; i++)
-            {
                 Pins.Add(new AvrIOPin(DDR, PORT, PIN, i));
-            }
 
             this.PinCount = pinCount;
         }

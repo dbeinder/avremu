@@ -45,6 +45,9 @@ namespace avrEmu
                 out parseOut
             ))
             {//simple working register, eg: 'r16'
+                if (parseOut < 0 || parseOut > 31)
+                    throw new Exception("Invalid Working Register!");
+
                 return new AvrInstrArgRegister(parseOut);
             } else
             {//more computations neccessary
@@ -65,7 +68,7 @@ namespace avrEmu
                 }
                 );
 
-                if (trimmed == "X" || trimmed == "Y" || trimmed == "Z")
+                if (trimmed == "x" || trimmed == "y" || trimmed == "z")
                 {
                     if (argStr.IndexOf('-') != -1)
                     {

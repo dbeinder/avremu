@@ -17,7 +17,7 @@ namespace avrEmu
         private const string helpDirectory = "Help";
         private const string startHelpFile = "index.html";
 
-        string tmpPath = Path.GetTempPath() + "avrEmuHelp-" + Guid.NewGuid().ToString("N").Substring(24);
+        string tmpPath;
 
         public AboutForm()
         {
@@ -31,6 +31,16 @@ namespace avrEmu
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
+            if (tmpPath == null)
+                UnpackHelpFiles();
+
+            Process.Start(tmpPath + '/' + startHelpFile);
+        }
+
+        private void UnpackHelpFiles()
+        {
+            tmpPath = Path.GetTempPath() + "avrEmuHelp-" + Guid.NewGuid().ToString("N").Substring(24);
+
             Assembly localAssembly = Assembly.GetExecutingAssembly();
             string[] resourceFiles = localAssembly.GetManifestResourceNames();
 
@@ -46,8 +56,8 @@ namespace avrEmu
 
                     Stream resourceStream = localAssembly.GetManifestResourceStream(resourceName);
 
-                    string storeFilename = tmpPath + '/' 
-                        + nameParts[nameParts.Length - 2] 
+                    string storeFilename = tmpPath + '/'
+                        + nameParts[nameParts.Length - 2]
                         + '.' + nameParts[nameParts.Length - 1];
 
                     using (FileStream fs = new FileStream(storeFilename, FileMode.Create))
@@ -55,8 +65,6 @@ namespace avrEmu
                         resourceStream.CopyTo(fs);
                     }
                 }
-
-                Process.Start(tmpPath + '/' + startHelpFile);
             }
             catch
             {

@@ -75,6 +75,8 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\ControllerModules.cs" />
+    <Compile Include="Controller\ControllerPorts.cs" />
     <Compile Include="CreditsForms.cs">
       <SubType>Form</SubType>
     </Compile>

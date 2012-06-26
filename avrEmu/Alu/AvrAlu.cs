@@ -5,7 +5,7 @@ using System.Text;
 
 namespace avrEmu
 {
-    abstract class AvrAlu : AvrModule
+    public abstract class AvrAlu : AvrModule
     {
         //reference to the AvrController, of which this ALU is a part of
         public AvrController Controller { get; protected set; }
