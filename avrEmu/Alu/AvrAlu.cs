@@ -52,9 +52,9 @@ namespace avrEmu
 
         #region Instruction Set
 
-        protected delegate void Instruction(List<AvrInstrArg> args);
+        public delegate void Instruction(List<AvrInstrArg> args);
 
-        protected class VI  //Valid Instruction, InstructionSet entry
+        public class VI  //Valid Instruction, InstructionSet entry
         {
             public Instruction Exec;
             public List<AvrInstrArgType> Args;

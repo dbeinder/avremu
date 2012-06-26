@@ -8,6 +8,7 @@ namespace avrEmu
     public abstract class AvrModule
     {
         public Dictionary<string, ExtByte> IORegisters = new Dictionary<string, ExtByte>();
+        //public Dictionary<string, AvrAlu.VI> ModuleInstructions = new Dictionary<string, AvrAlu.VI>();
 
         //Not every AvrModule has to react to a ClockTick, overriding them is optional
         public virtual void ClockTick()
