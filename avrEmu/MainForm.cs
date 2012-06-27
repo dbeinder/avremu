@@ -129,6 +129,8 @@ namespace avrEmu
                 pbCodeIcons.Height = newIconLineHeight;
             if (pbCodeIcons.Top != yOffset)
                 pbCodeIcons.Top = yOffset;
+
+            rtbCode.Invalidate();
         }
 
         #endregion
