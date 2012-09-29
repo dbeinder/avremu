@@ -144,11 +144,13 @@ namespace avrEmu
         {
             //when pressed key is a number, open the dialog and insert said number
             int firstNumber;
-
-            if (int.TryParse(((char)MapVirtualKey((uint)e.KeyValue, 2)).ToString(), out firstNumber))
-                StartEdit(firstNumber);
-            else if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
                 StartEdit(-1);
+            else if (Type.GetType("Mono.Runtime") == null)
+            {
+                if (int.TryParse(((char)MapVirtualKey((uint)e.KeyValue, 2)).ToString(), out firstNumber))
+                    StartEdit(firstNumber);
+            }
         }
 
         #endregion
