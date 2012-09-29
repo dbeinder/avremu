@@ -390,7 +390,10 @@ namespace avrEmu
             if (this.autoSimTimer.Enabled)
                 StopAutoSim();
             else
+            {
+                SimulationStep();
                 StartAutoSim();
+            }
         }
 
         private void tsBtnReset_Click(object sender, EventArgs e)

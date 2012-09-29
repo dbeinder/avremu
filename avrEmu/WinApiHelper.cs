@@ -35,13 +35,24 @@ namespace avrEmu
 
         public static int GetVScrollPos(IntPtr handle)
         {
-            return GetScrollPos(handle, (int)ScrollBarType.SbVert);
+            if (Type.GetType("Mono.Runtime") == null)
+                return GetScrollPos(handle, (int)ScrollBarType.SbVert);
+            else
+                return 0;
         }
 
         public static void SetVScrollPos(IntPtr handle, int offset)
         {
-            uint wParam = (uint)ScrollBarCommands.SB_THUMBPOSITION | (uint)(offset << 16);
-            SendMessage(handle, (int)Message.WM_VSCROLL, new IntPtr(wParam), new IntPtr(0));
+            if (Type.GetType("Mono.Runtime") == null)
+            {
+                uint wParam = (uint)ScrollBarCommands.SB_THUMBPOSITION | (uint)(offset << 16);
+                SendMessage(
+                    handle,
+                    (int)Message.WM_VSCROLL,
+                    new IntPtr(wParam),
+                    new IntPtr(0)
+                );
+            }
         }
     }
 }
